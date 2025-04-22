@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { prisma } from 'src/db';
-import { BcryptInstance } from 'src/lib/bcrypt';
 import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
@@ -22,7 +21,6 @@ export class UserService {
       };
     }
 
-    createUserDto.password = await BcryptInstance.hash(createUserDto.password);
     await prisma.user.create({
       data: createUserDto,
     });
@@ -41,7 +39,6 @@ export class UserService {
         user.id,
         user.name,
         user.email,
-        user.password,
         user.role,
         user.bio,
         user.profile_image,
@@ -73,14 +70,12 @@ export class UserService {
       user.id,
       user.name,
       user.email,
-      user.password,
       user.role,
       user.bio,
       user.profile_image,
       user.created_at,
       user.updated_at
     ).getFullInfo();
-    delete userDto.password;
     return {
       message: "User retrieved successfully!",
       data: userDto
@@ -102,14 +97,12 @@ export class UserService {
       user.id,
       user.name,
       user.email,
-      user.password,
       user.role,
       user.bio,
       user.profile_image,
       user.created_at,
       user.updated_at
     ).getFullInfo();
-    delete userDto.password;
     return {
       message: "User retrieved successfully!",
       data: userDto
