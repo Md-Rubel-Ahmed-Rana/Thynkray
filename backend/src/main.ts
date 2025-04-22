@@ -1,15 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './interceptors/ResponseInterceptor';
-import  morgan from 'morgan';
+import morgan from 'morgan';
 const port = process.env.PORT || 6001;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['http://localhost:3000', "https://thynkray.vercel.app"],
+    origin: ['http://localhost:3000', 'https://thynkray.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    credentials: true
   });
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new ResponseInterceptor());

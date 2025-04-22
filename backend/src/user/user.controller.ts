@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {  multerOptions } from 'src/config/multer';
+import { multerOptions } from 'src/config/multer';
 
 @Controller('user')
 export class UserController {
@@ -39,15 +49,13 @@ export class UserController {
     return this.userService.remove(id);
   }
 
-
-@Post('/update-profile-picture/:id')
-@UseInterceptors(FileInterceptor('profile_image', multerOptions))
-updateProfileImage(
-  @Param('id') id: string,
-  @UploadedFile() file: Express.Multer.File
-) {
-  console.log({ id, file });
-  return this.userService.updateProfileImage(id, file);
-}
-
+  @Post('/update-profile-picture/:id')
+  @UseInterceptors(FileInterceptor('profile_image', multerOptions))
+  updateProfileImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    console.log({ id, file });
+    return this.userService.updateProfileImage(id, file);
+  }
 }
