@@ -2,7 +2,6 @@ export class GetUserDto {
     id: string;
     name: string;
     email: string;
-    password: string;
     role: string;
     bio?: string;
     profile_image?: string;
@@ -13,7 +12,6 @@ export class GetUserDto {
         id: string,
         name: string,
         email: string,
-        password: string,
         role: string,
         bio?: string,
         profile_image?: string,
@@ -23,7 +21,6 @@ export class GetUserDto {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
         this.role = role;
         this.bio = bio;
         this.profile_image = profile_image;
@@ -49,7 +46,6 @@ export class GetUserDto {
             id: this.id,
             name: this.name,
             email: this.email,
-            password: this.password,
             role: this.role,
             bio: this.bio,
             profile_image: this.profile_image,
