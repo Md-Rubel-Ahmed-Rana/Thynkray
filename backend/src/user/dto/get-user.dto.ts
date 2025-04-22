@@ -1,0 +1,68 @@
+export class GetUserDto {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    bio?: string;
+    profile_image?: string;
+    created_at: Date;
+    updated_at: Date;
+
+    constructor(
+        id: string,
+        name: string,
+        email: string,
+        password: string,
+        role: string,
+        bio?: string,
+        profile_image?: string,
+        created_at?: Date,
+        updated_at?: Date
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.bio = bio;
+        this.profile_image = profile_image;
+        this.created_at = created_at || new Date();
+        this.updated_at = updated_at || new Date();
+    }
+
+    // ---- GET methods ----
+
+    getBasicInfo() {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            role: this.role,
+            bio: this.bio,
+            profile_image: this.profile_image,
+        };
+    }
+
+    getFullInfo() {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            role: this.role,
+            bio: this.bio,
+            profile_image: this.profile_image,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
+        };
+    }
+
+    getPublicProfile() {
+        return {
+            name: this.name,
+            bio: this.bio,
+            profile_image: this.profile_image,
+        };
+    }
+}
