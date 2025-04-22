@@ -17,8 +17,6 @@ export const authOptions = {
         name: user?.name,
         email: user?.email,
         profile_image: user?.image,
-        role: "author",
-        password: "123456",
       };
       const res = await fetch(`${baseApi}/user`, {
         method: "POST",
