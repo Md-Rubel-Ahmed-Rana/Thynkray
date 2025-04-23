@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { buildMeiliSearchFilters } from 'src/utility/parseFiltersQuery';
 
 @Controller('post')
 export class PostController {
@@ -15,6 +16,11 @@ export class PostController {
   @Get()
   findAll() {
     return this.postService.findAll();
+  }
+  @Get("/search")
+  search(@Query("q") q: string, @Query("filters") filters: string) {
+    const parsedFilters = buildMeiliSearchFilters(filters);
+    return this.postService.search(q, parsedFilters);
   }
 
   @Get(':id')
