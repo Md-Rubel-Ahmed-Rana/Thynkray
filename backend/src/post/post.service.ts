@@ -4,9 +4,14 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { prisma } from 'src/db';
 import { GetPostDto } from './dto/get-post.dto';
 import { meiliSearchService } from 'src/search-library/meilisearch.service';
+import { RedisCacheService } from 'src/cache/cache.service';
 
 @Injectable()
 export class PostService {
+  private readonly cacheKey = 'posts';
+  
+  
+  constructor(private readonly cache: RedisCacheService) {}
   async create(createPostDto: CreatePostDto) {
     const {title, slug, tags, content, category, thumbnail, authorId} = createPostDto;
    await prisma.post.create({data: {
@@ -36,7 +41,7 @@ export class PostService {
 
     const postDto = GetPostDto.fromEntity(post);
     await meiliSearchService.addBlogsToMeiliSearch([postDto])
-
+    await this.cache.addNewValue(this.cacheKey, postDto)
 
     return {
       message: 'Post created successfully!',
@@ -45,16 +50,29 @@ export class PostService {
   }
 
   async findAll() {
-    const posts = await prisma.post.findMany({
-      include: {
-        author: true,
-        content: true,
-      }
-    });
-    const postDtos = GetPostDto.fromEntities(posts)
+    let postsData = []
+    let message = 'Posts retrieved successfully!'
+    const postsFromCache = await this.cache.get(this.cacheKey)
+    if(postsFromCache !== null){
+      postsData = postsFromCache
+      message = 'Posts retrieved from cache!'
+      console.log("Posts from cache", postsFromCache);
+    }else{
+      const posts = await prisma.post.findMany({
+          include: {
+            author: true,
+            content: true,
+          }
+        });
+      const postDtos = GetPostDto.fromEntities(posts)
+      await this.cache.set(this.cacheKey, postDtos)
+      postsData = postDtos
+      console.log("Posts from DB", postDtos);
+    }
+    
     return {
-      message: 'Posts retrieved successfully!',
-      data: postDtos
+      message,
+      data: postsData
     }
   }
 
@@ -68,6 +86,15 @@ export class PostService {
   }
 
  async findOne(id: string) {
+    const postFromCache = await this.cache.getSingleValue(this.cacheKey, id)
+
+    if(postFromCache !== null){
+      return {
+        message: 'Post retrieved successfully!',
+        data: postFromCache
+      }
+    }
+
     const post = await prisma.post.findUnique({
       where: {
         id
@@ -84,6 +111,7 @@ export class PostService {
       };
     }
     const postDto = GetPostDto.fromEntity(post);
+
     return {
       message: 'Post retrieved successfully!',
       data: postDto
@@ -114,7 +142,11 @@ export class PostService {
            }
           })),  
         },
-      }
+      },
+      include: {
+        author: true,
+        content: true
+      },
     });
     if (!post) {
       return {
@@ -122,6 +154,14 @@ export class PostService {
         statusCode: 404
       };
     }
+
+    const postDto = GetPostDto.fromEntity(post);
+
+    // update to meilisearch
+    await meiliSearchService.addBlogsToMeiliSearch([postDto])
+    // update to cache
+    await this.cache.updateValue(this.cacheKey, postDto)
+
     return {
       message: 'Post updated successfully!',
       statusCode: 200,
@@ -140,9 +180,17 @@ export class PostService {
         statusCode: 404
       };
     }
+
+    const postDto = GetPostDto.fromEntity(post);
+    // remove from meilisearch
+    await meiliSearchService.deleteBlogFromMeiliSearch(id)
+    // remove from cache
+    await this.cache.deleteValue(this.cacheKey, postDto)
+
     return {
       message: 'Post deleted successfully!',
       statusCode: 200,
     }
   }
+
   }

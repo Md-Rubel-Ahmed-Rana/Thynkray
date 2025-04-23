@@ -3,12 +3,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './interceptors/ResponseInterceptor';
 import morgan from 'morgan';
+import { RedisConfigService } from './config/redis';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService)
-
 
   const port = configService.get("PORT") && Number(configService.get("PORT")) || 6001
 
@@ -21,6 +21,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.use(morgan('dev'));
+
+  // connect redis cache database
+ const redis = app.get(RedisConfigService);
+ await redis.connect()
 
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
