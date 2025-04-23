@@ -6,6 +6,12 @@
 /prisma/generations
 /.pnp
 .pnp.js
+dist
+.git
+Dockerfile
+README.md
+.env
+
 
 # testing
 
