@@ -49,6 +49,19 @@ class MeiliSearchService {
       throw error;
     }
   }
+
+  async deleteBlogFromMeiliSearch(id: string): Promise<void> {
+    try {
+      const response = await this.index.deleteDocuments([id]);
+      console.log({
+        message: "Documents deleted from MeiliSearch",
+        response
+      });
+    } catch (error) {
+      console.error('Error deleting documents from MeiliSearch:', error);
+      throw error;
+    }
+  }
 }
 
 export const meiliSearchService = new MeiliSearchService();
