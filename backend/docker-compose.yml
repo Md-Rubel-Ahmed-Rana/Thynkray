@@ -2,8 +2,8 @@ version: '3'
 services:
   thynkray-server:
     build:
+      context: .
       dockerfile: Dockerfile
-      context: ./
     container_name: thynkray-server
     ports:
       - '6001:6001'
@@ -12,6 +12,5 @@ services:
       - .:/app
       - /app/node_modules
       - /app/prisma
-
     env_file:
       - .env
