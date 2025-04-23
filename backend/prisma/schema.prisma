@@ -18,4 +18,45 @@ model User {
   profile_image String?  @db.Text
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  Comment Comment[]
+
+  Post Post[]
+}
+
+
+model Post {
+  id String @id @default(uuid()) @db.Uuid
+  title String @db.Text
+  slug String @unique @db.Text
+  thumbnail String? @db.Text
+  category String? @db.Text
+  tags String[] @db.Text @default([])
+  authorId String @db.Uuid
+  author User? @relation(fields: [authorId], references: [id])
+  comments    Comment[]
+  content    PostSection[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt 
+}
+
+model PostSection {
+  id String @id @default(uuid()) @db.Uuid
+  postId String @db.Uuid
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  title String? @db.Text
+  images String[] @db.Text @default([])
+  description String? @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+}
+
+model Comment {
+  id String @id @default(uuid()) @db.Uuid
+  postId String @db.Uuid
+  post Post? @relation(fields: [postId], references: [id])
+  userId String @db.Uuid
+  user User? @relation(fields: [userId], references: [id])
+  content String? @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
 }
