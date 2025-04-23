@@ -1,3 +1,4 @@
+import { User } from "prisma/generations/client";
 import { PostSection } from "../entities/post.entity";
 
 export class GetPostDto {
@@ -8,6 +9,7 @@ export class GetPostDto {
     category?: string;
     tags: string[];
     content: PostSection[];
+    author: User
     createdAt: Date;
     updatedAt: Date;
 
@@ -19,6 +21,7 @@ export class GetPostDto {
         category?: string,
         tags: string[] = [],
         content: PostSection[] = [],
+        author?: User,
         createdAt?: Date,
         updatedAt?: Date
     ) {
@@ -29,6 +32,7 @@ export class GetPostDto {
         this.category = category;
         this.tags = tags;
         this.content = content;
+        this.author = author;
         this.createdAt = createdAt || new Date();
         this.updatedAt = updatedAt || new Date();
     }
@@ -42,6 +46,7 @@ export class GetPostDto {
             entity.category,
             entity.tags,
             entity.content,
+            entity.author,
             entity.createdAt,
             entity.updatedAt
         );
