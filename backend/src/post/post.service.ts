@@ -5,13 +5,15 @@ import { prisma } from 'src/db';
 import { GetPostDto } from './dto/get-post.dto';
 import { meiliSearchService } from 'src/search-library/meilisearch.service';
 import { RedisCacheService } from 'src/cache/cache.service';
+import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
+import { googleDriveService } from 'src/file-uploader/google.drive.service';
 
 @Injectable()
 export class PostService {
   private readonly cacheKey = 'posts';
   
-  
   constructor(private readonly cache: RedisCacheService) {}
+
   async create(createPostDto: CreatePostDto) {
     const {title, slug, tags, content, category, thumbnail, authorId} = createPostDto;
    await prisma.post.create({data: {
@@ -40,7 +42,9 @@ export class PostService {
       }})
 
     const postDto = GetPostDto.fromEntity(post);
+    // add to meilisearch
     await meiliSearchService.addBlogsToMeiliSearch([postDto])
+    // add to cache
     await this.cache.addNewValue(this.cacheKey, postDto)
 
     return {
@@ -56,7 +60,6 @@ export class PostService {
     if(postsFromCache !== null){
       postsData = postsFromCache
       message = 'Posts retrieved from cache!'
-      console.log("Posts from cache", postsFromCache);
     }else{
       const posts = await prisma.post.findMany({
           include: {
@@ -67,7 +70,6 @@ export class PostService {
       const postDtos = GetPostDto.fromEntities(posts)
       await this.cache.set(this.cacheKey, postDtos)
       postsData = postDtos
-      console.log("Posts from DB", postDtos);
     }
     
     return {
@@ -75,6 +77,35 @@ export class PostService {
       data: postsData
     }
   }
+
+  async findAllByAuthorId(authorId: string) {
+    // stage-1:  find from cache
+    const postsFromCache = await this.cache.get(this.cacheKey)
+    if(postsFromCache !== null){
+      const posts = postsFromCache.filter((post: any) => post?.author?.id === authorId)
+      if(posts.length > 0){
+        return {
+          message: 'Posts retrieved from cache!',
+          data: posts
+        }
+      }
+    }
+
+    const posts =await prisma.post.findMany({
+      where: {
+        authorId: authorId
+      },
+      include: {
+        author: true,
+        content: true,
+      }
+    })
+    return {
+      message: "Posts retrieved successfully",
+      data: posts
+    }
+  }
+
 
   async search(searchText: string, filters: string[] = []) {
     console.log(filters);
@@ -90,7 +121,7 @@ export class PostService {
 
     if(postFromCache !== null){
       return {
-        message: 'Post retrieved successfully!',
+        message: 'Post retrieved from cache successfully!',
         data: postFromCache
       }
     }
@@ -148,6 +179,7 @@ export class PostService {
         content: true
       },
     });
+
     if (!post) {
       return {
         message: 'Post not found!',
@@ -162,13 +194,23 @@ export class PostService {
     // update to cache
     await this.cache.updateValue(this.cacheKey, postDto)
 
+    // delete unused images from drive
+    const oldImages = postDto.content.map((section) => section.images).flat()
+    const newImages = content.map((section) => section.images).flat()
+
+    const imagesToDelete = compareArrayAndReturnUnmatched([...oldImages, postDto?.thumbnail], [...newImages, thumbnail])
+
+    if(imagesToDelete.length > 0){
+      await googleDriveService.deleteMultipleFiles(imagesToDelete)
+    }
+
     return {
       message: 'Post updated successfully!',
       statusCode: 200,
     }
   }
 
- async remove(id: string) {
+   async remove(id: string) {
     const post = await prisma.post.delete({
       where: {
         id
@@ -186,6 +228,13 @@ export class PostService {
     await meiliSearchService.deleteBlogFromMeiliSearch(id)
     // remove from cache
     await this.cache.deleteValue(this.cacheKey, postDto)
+
+    // delete images from drive
+    const imagesToDelete = [postDto?.thumbnail, ...postDto.content.map((section) => section.images).flat()]
+
+    if(imagesToDelete.length > 0){
+      await googleDriveService.deleteMultipleFiles(imagesToDelete)
+    }
 
     return {
       message: 'Post deleted successfully!',

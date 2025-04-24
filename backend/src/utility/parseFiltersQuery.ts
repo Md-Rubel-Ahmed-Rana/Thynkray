@@ -9,7 +9,6 @@ export const  buildMeiliSearchFilters = (filterQuery: string | undefined): strin
       const values = parsed[key];
       if (!Array.isArray(values) || values.length === 0) continue;
 
-      // Strings need quotes, booleans/numbers don't
       const formatted = values
         .map(v => typeof v === 'string' ? `"${v.trim()}"` : v)
         .join(', ');
