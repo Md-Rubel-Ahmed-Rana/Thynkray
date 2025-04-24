@@ -60,6 +60,22 @@ class GoogleDriveService {
       fs.unlink(file.path, () => {});
     }
   }
+
+  async uploadMultipleFiles(files: any[]): Promise<string[]> {
+  const uploadResults: string[] = [];
+
+  for (const file of files) {
+    try {
+        const fileUrl = await this.uploadSingleFile(file);
+        uploadResults.push(fileUrl);
+      } catch (error) {
+        console.error(`Failed to upload file ${file.originalname}:`, error);
+      }
+    }
+
+    return uploadResults;
+  }
+
 }
 
 export const googleDriveService = new GoogleDriveService(new ConfigService());

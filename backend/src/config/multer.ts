@@ -13,3 +13,6 @@ export const multerOptions = {
     fileSize: 5 * 1024 * 1024,
   },
 };
+
+
+export const uploadFiles = multer({ dest: "uploads/" })
