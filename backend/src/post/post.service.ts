@@ -58,7 +58,6 @@ export class PostService {
     if(postsFromCache !== null){
       postsData = postsFromCache
       message = 'Posts retrieved from cache!'
-      console.log("Posts from cache", postsFromCache);
     }else{
       const posts = await prisma.post.findMany({
           include: {
@@ -69,7 +68,6 @@ export class PostService {
       const postDtos = GetPostDto.fromEntities(posts)
       await this.cache.set(this.cacheKey, postDtos)
       postsData = postDtos
-      console.log("Posts from DB", postDtos);
     }
     
     return {
@@ -77,6 +75,35 @@ export class PostService {
       data: postsData
     }
   }
+
+  async findAllByAuthorId(authorId: string) {
+    // stage-1:  find from cache
+    const postsFromCache = await this.cache.get(this.cacheKey)
+    if(postsFromCache !== null){
+      const posts = postsFromCache.filter((post: any) => post?.author?.id === authorId)
+      if(posts.length > 0){
+        return {
+          message: 'Posts retrieved from cache!',
+          data: posts
+        }
+      }
+    }
+
+    const posts =await prisma.post.findMany({
+      where: {
+        authorId: authorId
+      },
+      include: {
+        author: true,
+        content: true,
+      }
+    })
+    return {
+      message: "Posts retrieved successfully",
+      data: posts
+    }
+  }
+
 
   async search(searchText: string, filters: string[] = []) {
     console.log(filters);
@@ -92,7 +119,7 @@ export class PostService {
 
     if(postFromCache !== null){
       return {
-        message: 'Post retrieved successfully!',
+        message: 'Post retrieved from cache successfully!',
         data: postFromCache
       }
     }

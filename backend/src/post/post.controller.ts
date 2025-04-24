@@ -15,8 +15,14 @@ export class PostController {
 
   @Get()
   findAll() {
-    return this.postService.findAll();
+    return this.postService.findAll()
   }
+
+  @Get("/author/:authorId")
+  findAllByAuthorId(@Param("authorId") authorId: string) {
+    return this.postService.findAllByAuthorId(authorId);
+  }
+
   @Get("/search")
   search(@Query("q") q: string, @Query("filters") filters: string) {
     const parsedFilters = buildMeiliSearchFilters(filters);
