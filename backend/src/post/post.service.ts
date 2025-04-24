@@ -40,7 +40,9 @@ export class PostService {
       }})
 
     const postDto = GetPostDto.fromEntity(post);
+    // add to meilisearch
     await meiliSearchService.addBlogsToMeiliSearch([postDto])
+    // add to cache
     await this.cache.addNewValue(this.cacheKey, postDto)
 
     return {
@@ -191,6 +193,10 @@ export class PostService {
       message: 'Post deleted successfully!',
       statusCode: 200,
     }
+  }
+
+   isMulterFile(file: any): file is Express.Multer.File {
+    return typeof file === "object" && file !== null
   }
 
   }

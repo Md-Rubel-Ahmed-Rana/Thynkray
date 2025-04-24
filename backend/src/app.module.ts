@@ -15,4 +15,12 @@ import { CacheModule } from './cache/cache.module';
   providers: [AppService, RedisConfigService, RedisCacheService, CacheModule],
   exports: [RedisConfigService, RedisCacheService],
 })
-export class AppModule {}
+
+
+export class AppModule  {}
+
+/*
+import { multerOptions } from 'src/config/multer';
+
+*/
+
