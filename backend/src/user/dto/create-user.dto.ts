@@ -1,9 +1,20 @@
+import { IsEmail, IsOptional, IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
-    name: string;  
+    @IsString({ message: 'Name must be a string', context: { field: 'name' } })
+    @IsNotEmpty({ message: 'Name is required', context: { field: 'name' } })
+    name: string;
+    @IsEmail({}, { message: 'Email must be a valid email address', context: { field: 'email' } })
+    @IsNotEmpty({ message: 'Email is required', context: { field: 'email' } })
     email: string; 
-    role: string; 
-    bio?: string; 
+    @IsOptional()
+    @IsString({ message: 'Role must be a string', context: { field: 'role' } })
+    role: string;
+    @IsOptional()
+    @IsString({ message: 'Bio must be a string', context: { field: 'bio' } })
+    bio?: string;
+    @IsOptional()
+    @IsString({ message: 'Profile image must be a string', context: { field: 'profile_image' } })
     profile_image?: string; 
 
     constructor(name: string, email: string, role: string, bio?: string, profile_image?: string) {
