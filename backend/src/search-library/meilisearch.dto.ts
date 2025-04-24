@@ -26,11 +26,15 @@ export class MeiliSearchDto {
   }
 
   static fromPost(post: any): MeiliSearchDto {
-    const sectionDescriptions = post.content
+     const content = Array.isArray(post?.content) ? post?.content : [];
+    const sectionTitles = content
+      ?.map((section: any) => section?.title)
+      .join(' ') || '';
+    const sectionDescriptions = content
       ?.map((section: any) => section?.description)
       .join(' ') || '';
 
-    const title = `${post.title} ${sectionDescriptions}`;
+    const title = `${post.title} ${sectionTitles}`;
 
     return new MeiliSearchDto(
       post.id,
