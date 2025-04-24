@@ -5,13 +5,15 @@ import { prisma } from 'src/db';
 import { GetPostDto } from './dto/get-post.dto';
 import { meiliSearchService } from 'src/search-library/meilisearch.service';
 import { RedisCacheService } from 'src/cache/cache.service';
+import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
+import { googleDriveService } from 'src/file-uploader/google.drive.service';
 
 @Injectable()
 export class PostService {
   private readonly cacheKey = 'posts';
   
-  
   constructor(private readonly cache: RedisCacheService) {}
+
   async create(createPostDto: CreatePostDto) {
     const {title, slug, tags, content, category, thumbnail, authorId} = createPostDto;
    await prisma.post.create({data: {
@@ -177,6 +179,7 @@ export class PostService {
         content: true
       },
     });
+
     if (!post) {
       return {
         message: 'Post not found!',
@@ -191,13 +194,23 @@ export class PostService {
     // update to cache
     await this.cache.updateValue(this.cacheKey, postDto)
 
+    // delete unused images from drive
+    const oldImages = postDto.content.map((section) => section.images).flat()
+    const newImages = content.map((section) => section.images).flat()
+
+    const imagesToDelete = compareArrayAndReturnUnmatched([...oldImages, postDto?.thumbnail], [...newImages, thumbnail])
+
+    if(imagesToDelete.length > 0){
+      await googleDriveService.deleteMultipleFiles(imagesToDelete)
+    }
+
     return {
       message: 'Post updated successfully!',
       statusCode: 200,
     }
   }
 
- async remove(id: string) {
+   async remove(id: string) {
     const post = await prisma.post.delete({
       where: {
         id
@@ -216,14 +229,17 @@ export class PostService {
     // remove from cache
     await this.cache.deleteValue(this.cacheKey, postDto)
 
+    // delete images from drive
+    const imagesToDelete = [postDto?.thumbnail, ...postDto.content.map((section) => section.images).flat()]
+
+    if(imagesToDelete.length > 0){
+      await googleDriveService.deleteMultipleFiles(imagesToDelete)
+    }
+
     return {
       message: 'Post deleted successfully!',
       statusCode: 200,
     }
-  }
-
-   isMulterFile(file: any): file is Express.Multer.File {
-    return typeof file === "object" && file !== null
   }
 
   }

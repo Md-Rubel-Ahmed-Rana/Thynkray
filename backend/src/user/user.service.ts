@@ -79,6 +79,7 @@ export class UserService {
       data: userDto
     };
   }
+
   async findOneByEmail(email: string) {
     const user = await prisma.user.findUnique({
       where: {
@@ -120,15 +121,21 @@ export class UserService {
       message: 'User updated successfully!'
     };
   }
+
   async updateProfileImage(
     id: string,
     file: any
   ): Promise<{ message: string }> {
     const imageUrl = await googleDriveService.uploadSingleFile(file);
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: { id },
       data: { profile_image: imageUrl }
     });
+
+    // Delete the old image from Google Drive 
+    if(user?.profile_image) {
+      await googleDriveService.deleteFile(user?.profile_image);
+    }
 
     return {
       message: 'User updated successfully!'

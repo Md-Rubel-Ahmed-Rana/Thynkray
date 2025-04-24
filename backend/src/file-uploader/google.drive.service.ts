@@ -76,6 +76,50 @@ class GoogleDriveService {
     return uploadResults;
   }
 
+  async deleteFile(link: string): Promise<void> {
+    const fileId =  this.extractFileIdFromLink(link)
+
+    if(!fileId) {
+      console.log('Invalid file link provided', link);
+      return
+    }
+
+    try {
+      await this.drive.files.delete({
+        fileId
+      });
+    } catch (error) {
+      console.error('Google Drive delete error:', error);
+      throw new Error('Failed to delete file from Google Drive');
+    }
+  }
+
+  async deleteMultipleFiles(links: string[]): Promise<void> {
+    for (const link of links) {
+      try {
+        await this.deleteFile(link);
+      } catch (error) {
+        console.error(`Failed to delete file with link ${link}:`, error);
+      }
+    }
+  }
+
+  extractFileIdFromLink(link: string): string | null {
+  try {
+    const url = new URL(link);
+    const idParam = url.searchParams.get('id');
+    if (idParam) return idParam;
+
+    const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) return match[1];
+
+      return null;
+    } catch (error) {
+      console.error('Invalid URL:', error);
+      return null;
+    }
+  }
+
 }
 
 export const googleDriveService = new GoogleDriveService(new ConfigService());
