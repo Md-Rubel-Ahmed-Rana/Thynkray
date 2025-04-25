@@ -14,6 +14,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { FileUploaderModule } from './file-uploader/fileUploader.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }), UserModule, PostModule, CommentModule, CacheModule, FileUploaderModule, PrismaModule, 
@@ -35,7 +36,7 @@ import { APP_GUARD } from '@nestjs/core';
             limit: 100
           }
       ],
-    })],
+    }), AuthModule],
   controllers: [AppController],
   providers: [AppService, RedisConfigService, RedisCacheService, CacheModule, GoogleDriveService, PrismaService, {
       provide: APP_GUARD,
