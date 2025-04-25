@@ -43,6 +43,33 @@ export class CommentService {
     }
   }
 
+  async findAllByPostId(id: string) {
+    const comments = await this.prisma.comment.findMany({
+      where: {postId: id},
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            profile_image: true
+          }
+        },
+        post: {
+          select: {
+            id: true,
+            title: true
+          }
+        }
+      }
+    })
+    const commentDtos = GetCommentDto.fromEntities(comments)
+    return {
+      message: 'Comments retrieved successfully',
+      statusCode: 200,
+      data: commentDtos
+    }
+  }
+
   async findOne(id: string) {
     const comment = await this.prisma.comment.findUnique({
       where: { id: id },

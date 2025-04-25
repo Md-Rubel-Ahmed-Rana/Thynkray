@@ -6,14 +6,20 @@ import morgan from 'morgan';
 import { RedisConfigService } from './config/redis';
 import { ValidationPipe } from '@nestjs/common';
 import { ValidationExceptionFilter } from './common/validation/validation-exception.filter';
+import helmet from 'helmet';
+import { doubleCsrf } from 'csrf-csrf';
+import { doubleCsrfOptions } from './utility/csrfOptions';
+const {doubleCsrfProtection} = doubleCsrf(doubleCsrfOptions);
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  
   const configService = app.get(ConfigService)
-
+  
   const port = configService.get("PORT") && Number(configService.get("PORT"))
-
+  
   // cors configuration
   app.enableCors({
     origin: ['http://localhost:3000', 'https://thynkray.vercel.app'],
@@ -27,6 +33,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.use(morgan('dev'));
+  app.use(helmet());
+  app.use(doubleCsrfProtection);
 
 
   // connect redis cache database
