@@ -7,21 +7,29 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  UploadedFile
+  UploadedFile,
+  Res
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer';
+import { Response } from 'express';
+import { cookieName } from 'src/constants/cookie';
+import { cookieOptions } from 'src/utility/cookieOptions';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+ async create(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) res: Response) {
+   const {access_token, message, statusCode} = await this.userService.create(createUserDto);
+
+    res.cookie(cookieName, access_token, cookieOptions);
+
+    return { message, statusCode };
   }
 
   @Get()

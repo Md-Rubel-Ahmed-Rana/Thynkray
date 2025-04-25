@@ -7,9 +7,7 @@ import { RedisConfigService } from './config/redis';
 import { ValidationPipe } from '@nestjs/common';
 import { ValidationExceptionFilter } from './common/validation/validation-exception.filter';
 import helmet from 'helmet';
-import { doubleCsrf } from 'csrf-csrf';
-import { doubleCsrfOptions } from './utility/csrfOptions';
-const {doubleCsrfProtection} = doubleCsrf(doubleCsrfOptions);
+import  cookieParser from 'cookie-parser';
 
 
 async function bootstrap() {
@@ -34,7 +32,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.use(morgan('dev'));
   app.use(helmet());
-  app.use(doubleCsrfProtection);
+  app.use(cookieParser());
 
 
   // connect redis cache database
