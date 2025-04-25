@@ -1,4 +1,4 @@
-import { Post, User } from "prisma/generations/client";
+import { Post, User } from "@prisma/client";
 
 export class GetCommentDto {
     id: string;

@@ -1,4 +1,4 @@
-import { User } from "prisma/generations/client";
+import { User } from "@prisma/client";
 import { Comment } from "src/comment/entities/comment.entity";
 
 export class Post {

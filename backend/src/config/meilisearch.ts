@@ -1,10 +1,7 @@
-import { ConfigService } from '@nestjs/config';
-import  MeiliSearch  from 'meilisearch'
-
-const configService = new ConfigService();
+import 'dotenv/config';
+import MeiliSearch from 'meilisearch';
 
 export const MeiliSearchClient = new MeiliSearch({
-  host: configService.get<string>('MEILISEARCH_HOST'),   
-  apiKey: configService.get<string>('MEILISEARCH_API_KEY'), 
+  host: process.env.MEILISEARCH_HOST!,
+  apiKey: process.env.MEILISEARCH_API_KEY!,
 });
-
