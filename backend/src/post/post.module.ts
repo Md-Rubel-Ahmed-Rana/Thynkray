@@ -6,14 +6,17 @@ import { RedisConfigService } from 'src/config/redis';
 import { ManipulatePostMiddleware } from 'src/middlewares/post.middleware';
 import multer from 'multer';
 import { multerOptions } from 'src/config/multer';
+import { FileUploaderModule } from 'src/file-uploader/FileUploader.module';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 
 const upload = multer(multerOptions);
 
 @Module({
+  imports: [FileUploaderModule],
   controllers: [PostController],
-  providers: [PostService, RedisCacheService, RedisConfigService],
-  exports: [RedisCacheService],
+  providers: [PostService, RedisCacheService, RedisConfigService, PrismaService],
+  exports: [RedisCacheService ],
 })
 
 export class PostModule {

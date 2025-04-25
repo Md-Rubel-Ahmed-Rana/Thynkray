@@ -7,20 +7,18 @@ import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 import { RedisConfigService } from './config/redis';
 import { RedisCacheService } from './cache/cache.service';
-import { CacheModule } from './cache/cache.module';
+import { CacheModule } from './cache/cache.module'; 
+import { FileUploaderModule } from './file-uploader/FileUploader.module';
+import { GoogleDriveService } from './file-uploader/google.drive.service';
+import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
-  imports: [UserModule, ConfigModule.forRoot({ isGlobal: true }), PostModule, CommentModule, CacheModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }), UserModule, PostModule, CommentModule, CacheModule, FileUploaderModule, PrismaModule],
   controllers: [AppController],
-  providers: [AppService, RedisConfigService, RedisCacheService, CacheModule],
-  exports: [RedisConfigService, RedisCacheService],
+  providers: [AppService, RedisConfigService, RedisCacheService, CacheModule, GoogleDriveService, PrismaService],
+  exports: [RedisConfigService, RedisCacheService, GoogleDriveService],
 })
 
 
 export class AppModule  {}
-
-/*
-import { multerOptions } from 'src/config/multer';
-
-*/
-

@@ -12,7 +12,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService)
 
-  const port = configService.get("PORT") && Number(configService.get("PORT")) || 6001
+  const port = configService.get("PORT") && Number(configService.get("PORT"))
 
   // cors configuration
   app.enableCors({

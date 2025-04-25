@@ -2,7 +2,10 @@ import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 
-class GoogleDriveService {
+import { Injectable } from '@nestjs/common';
+ 
+@Injectable()
+export class GoogleDriveService {
   private readonly SCOPES = ['https://www.googleapis.com/auth/drive.file'];
   private drive;
 
@@ -10,7 +13,8 @@ class GoogleDriveService {
     const rawCredentials = this.configService.get<string>(
       'GOOGLE_DRIVE_CREDENTIALS'
     );
-    const credentials = JSON.parse(rawCredentials);
+
+    const credentials = rawCredentials && JSON.parse(rawCredentials);
     credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
 
     const auth = new google.auth.GoogleAuth({
@@ -122,4 +126,3 @@ class GoogleDriveService {
 
 }
 
-export const googleDriveService = new GoogleDriveService(new ConfigService());
