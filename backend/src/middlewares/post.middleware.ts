@@ -1,15 +1,16 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { googleDriveService } from 'src/file-uploader/google.drive.service';
+import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
 
 @Injectable()
 export class ManipulatePostMiddleware implements NestMiddleware {
+  constructor(private readonly googleDriveService: GoogleDriveService) {}
   async use(req: Request, res: Response, next: NextFunction) {
     const files = req.files as Express.Multer.File[];
 
     try {
       if (typeof req.body.tags === 'string') {
-        req.body.tags = JSON.parse(req.body.tags);
+        req.body.tags = JSON.parse(JSON.stringify(req?.body?.tags));
       }
     } catch {
       req.body.tags = [];
@@ -17,14 +18,14 @@ export class ManipulatePostMiddleware implements NestMiddleware {
 
     let content = [];
     try {
-      content = typeof req.body.content === 'string' ? JSON.parse(req.body.content) : req.body.content || [];
+      content = typeof req.body?.content === 'string' ? JSON.parse(JSON.stringify(req?.body?.content)) : req.body.content || [];
     } catch {
       content = [];
     }
 
     const thumbnailFile = files.find(file => file.fieldname === 'thumbnail');
     if (thumbnailFile) {
-      const url = await googleDriveService.uploadSingleFile(thumbnailFile);
+      const url = await this.googleDriveService.uploadSingleFile(thumbnailFile);
       req.body.thumbnail = url;
     } else if (typeof req.body.thumbnail !== 'string') {
       req.body.thumbnail = '';
@@ -63,7 +64,7 @@ export class ManipulatePostMiddleware implements NestMiddleware {
       }
 
       if (fileImages.length > 0) {
-        const uploadedUrls = await googleDriveService.uploadMultipleFiles(fileImages);
+        const uploadedUrls = await this.googleDriveService.uploadMultipleFiles(fileImages);
         section.images = [...urlImages, ...uploadedUrls];
       } else {
         section.images = urlImages;

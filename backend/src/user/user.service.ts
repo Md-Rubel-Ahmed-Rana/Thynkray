@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { prisma } from 'src/db';
 import { GetUserDto } from './dto/get-user.dto';
-import { googleDriveService } from 'src/file-uploader/google.drive.service';
+import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly googleDriveService: GoogleDriveService, private prisma: PrismaService) {}
   async create(createUserDto: CreateUserDto) {
-    const isExist = await prisma.user.findUnique({
+    const isExist = await this.prisma.user.findUnique({
       where: {
         email: createUserDto.email
       }
@@ -21,7 +22,7 @@ export class UserService {
       };
     }
 
-    await prisma.user.create({
+    await this.prisma.user.create({
       data: createUserDto
     });
     return {
@@ -31,7 +32,7 @@ export class UserService {
   }
 
   async findAll(): Promise<{ message: string; data: Partial<GetUserDto>[] }> {
-    const users = await prisma.user.findMany({});
+    const users = await this.prisma.user.findMany({});
 
     const userDtos = users.map((user) =>
       new GetUserDto(
@@ -53,7 +54,7 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         id
       }
@@ -81,7 +82,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email
       }
@@ -112,7 +113,7 @@ export class UserService {
     id: string,
     updateUserDto: UpdateUserDto
   ): Promise<{ message: string }> {
-    await prisma.user.update({
+    await this.prisma.user.update({
       where: { id },
       data: updateUserDto
     });
@@ -123,27 +124,31 @@ export class UserService {
   }
 
   async updateProfileImage(
-    id: string,
-    file: any
-  ): Promise<{ message: string }> {
-    const imageUrl = await googleDriveService.uploadSingleFile(file);
-    const user = await prisma.user.update({
-      where: { id },
-      data: { profile_image: imageUrl }
-    });
+  id: string,
+  file: any
+): Promise<{ message: string }> {
+  const existingUser = await this.prisma.user.findUnique({ where: { id } });
+  const oldImageUrl = existingUser?.profile_image;
 
-    // Delete the old image from Google Drive 
-    if(user?.profile_image) {
-      await googleDriveService.deleteFile(user?.profile_image);
-    }
+  const newImageUrl = await this.googleDriveService.uploadSingleFile(file);
 
-    return {
-      message: 'User updated successfully!'
-    };
+  await this.prisma.user.update({
+    where: { id },
+    data: { profile_image: newImageUrl }
+  });
+
+  if (oldImageUrl) {
+    await this.googleDriveService.deleteFile(oldImageUrl);
   }
 
+  return {
+    message: 'User updated successfully!'
+  };
+}
+
+
   async remove(id: string) {
-    await prisma.user.delete({
+    await this.prisma.user.delete({
       where: { id }
     });
     return {

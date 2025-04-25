@@ -1,4 +1,4 @@
-import { User } from "prisma/generations/client";
+import { User } from "@prisma/client";
 import { PostSection } from "../entities/post.entity";
 
 export class GetPostDto {

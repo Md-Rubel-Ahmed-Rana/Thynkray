@@ -1,22 +1,22 @@
+import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
 import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { prisma } from 'src/db';
 import { GetPostDto } from './dto/get-post.dto';
 import { meiliSearchService } from 'src/search-library/meilisearch.service';
 import { RedisCacheService } from 'src/cache/cache.service';
 import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
-import { googleDriveService } from 'src/file-uploader/google.drive.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class PostService {
   private readonly cacheKey = 'posts';
   
-  constructor(private readonly cache: RedisCacheService) {}
+  constructor(private readonly cache: RedisCacheService,private readonly googleDriveService: GoogleDriveService, private readonly prisma: PrismaService) {}
 
   async create(createPostDto: CreatePostDto) {
     const {title, slug, tags, content, category, thumbnail, authorId} = createPostDto;
-   await prisma.post.create({data: {
+   await this.prisma.post.create({data: {
       title,
       slug,
       tags,
@@ -32,7 +32,7 @@ export class PostService {
       },
     }});
 
-    const post = await prisma.post.findUnique({
+    const post = await this.prisma.post.findUnique({
       where: {
         slug
       },
@@ -61,7 +61,7 @@ export class PostService {
       postsData = postsFromCache
       message = 'Posts retrieved from cache!'
     }else{
-      const posts = await prisma.post.findMany({
+      const posts = await this.prisma.post.findMany({
           include: {
             author: true,
             content: true,
@@ -91,7 +91,7 @@ export class PostService {
       }
     }
 
-    const posts =await prisma.post.findMany({
+    const posts =await this.prisma.post.findMany({
       where: {
         authorId: authorId
       },
@@ -108,7 +108,6 @@ export class PostService {
 
 
   async search(searchText: string, filters: string[] = []) {
-    console.log(filters);
     const response = await meiliSearchService.search(searchText, filters);
     return {
       message: 'Posts retrieved successfully!',
@@ -126,7 +125,7 @@ export class PostService {
       }
     }
 
-    const post = await prisma.post.findUnique({
+    const post = await this.prisma.post.findUnique({
       where: {
         id
       },
@@ -151,7 +150,7 @@ export class PostService {
 
   async update(id: string, updatePostDto: UpdatePostDto) {
     const {title, slug, tags, content, category, thumbnail} = updatePostDto;
-    const post = await prisma.post.update({
+    const post = await this.prisma.post.update({
       where: {
         id
       },
@@ -201,7 +200,7 @@ export class PostService {
     const imagesToDelete = compareArrayAndReturnUnmatched([...oldImages, postDto?.thumbnail], [...newImages, thumbnail])
 
     if(imagesToDelete.length > 0){
-      await googleDriveService.deleteMultipleFiles(imagesToDelete)
+      await this.googleDriveService.deleteMultipleFiles(imagesToDelete)
     }
 
     return {
@@ -211,7 +210,7 @@ export class PostService {
   }
 
    async remove(id: string) {
-    const post = await prisma.post.delete({
+    const post = await this.prisma.post.delete({
       where: {
         id
       }
@@ -233,7 +232,7 @@ export class PostService {
     const imagesToDelete = [postDto?.thumbnail, ...postDto.content.map((section) => section.images).flat()]
 
     if(imagesToDelete.length > 0){
-      await googleDriveService.deleteMultipleFiles(imagesToDelete)
+      await this.googleDriveService.deleteMultipleFiles(imagesToDelete)
     }
 
     return {

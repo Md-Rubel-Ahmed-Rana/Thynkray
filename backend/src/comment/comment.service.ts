@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { prisma } from 'src/db';
 import { GetCommentDto } from './dto/get-comment.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CommentService {
+  constructor(private readonly prisma: PrismaService) {}
  async  create(createCommentDto: CreateCommentDto) {
-    await prisma.comment.create({
+    await this.prisma.comment.create({
       data: createCommentDto
     })
     return {
@@ -17,7 +18,7 @@ export class CommentService {
   }
 
   async findAll() {
-    const comments = await prisma.comment.findMany({
+    const comments = await this.prisma.comment.findMany({
       include: {
         user: {
           select: {
@@ -43,7 +44,7 @@ export class CommentService {
   }
 
   async findOne(id: string) {
-    const comment = await prisma.comment.findUnique({
+    const comment = await this.prisma.comment.findUnique({
       where: { id: id },
       include: {
         user: {
@@ -78,7 +79,7 @@ export class CommentService {
   }
 
   async update(id: string, updateCommentDto: UpdateCommentDto) {
-    await prisma.comment.update({
+    await this.prisma.comment.update({
       where: {
         id
       },
@@ -91,7 +92,7 @@ export class CommentService {
   }
 
   async remove(id: string) {
-    await prisma.comment.delete({
+    await this.prisma.comment.delete({
       where: { id: id }
     })
     return {
