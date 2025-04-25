@@ -3,6 +3,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { buildMeiliSearchFilters } from 'src/utility/parseFiltersQuery';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('post')
 export class PostController {
@@ -13,6 +14,7 @@ export class PostController {
     return this.postService.create(createPostDto);
   }
 
+  @SkipThrottle()
   @Get()
   findAll() {
     return this.postService.findAll()
@@ -23,12 +25,14 @@ export class PostController {
     return this.postService.findAllByAuthorId(authorId);
   }
 
+  @SkipThrottle()
   @Get("/search")
   search(@Query("q") q: string, @Query("filters") filters: string) {
     const parsedFilters = buildMeiliSearchFilters(filters);
     return this.postService.search(q, parsedFilters);
   }
 
+  @SkipThrottle()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postService.findOne(id);
