@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { FileUploaderModule } from 'src/file-uploader/FileUploader.module';
+import { FileUploaderModule } from 'src/file-uploader/fileUploader.module';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({

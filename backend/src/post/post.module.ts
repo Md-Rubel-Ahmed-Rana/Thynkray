@@ -6,7 +6,7 @@ import { RedisConfigService } from 'src/config/redis';
 import { ManipulatePostMiddleware } from 'src/middlewares/post.middleware';
 import multer from 'multer';
 import { multerOptions } from 'src/config/multer';
-import { FileUploaderModule } from 'src/file-uploader/FileUploader.module';
+import { FileUploaderModule } from 'src/file-uploader/fileUploader.module';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 
