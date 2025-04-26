@@ -5,3 +5,22 @@ body {
   box-sizing: border-box;
   cursor: default !important;
 }
+
+
+/* Swiper Custom Pagination */
+.custom-pagination .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  transition: all 0.3s;
+  margin: 8px 0;
+  border-radius: 50%;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  background: white;
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
