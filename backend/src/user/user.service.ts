@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
@@ -75,10 +75,7 @@ export class UserService {
       }
     });
     if (!user) {
-      return {
-        message: 'User not found!',
-        statusCode: 404
-      };
+     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     const userDto = new GetUserDto(
       user.id,
@@ -103,10 +100,7 @@ export class UserService {
       }
     });
     if (!user) {
-      return {
-        message: 'User not found!',
-        statusCode: 404
-      };
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     const userDto = new GetUserDto(
       user.id,

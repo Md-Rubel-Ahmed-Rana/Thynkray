@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { GetCommentDto } from './dto/get-comment.dto';
@@ -92,10 +92,7 @@ export class CommentService {
     })
 
     if (!comment) {
-      return {
-        message: 'Comment not found',
-        statusCode: 404
-      }
+      throw new HttpException('Comment was not found', HttpStatus.NOT_FOUND);
     }
     const commentDto = GetCommentDto.fromEntity(comment)
     return {
