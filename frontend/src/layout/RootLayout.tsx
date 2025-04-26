@@ -1,20 +1,6 @@
 import Footer from "@/components/common/Footer";
 import Navbar from "@/components/common/Navbar";
 import React from "react";
-import styled from "styled-components";
-
-const LayoutWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-
-const Main = styled.main`
-  flex: 1;
-  padding: 2rem;
-  max-width: 1024px;
-  margin: 0 auto;
-`;
 
 type Props = {
   children: React.ReactNode;
@@ -22,11 +8,23 @@ type Props = {
 
 const RootLayout = ({ children }: Props) => {
   return (
-    <LayoutWrapper>
+    <main
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
       <Navbar />
-      <Main>{children}</Main>
+      <main
+        style={{
+          flex: 1,
+          padding: "2rem",
+          maxWidth: "1024px",
+          width: "100%",
+          margin: "0 auto",
+        }}
+      >
+        {children}
+      </main>
       <Footer />
-    </LayoutWrapper>
+    </main>
   );
 };
 
