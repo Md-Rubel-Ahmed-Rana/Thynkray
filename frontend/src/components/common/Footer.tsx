@@ -1,54 +1,58 @@
-// Footer.js
-import React from "react";
-import styled from "styled-components";
-
-const FooterContainer = styled.footer`
-  background-color: #f8f9fa;
-  padding: 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-  text-align: center;
-  border-top: 1px solid #eaeaea;
-`;
-
-const FooterLinks = styled.div`
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const FooterLink = styled.a`
-  color: #333;
-  text-decoration: none;
-  font-size: 0.95rem;
-
-  &:hover {
-    color: #0070f3;
-  }
-`;
-
-const CopyRight = styled.p`
-  color: #666;
-  font-size: 0.875rem;
-  margin-top: 1rem;
-`;
+import Link from "next/link";
+import { Box, Container, Typography, Stack } from "@mui/material";
 
 const Footer = () => {
   return (
-    <FooterContainer>
-      <FooterLinks>
-        <FooterLink href="/">Home</FooterLink>
-        <FooterLink href="/blogs">Blogs</FooterLink>
-        <FooterLink href="/about">About</FooterLink>
-        <FooterLink href="/contact">Contact</FooterLink>
-      </FooterLinks>
-      <CopyRight>
-        &copy; {new Date().getFullYear()} Thynkray. All rights reserved.
-      </CopyRight>
-    </FooterContainer>
+    <Box
+      component="footer"
+      sx={{
+        py: 4,
+        borderTop: "1px solid #e0e0e0",
+        mt: 8,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Typography variant="body2" color="text.secondary" align="center">
+            &copy; {new Date().getFullYear()} Thynkray. All rights reserved.
+          </Typography>
+          <Stack direction="row" spacing={3}>
+            <Link href="/privacy-policy" passHref>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ cursor: "pointer" }}
+              >
+                Privacy Policy
+              </Typography>
+            </Link>
+            <Link href="/terms" passHref>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ cursor: "pointer" }}
+              >
+                Terms
+              </Typography>
+            </Link>
+            <Link href="/contact" passHref>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ cursor: "pointer" }}
+              >
+                Contact
+              </Typography>
+            </Link>
+          </Stack>
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 
