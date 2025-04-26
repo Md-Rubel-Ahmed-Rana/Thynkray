@@ -1,5 +1,5 @@
 import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { GetPostDto } from './dto/get-post.dto';
@@ -135,10 +135,7 @@ export class PostService {
       }
     });
     if (!post) {
-      return {
-        message: 'Post not found!',
-        statusCode: 404
-      };
+       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }
     const postDto = GetPostDto.fromEntity(post);
 
@@ -180,10 +177,7 @@ export class PostService {
     });
 
     if (!post) {
-      return {
-        message: 'Post not found!',
-        statusCode: 404
-      };
+       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }
 
     const postDto = GetPostDto.fromEntity(post);
@@ -216,10 +210,7 @@ export class PostService {
       }
     });
     if (!post) {
-      return {
-        message: 'Post not found!',
-        statusCode: 404
-      };
+      throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }
 
     const postDto = GetPostDto.fromEntity(post);
