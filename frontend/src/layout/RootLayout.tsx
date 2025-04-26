@@ -1,5 +1,6 @@
 import Footer from "@/components/common/Footer";
 import Navbar from "@/components/common/Navbar";
+import { Box } from "@mui/material";
 import React from "react";
 
 type Props = {
@@ -12,17 +13,18 @@ const RootLayout = ({ children }: Props) => {
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       <Navbar />
-      <main
+      <Box
+        component={"main"}
         style={{
           flex: 1,
-          padding: "2rem",
           maxWidth: "1024px",
           width: "100%",
           margin: "0 auto",
         }}
+        sx={{ padding: { xs: "1rem", md: "1.5rem" } }}
       >
         {children}
-      </main>
+      </Box>
       <Footer />
     </main>
   );
