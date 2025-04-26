@@ -15,7 +15,6 @@ export class UserService {
     private readonly authService: AuthService) {}
 
   async create(createUserDto: CreateUserDto) {
-  console.log("From user service");
   const { email } = createUserDto;
 
   let user = await this.prisma.user.findUnique({

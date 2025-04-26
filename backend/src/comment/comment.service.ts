@@ -43,6 +43,7 @@ export class CommentService {
     }
   }
 
+
   async findAllByPostId(id: string) {
     const comments = await this.prisma.comment.findMany({
       where: {postId: id},
