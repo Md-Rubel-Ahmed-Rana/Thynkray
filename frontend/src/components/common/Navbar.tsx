@@ -12,11 +12,15 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
+import ThemeSwitcher from "./ThemeSwitcher";
+import { useGetLoggedInUser } from "@/modules/user/hooks";
+import LoginButton from "./LoginButton";
 
 const pages = ["Home", "Articles", "About", "Contact"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 const Navbar = () => {
+  const { user } = useGetLoggedInUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -103,7 +107,10 @@ const Navbar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Link href={`/${page.toLowerCase()}`}>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    href={`/${page.toLowerCase()}`}
+                  >
                     <Typography textAlign="center">{page}</Typography>
                   </Link>
                 </MenuItem>
@@ -169,11 +176,17 @@ const Navbar = () => {
 
           {/* User Avatar */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            <ThemeSwitcher />
+            {user && user?.id ? (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="User" src={user?.profile_image} />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <LoginButton />
+            )}
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
