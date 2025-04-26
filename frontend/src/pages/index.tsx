@@ -1,11 +1,10 @@
 import SEOHead from "@/components/common/SEOHead";
-export default function Home() {
+import Home from "@/components/home";
+export default function HomePage() {
   return (
     <>
       <SEOHead title="Home - Thynkray" />
-      <div>
-        <h1>Hello World</h1>
-      </div>
+      <Home />
     </>
   );
 }
