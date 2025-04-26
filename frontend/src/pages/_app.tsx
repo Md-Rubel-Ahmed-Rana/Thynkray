@@ -1,22 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AppProps } from "next/app";
-import { ThemeProvider } from "styled-components";
-import GlobalStyle from "@/styles/GlobalStyle";
-import theme from "@/styles/theme";
 import RootLayout from "@/layout/RootLayout";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import { CssBaseline } from "@mui/material";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <SessionProvider session={(pageProps as any).session}>
+    <>
+      <CssBaseline />
+      <SessionProvider session={pageProps.session}>
         <RootLayout>
           <Component {...pageProps} />
           <ToastContainer />
         </RootLayout>
       </SessionProvider>
-    </ThemeProvider>
+    </>
   );
 }
