@@ -8,7 +8,8 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  Res
+  Res,
+  UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,6 +19,7 @@ import { multerOptions } from 'src/config/multer';
 import { Response } from 'express';
 import { cookieName } from 'src/constants/cookie';
 import { cookieOptions } from 'src/utility/cookieOptions';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -37,26 +39,31 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/auth/:email')
   findOneByEmail(@Param('email') email: string) {
     return this.userService.findOneByEmail(email);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post('/update-profile-picture/:id')
   @UseInterceptors(FileInterceptor('profile_image', multerOptions))
   updateProfileImage(
