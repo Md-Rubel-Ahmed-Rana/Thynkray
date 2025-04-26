@@ -4,32 +4,47 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
 import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthService } from 'src/auth/auth.service';
+
 
 @Injectable()
 export class UserService {
-  constructor(private readonly googleDriveService: GoogleDriveService, private prisma: PrismaService) {}
+  constructor(
+    private readonly googleDriveService: GoogleDriveService, 
+    private readonly prisma: PrismaService, 
+    private readonly authService: AuthService) {}
+
   async create(createUserDto: CreateUserDto) {
-    const isExist = await this.prisma.user.findUnique({
-      where: {
-        email: createUserDto.email
-      }
-    });
+  const { email } = createUserDto;
 
-    if (isExist) {
-      return {
-        message: 'User logged in successfully!',
-        statusCode: 200
-      };
-    }
+  let user = await this.prisma.user.findUnique({
+    where: { email }
+  });
 
-    await this.prisma.user.create({
+  let statusCode: number;
+  let message: string;
+
+  if (user) {
+    statusCode = 200;
+    message = 'User logged in successfully!';
+  } else {
+    user = await this.prisma.user.create({
       data: createUserDto
     });
-    return {
-      message: 'User register successfully!',
-      statusCode: 201
-    };
+    statusCode = 201;
+    message = 'User registered successfully!';
   }
+
+  const payload = {
+    id: user.id,
+    email: user.email
+  };
+
+  const { access_token } = await this.authService.generateAccessToken(payload);
+
+  return { message, statusCode, access_token };
+  }
+
 
   async findAll(): Promise<{ message: string; data: Partial<GetUserDto>[] }> {
     const users = await this.prisma.user.findMany({});
