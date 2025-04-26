@@ -7,10 +7,11 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { CssBaseline } from "@mui/material";
+import ContextAPI from "@/context";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ContextAPI>
       <CssBaseline />
       <SessionProvider session={pageProps.session}>
         <RootLayout>
@@ -18,6 +19,6 @@ export default function App({ Component, pageProps }: AppProps) {
           <ToastContainer />
         </RootLayout>
       </SessionProvider>
-    </>
+    </ContextAPI>
   );
 }

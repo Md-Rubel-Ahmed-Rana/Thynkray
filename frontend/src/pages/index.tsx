@@ -1,4 +1,3 @@
-import Login from "@/components/auth/Login";
 import SEOHead from "@/components/common/SEOHead";
 export default function Home() {
   return (
@@ -6,7 +5,6 @@ export default function Home() {
       <SEOHead title="Home - Thynkray" />
       <div>
         <h1>Hello World</h1>
-        <Login />
       </div>
     </>
   );
