@@ -41,7 +41,7 @@ import { AuthModule } from './auth/auth.module';
   providers: [AppService, RedisConfigService, RedisCacheService, CacheModule, GoogleDriveService, PrismaService, {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
-    },],
+    }],
   exports: [RedisConfigService, RedisCacheService, GoogleDriveService],
 })
 

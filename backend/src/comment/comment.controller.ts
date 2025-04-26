@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { CheckOwnership } from 'src/decorators/ownership.decorators';
+import { OwnershipGuard } from 'src/guards/ownership.guard';
 
 @Controller('comment')
 export class CommentController {
@@ -29,13 +31,25 @@ export class CommentController {
     return this.commentService.findAllByPostId(postId);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OwnershipGuard)
+  @CheckOwnership({
+      service: CommentService,
+      fetchMethod: "findOne",
+      ownerField: "user.id",
+      paramFieldName: "id"
+    })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
     return this.commentService.update(id, updateCommentDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OwnershipGuard)
+  @CheckOwnership({
+    service: CommentService,
+    fetchMethod: "findOne",
+    ownerField: "user.id",
+    paramFieldName: "id"
+  })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.commentService.remove(id);
