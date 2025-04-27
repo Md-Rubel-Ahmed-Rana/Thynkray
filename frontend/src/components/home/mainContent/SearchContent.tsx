@@ -13,17 +13,12 @@ const SearchContent = () => {
   return (
     <Box
       sx={{
-        display: { xs: "flex", sm: "none" },
-        flexDirection: "row",
-        gap: 1,
         width: { xs: "100%", md: "fit-content" },
         overflow: "auto",
+        marginBottom: { xs: "20px", md: "0px" },
       }}
     >
-      <FormControl
-        sx={{ width: { xs: "100%", md: "25ch" } }}
-        variant="outlined"
-      >
+      <FormControl sx={{ width: { xs: "90%", md: "auto" } }} variant="outlined">
         <OutlinedInput
           size="small"
           id="search"
@@ -39,7 +34,11 @@ const SearchContent = () => {
           }}
         />
       </FormControl>
-      <IconButton size="small" aria-label="RSS feed">
+      <IconButton
+        sx={{ width: { xs: "10%", md: "auto" } }}
+        size="small"
+        aria-label="RSS feed"
+      >
         <RssFeedRoundedIcon />
       </IconButton>
     </Box>

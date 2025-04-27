@@ -15,24 +15,19 @@ const MainContent = () => {
         display: "flex",
         flexDirection: "column",
         gap: 4,
-        padding: "20px 0px",
+        marginTop: "50px",
       }}
     >
-      {/* categories of posts  */}
-      <Categories />
-      {/* search posts  */}
-      <SearchContent />
+      {/* SearchContent  and categories */}
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column-reverse", md: "row" },
-          width: "100%",
           justifyContent: "space-between",
-          alignItems: { xs: "start", md: "center" },
-          gap: 4,
-          overflow: "auto",
+          alignItems: "center",
+          flexDirection: { xs: "column-reverse", md: "row" },
         }}
       >
+        <Categories />
         {/* search posts  */}
         <SearchContent />
       </Box>
@@ -52,17 +47,23 @@ const MainContent = () => {
           <ContentCard post={leftCard} index={2} />
         </Grid>
 
+        {/* middle two cards  */}
         <Grid size={{ xs: 12, md: 4 }}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               gap: 2,
-              height: "100%",
+              height: "500px",
             }}
           >
             {middleCards.map((card, index: number) => (
-              <ContentCard key={card?.id} post={card} index={index + 3} />
+              <ContentCard
+                key={card?.id}
+                post={card}
+                index={index + 3}
+                shouldShowThumbnail={false}
+              />
             ))}
           </Box>
         </Grid>
