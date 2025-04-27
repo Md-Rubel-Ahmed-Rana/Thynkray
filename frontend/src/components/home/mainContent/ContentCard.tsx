@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Post } from "@/modules/post/types";
 import Author from "./Author";
+import Link from "next/link";
 
 const StyledCard = styled(Card)(({ theme }: any) => ({
   display: "flex",
@@ -28,6 +29,7 @@ const StyledCardContent = styled(CardContent)({
   gap: 4,
   padding: 16,
   flexGrow: 1,
+
   "&:last-child": {
     paddingBottom: 16,
   },
@@ -44,13 +46,18 @@ const StyledTypography = styled(Typography)({
 type CardProps = {
   post: Post;
   index: number;
+  shouldShowThumbnail?: boolean;
 };
 
-const ContentCard = ({ post }: CardProps) => {
+const ContentCard = ({
+  post,
+  shouldShowThumbnail = true,
+  index,
+}: CardProps) => {
   const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
 
-  const handleFocus = (index: number) => {
-    setFocusedCardIndex(index);
+  const handleFocus = (idx: number) => {
+    setFocusedCardIndex(idx);
   };
 
   const handleBlur = () => {
@@ -60,27 +67,36 @@ const ContentCard = ({ post }: CardProps) => {
     <>
       <StyledCard
         variant="outlined"
-        onFocus={() => handleFocus(0)}
+        onFocus={() => handleFocus(index)}
         onBlur={handleBlur}
         tabIndex={0}
-        className={focusedCardIndex === 0 ? "Mui-focused" : ""}
+        className={`${focusedCardIndex === 0 ? "Mui-focused" : ""}`}
       >
-        <CardMedia
-          component="img"
-          alt="green iguana"
-          image={post.thumbnail}
-          sx={{
-            aspectRatio: "16 / 9",
-            borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
-        />
+        {shouldShowThumbnail && (
+          <CardMedia
+            component="img"
+            alt="green iguana"
+            image={post.thumbnail}
+            sx={{
+              aspectRatio: "16 / 9",
+              borderBottom: "1px solid",
+              borderColor: "divider",
+            }}
+          />
+        )}
+
         <StyledCardContent>
           <Typography gutterBottom variant="caption" component="div">
             {post?.category}
           </Typography>
           <Typography gutterBottom variant="h6" component="div">
-            {post?.title}
+            <Link
+              style={{ textDecoration: "none" }}
+              href={`/post/${post.slug}`}
+              className="hover-underline"
+            >
+              {post?.title}
+            </Link>
           </Typography>
           <StyledTypography variant="body2" color="text.secondary" gutterBottom>
             {post?.description}

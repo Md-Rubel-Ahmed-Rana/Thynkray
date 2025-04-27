@@ -19,6 +19,7 @@ const Categories = () => {
         flexDirection: "row",
         gap: 3,
         overflow: "auto",
+        width: { xs: "100%", md: "auto" },
       }}
     >
       {categories.map((category, index: number) => (
@@ -31,6 +32,8 @@ const Categories = () => {
             backgroundColor: category === active ? "blue" : "transparent",
             border: "none",
             color: category === active ? "white" : "",
+            fontSize: "1rem",
+            fontWeight: 500,
           }}
         />
       ))}
