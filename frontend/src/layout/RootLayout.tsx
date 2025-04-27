@@ -17,7 +17,7 @@ const RootLayout = ({ children }: Props) => {
         component={"main"}
         style={{
           flex: 1,
-          maxWidth: "1024px",
+          maxWidth: "1280px",
           width: "100%",
           margin: "0 auto",
         }}
