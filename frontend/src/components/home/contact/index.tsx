@@ -17,7 +17,6 @@ const ContactUs = () => {
       transition={{ duration: 0.8 }}
       sx={{
         py: { xs: 8, md: 12 },
-        background: "linear-gradient(135deg, #fff 0%, #f0f4ff 100%)",
       }}
     >
       <Container maxWidth="sm" sx={{ textAlign: "center" }}>
