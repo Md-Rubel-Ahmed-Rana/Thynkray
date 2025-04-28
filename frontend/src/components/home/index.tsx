@@ -4,6 +4,7 @@ import MainContent from "./mainContent";
 import LatestPosts from "./latestPosts";
 import FeaturedAuthors from "./featuredAuthors";
 import DailyQuote from "./quotes";
+import MiniAbout from "./about";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <LatestPosts />
       <FeaturedAuthors />
       <DailyQuote />
+      <MiniAbout />
     </main>
   );
 };
