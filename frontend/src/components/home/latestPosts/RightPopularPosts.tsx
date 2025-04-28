@@ -70,6 +70,16 @@ const data = [
 
 const PopularContainer = styled("div")(({ theme }: any) => ({
   backgroundColor: (theme?.vars || theme).palette.background.paper,
+  "&:hover": {
+    backgroundColor: "transparent",
+    cursor: "pointer",
+  },
+  boxShadow: `0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.14)`,
+  "&:focus-visible": {
+    outline: "3px solid",
+    outlineColor: "hsla(210, 98%, 48%, 0.5)",
+    outlineOffset: "2px",
+  },
 }));
 
 const RightPopularPosts = () => {
