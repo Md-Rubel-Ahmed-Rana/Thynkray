@@ -69,6 +69,8 @@ const data = [
 ];
 
 const PopularContainer = styled("div")(({ theme }: any) => ({
+  padding: "1rem",
+  borderRadius: "10px",
   backgroundColor: (theme?.vars || theme).palette.background.paper,
   "&:hover": {
     backgroundColor: "transparent",
