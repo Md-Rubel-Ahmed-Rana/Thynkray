@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { Post } from "@/modules/post/types";
 
-const StyledCard = styled(Card)<{ borderColor: string }>(
-  ({ theme, borderColor }: any) => ({
+const StyledCard = styled(Card)<{ bordercolor: string }>(
+  ({ theme, bordercolor }: any) => ({
     display: "flex",
     flexDirection: "column",
     gap: "20px",
@@ -21,7 +21,7 @@ const StyledCard = styled(Card)<{ borderColor: string }>(
       backgroundColor: "transparent",
       cursor: "pointer",
     },
-    borderLeft: `5px solid ${borderColor}`,
+    borderLeft: `5px solid ${bordercolor}`,
     borderRadius: "20px 5px 5px 20px",
     boxShadow: `0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.14)`,
     "&:focus-visible": {
@@ -47,6 +47,7 @@ const StyledCardContent = styled(CardContent)(({ theme }: any) => ({
   flexDirection: "column",
   justifyContent: "space-between",
   padding: "0px 10px",
+  gap: "5px",
 }));
 
 const borderColors = [
@@ -77,7 +78,7 @@ const PostCard = ({ post }: Props) => {
     borderColors[Math.floor(Math.random() * borderColors.length)];
 
   return (
-    <StyledCard borderColor={randomColor}>
+    <StyledCard bordercolor={randomColor}>
       <StyledContentBody sx={{ flexDirection: { xs: "column", md: "row" } }}>
         <CardMedia
           component="img"
@@ -93,18 +94,28 @@ const PostCard = ({ post }: Props) => {
           }}
         />
         <StyledCardContent>
-          <Typography className="hover-underline" variant="h6" component="h2">
+          <Typography
+            className="hover-underline"
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: { xs: "1rem", md: "1.3rem" } }}
+          >
             {post?.title}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Typography variant="subtitle2" component="p">
-              {post?.author?.name}
+              By {post?.author?.name}
             </Typography>
+            |
             <Typography variant="subtitle2" component="p">
               {post?.comments?.length || 0} comments
             </Typography>
           </Box>
-          <Typography variant="body2" component="p">
+          <Typography
+            sx={{ fontSize: { xs: "0.8rem", md: "0.9rem" } }}
+            variant="body2"
+            component="p"
+          >
             {post?.description}
           </Typography>
         </StyledCardContent>

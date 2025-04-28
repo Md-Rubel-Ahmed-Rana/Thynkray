@@ -1,0 +1,90 @@
+import { User } from "@/modules/user/types";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  Typography,
+} from "@mui/material";
+import { motion } from "framer-motion";
+
+type Props = {
+  author: Partial<User>;
+};
+
+const AuthorCard = ({ author }: Props) => {
+  return (
+    <Card
+      component={motion.div}
+      whileHover={{ scale: 1.03 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      sx={{
+        p: 3,
+        borderRadius: 4,
+        boxShadow: 3,
+        textAlign: "center",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        backgroundColor: "background.paper",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Avatar
+          alt={author.name}
+          src={author.profile_image}
+          sx={{ width: 80, height: 80, boxShadow: 2 }}
+        />
+        <Typography variant="h6" fontWeight="bold">
+          {author.name}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mt: 0.5, mb: 1.5 }}
+        >
+          {author.bio}
+        </Typography>
+      </Box>
+
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="caption" color="text.secondary">
+          Articles: <b>50</b>
+        </Typography>
+      </Box>
+
+      <CardActions sx={{ justifyContent: "center", mt: 3 }}>
+        <Button
+          component={motion.button}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          variant="contained"
+          size="small"
+          sx={{
+            borderRadius: 20,
+            textTransform: "none",
+            px: 3,
+            py: 1,
+            fontWeight: "medium",
+          }}
+        >
+          Explore Articles
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
+export default AuthorCard;
