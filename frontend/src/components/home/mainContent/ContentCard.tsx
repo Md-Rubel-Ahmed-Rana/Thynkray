@@ -89,7 +89,12 @@ const ContentCard = ({
           <Typography gutterBottom variant="caption" component="div">
             {post?.category}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="h2"
+            sx={{ fontSize: { xs: "1rem", md: "1.1rem" } }}
+          >
             <Link
               style={{ textDecoration: "none" }}
               href={`/post/${post.slug}`}
@@ -98,7 +103,12 @@ const ContentCard = ({
               {post?.title}
             </Link>
           </Typography>
-          <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+          <StyledTypography
+            variant="body2"
+            color="text.secondary"
+            gutterBottom
+            sx={{ fontSize: { xs: "0.8rem", md: "0.9rem" } }}
+          >
             {post?.description}
           </StyledTypography>
         </StyledCardContent>
