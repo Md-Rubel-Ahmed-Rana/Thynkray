@@ -8,7 +8,13 @@ const LatestPosts = () => {
   return (
     <Box>
       <h2>Latest Posts</h2>
-      <Box sx={{ display: "flex", gap: "20px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "20px",
+          flexDirection: { xs: "column", md: "row" },
+        }}
+      >
         <Box
           sx={{
             width: { xs: "100%", md: "80%" },
@@ -17,15 +23,24 @@ const LatestPosts = () => {
             gap: "10px",
           }}
         >
-          {cardData.map((post) => (
-            <PostCard key={post?.id} post={post} />
-          ))}
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
+            {cardData.slice(0, 5).map((post) => (
+              <PostCard key={post?.id} post={post} />
+            ))}
+          </Box>
+          <PaginationContainer />
         </Box>
         <Box sx={{ width: { xs: "100%", md: "25%" } }}>
           <RightPopularPosts />
         </Box>
       </Box>
-      <PaginationContainer />
     </Box>
   );
 };
