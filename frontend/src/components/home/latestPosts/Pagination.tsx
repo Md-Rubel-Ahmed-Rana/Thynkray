@@ -10,7 +10,7 @@ const PaginationContainer = () => {
   return (
     <Box
       sx={{
-        width: "80%",
+        width: { xs: "100%", md: "80%" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

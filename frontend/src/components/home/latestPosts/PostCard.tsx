@@ -10,26 +10,27 @@ import {
 } from "@mui/material";
 import { Post } from "@/modules/post/types";
 
-const StyledCard = styled(Card)(({ theme }: any) => ({
-  height: "240px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "20px",
-  padding: "1.5rem 1rem",
-  backgroundColor: (theme?.vars || theme).palette.background.paper,
-  "&:hover": {
-    backgroundColor: "transparent",
-    cursor: "pointer",
-  },
-  borderLeft: "5px solid red",
-  borderRadius: "20px 5px 5px 20px",
-  boxShadow: `0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.14)`,
-  "&:focus-visible": {
-    outline: "3px solid",
-    outlineColor: "hsla(210, 98%, 48%, 0.5)",
-    outlineOffset: "2px",
-  },
-}));
+const StyledCard = styled(Card)<{ borderColor: string }>(
+  ({ theme, borderColor }: any) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    padding: "1.5rem 1rem",
+    backgroundColor: (theme?.vars || theme).palette.background.paper,
+    "&:hover": {
+      backgroundColor: "transparent",
+      cursor: "pointer",
+    },
+    borderLeft: `5px solid ${borderColor}`,
+    borderRadius: "20px 5px 5px 20px",
+    boxShadow: `0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.14)`,
+    "&:focus-visible": {
+      outline: "3px solid",
+      outlineColor: "hsla(210, 98%, 48%, 0.5)",
+      outlineOffset: "2px",
+    },
+  })
+);
 
 const StyledContentBody = styled(CardContent)(({ theme }: any) => ({
   height: "100%",
@@ -48,25 +49,47 @@ const StyledCardContent = styled(CardContent)(({ theme }: any) => ({
   padding: "0px 10px",
 }));
 
+const borderColors = [
+  "red",
+  "blue",
+  "green",
+  "orange",
+  "purple",
+  "teal",
+  "pink",
+  "brown",
+  "cyan",
+  "magenta",
+  "limegreen",
+  "gold",
+  "tomato",
+  "violet",
+  "indigo",
+  "deeppink",
+];
+
 type Props = {
   post: Post;
 };
 
 const PostCard = ({ post }: Props) => {
+  const randomColor =
+    borderColors[Math.floor(Math.random() * borderColors.length)];
+
   return (
-    <StyledCard>
-      <StyledContentBody>
+    <StyledCard borderColor={randomColor}>
+      <StyledContentBody sx={{ flexDirection: { xs: "column", md: "row" } }}>
         <CardMedia
           component="img"
-          alt="green iguana"
+          alt={post?.title}
           image={post?.thumbnail}
           sx={{
             aspectRatio: "16 / 9",
             borderBottom: "1px solid",
             borderColor: "divider",
-            width: "15%",
-            height: "150px",
             borderRadius: "10px",
+            width: { xs: "100%", md: "200px" },
+            height: { xs: "200px", md: "150px" },
           }}
         />
         <StyledCardContent>

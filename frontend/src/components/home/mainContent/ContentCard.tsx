@@ -75,7 +75,7 @@ const ContentCard = ({
         {shouldShowThumbnail && (
           <CardMedia
             component="img"
-            alt="green iguana"
+            alt={post?.title}
             image={post.thumbnail}
             sx={{
               aspectRatio: "16 / 9",
