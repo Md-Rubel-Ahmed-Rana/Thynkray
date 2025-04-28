@@ -11,7 +11,13 @@ const DailyQuote = () => {
           mb: 6,
         }}
       >
-        <Typography variant="h4" component="h2" fontWeight="bold" mb={2}>
+        <Typography
+          sx={{ fontSize: { xs: "1.3rem", md: "1.6rem" } }}
+          variant="h4"
+          component="h2"
+          fontWeight="bold"
+          mb={2}
+        >
           Words of Wisdom
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" mb={3}>
@@ -25,7 +31,7 @@ const DailyQuote = () => {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
+        columns={{ xs: 2, sm: 8, md: 12 }}
       >
         {quotes.map((quote, index) => (
           <QuoteCard key={index} quote={quote} />

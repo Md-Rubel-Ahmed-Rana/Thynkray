@@ -6,6 +6,7 @@ import FeaturedAuthors from "./featuredAuthors";
 import DailyQuote from "./quotes";
 import MiniAbout from "./about";
 import ContactUs from "./contact";
+import International from "./international";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Banner />
       <MainContent />
       <LatestPosts />
+      <International />
       <FeaturedAuthors />
       <DailyQuote />
       <MiniAbout />
