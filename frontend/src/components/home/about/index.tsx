@@ -23,7 +23,7 @@ const MiniAbout = () => {
           fontWeight="bold"
           gutterBottom
           sx={{
-            fontSize: { xs: "2rem", md: "2.5rem" },
+            fontSize: { xs: "1.3rem", md: "2.5rem" },
           }}
         >
           Welcome to Thynkray
