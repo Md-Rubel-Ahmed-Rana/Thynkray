@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import MainContent from "./mainContent";
 import LatestPosts from "./latestPosts";
 import FeaturedAuthors from "./featuredAuthors";
+import DailyQuote from "./quotes";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <MainContent />
       <LatestPosts />
       <FeaturedAuthors />
+      <DailyQuote />
     </main>
   );
 };
