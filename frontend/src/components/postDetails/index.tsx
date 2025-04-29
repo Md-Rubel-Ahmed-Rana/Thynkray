@@ -6,9 +6,9 @@ import PostHeader from "./PostHeader";
 import PostDescription from "./PostDescription";
 import PostContent from "./PostContent";
 import Comments from "./Comments";
-import RelatedPosts from "../sharedPosts/RelatedPosts";
-import PopularPosts from "../sharedPosts/PopularPosts";
-import InternationalPosts from "../sharedPosts/InternationalPosts";
+import RelatedPosts from "../sharedContent/RelatedPosts";
+import PopularPosts from "../sharedContent/PopularPosts";
+import InternationalPosts from "../sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
 
 const PostDetails = () => {

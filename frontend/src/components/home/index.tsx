@@ -6,7 +6,7 @@ import DailyQuote from "./quotes";
 import MiniAbout from "./about";
 import ContactUs from "./contact";
 import International from "./international";
-import LatestPosts from "../sharedPosts/LatestPosts";
+import LatestPosts from "../sharedContent/LatestPosts";
 import { Box, Divider } from "@mui/material";
 
 const Home = () => {

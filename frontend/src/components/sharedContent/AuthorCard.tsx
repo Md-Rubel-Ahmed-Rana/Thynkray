@@ -51,6 +51,9 @@ const AuthorCard = ({ author }: Props) => {
         <Typography variant="h6" fontWeight="bold">
           {author.name}
         </Typography>
+        <Typography variant="subtitle2" fontWeight="bold">
+          {author?.designation || "Author"}
+        </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
@@ -68,7 +71,9 @@ const AuthorCard = ({ author }: Props) => {
 
       <CardActions sx={{ justifyContent: "center", mt: 3 }}>
         <Link
-          href={`/posts/author/${author?.id}?name=${author?.name}&designation=${author?.designation}&bio=${author?.bio}`}
+          href={`/posts/author/${author?.id}?name=${author?.name}&designation=${
+            author?.designation || "author"
+          }&bio=${author?.bio}`}
         >
           <Button
             component={motion.button}

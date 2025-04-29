@@ -1,9 +1,9 @@
 import Categories from "@/components/common/Categories";
 import SearchForm from "@/components/common/SearchForm";
-import CommonPosts from "@/components/sharedPosts/CommonPosts";
-import InternationalPosts from "@/components/sharedPosts/InternationalPosts";
-import LatestPosts from "@/components/sharedPosts/LatestPosts";
-import RelatedPosts from "@/components/sharedPosts/RelatedPosts";
+import CommonPosts from "@/components/sharedContent/CommonPosts";
+import InternationalPosts from "@/components/sharedContent/InternationalPosts";
+import LatestPosts from "@/components/sharedContent/LatestPosts";
+import RelatedPosts from "@/components/sharedContent/RelatedPosts";
 import { cardData } from "@/constants/cardData";
 import { internationalNews } from "@/constants/international";
 import { Box, Divider, Typography } from "@mui/material";
