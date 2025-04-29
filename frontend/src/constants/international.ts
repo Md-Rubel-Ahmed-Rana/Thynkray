@@ -1,4 +1,4 @@
-export type NewsArticle = {
+export type InternationalPost = {
   source: {
     id: string | null;
     name: string;
@@ -12,7 +12,7 @@ export type NewsArticle = {
   content: string;
 };
 
-export const internationalNews: NewsArticle[] = [
+export const internationalNews: InternationalPost[] = [
   {
     source: { id: "bbc-news", name: "BBC News" },
     author: "BBC News",

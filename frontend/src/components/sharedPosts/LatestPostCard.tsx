@@ -73,7 +73,7 @@ type Props = {
   post: Post;
 };
 
-const PostCard = ({ post }: Props) => {
+const LatestPostCard = ({ post }: Props) => {
   const randomColor =
     borderColors[Math.floor(Math.random() * borderColors.length)];
 
@@ -140,4 +140,4 @@ const PostCard = ({ post }: Props) => {
   );
 };
 
-export default PostCard;
+export default LatestPostCard;

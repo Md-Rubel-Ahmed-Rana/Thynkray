@@ -1,8 +1,8 @@
 import { Box, Grid } from "@mui/material";
-import SearchContent from "./SearchContent";
 import { cardData } from "@/constants/cardData";
 import ContentCard from "./ContentCard";
-import Categories from "./Categories";
+import Categories from "../../common/Categories";
+import SearchForm from "@/components/common/SearchForm";
 
 const MainContent = () => {
   const firstRowCards = cardData.slice(0, 2);
@@ -27,9 +27,13 @@ const MainContent = () => {
           flexDirection: { xs: "column-reverse", md: "row" },
         }}
       >
-        <Categories />
+        <Box sx={{ width: "70%" }}>
+          <Categories />
+        </Box>
         {/* search posts  */}
-        <SearchContent />
+        <Box sx={{ width: "25%" }}>
+          <SearchForm />
+        </Box>
       </Box>
 
       {/* posts cards  */}

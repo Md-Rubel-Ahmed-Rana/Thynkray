@@ -109,7 +109,7 @@ const Navbar = () => {
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
                     style={{ textDecoration: "none" }}
-                    href={`/${page.toLowerCase()}`}
+                    href={`${page === "Home" ? "/" : `/${page.toLowerCase()}`}`}
                   >
                     <Typography textAlign="center">{page}</Typography>
                   </Link>
@@ -162,7 +162,7 @@ const Navbar = () => {
               <Link
                 style={{ textDecoration: "none" }}
                 key={page}
-                href={`/${page.toLowerCase()}`}
+                href={`${page === "Home" ? "/" : `/${page.toLowerCase()}`}`}
               >
                 <Button
                   onClick={handleCloseNavMenu}
