@@ -1,6 +1,6 @@
-import CommonPosts from "@/components/sharedPosts/CommonPosts";
-import PopularPosts from "@/components/sharedPosts/PopularPosts";
-import RelatedPosts from "@/components/sharedPosts/RelatedPosts";
+import CommonPosts from "@/components/sharedContent/CommonPosts";
+import PopularPosts from "@/components/sharedContent/PopularPosts";
+import RelatedPosts from "@/components/sharedContent/RelatedPosts";
 import { cardData } from "@/constants/cardData";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import Link from "next/link";

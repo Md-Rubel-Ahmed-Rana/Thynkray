@@ -1,4 +1,4 @@
-import InternationalPosts from "@/components/sharedPosts/InternationalPosts";
+import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
 import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";

@@ -2,12 +2,12 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import SearchForm from "../common/SearchForm";
 import Categories from "../common/Categories";
-import CommonPosts from "../sharedPosts/CommonPosts";
+import CommonPosts from "../sharedContent/CommonPosts";
 import { cardData } from "@/constants/cardData";
-import InternationalPosts from "../sharedPosts/InternationalPosts";
+import InternationalPosts from "../sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
-import LatestPosts from "../sharedPosts/LatestPosts";
-import PopularPosts from "../sharedPosts/PopularPosts";
+import LatestPosts from "../sharedContent/LatestPosts";
+import PopularPosts from "../sharedContent/PopularPosts";
 
 const Articles = () => {
   return (
