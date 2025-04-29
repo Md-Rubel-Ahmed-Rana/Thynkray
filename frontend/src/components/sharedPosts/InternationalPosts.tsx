@@ -59,12 +59,19 @@ const InternationalPosts = ({ posts }: Props) => {
           >
             <Box>
               <Typography
+                component={"a"}
+                href={news.url}
                 variant="h6"
                 fontWeight="bold"
                 className="hover-underline"
                 gutterBottom
                 sx={{
-                  fontSize: { xs: "0.8rem", md: "1rem" },
+                  fontSize: {
+                    xs: "0.8rem",
+                    md: "1rem",
+                  },
+                  textDecoration: "none",
+                  color: "text.primary",
                 }}
               >
                 {news.title}

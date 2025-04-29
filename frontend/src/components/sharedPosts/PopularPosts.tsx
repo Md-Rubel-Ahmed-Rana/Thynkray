@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Post } from "@/modules/post/types";
+import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
 import { Box, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Link from "next/link";
 
 const PopularContainer = styled("div")(({ theme }: any) => ({
   padding: "1rem",
@@ -75,14 +77,21 @@ const PopularPosts = ({ posts }: Props) => {
               </Box>
 
               <Box>
-                <Typography
-                  variant="subtitle2"
-                  className="hover-underline"
-                  fontWeight="bold"
-                  sx={{ lineHeight: 1.2, cursor: "pointer" }}
-                >
-                  {post.title}
-                </Typography>
+                <Link href={makePostDetailsUrl(post)}>
+                  <Typography
+                    style={{ textDecoration: "none" }}
+                    variant="subtitle2"
+                    className="hover-underline"
+                    fontWeight="bold"
+                    sx={{
+                      lineHeight: 1.2,
+                      cursor: "pointer",
+                      color: "text.primary",
+                    }}
+                  >
+                    {post.title}
+                  </Typography>
+                </Link>
                 <Typography variant="caption" color="text.secondary">
                   By {post.author.name}
                 </Typography>
