@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import React from "react";
 import ShowSearchResult from "./ShowSearchResult";
 import { cardData } from "@/constants/cardData";
-import RelatedPosts from "@/components/sharedPosts/RelatedPosts";
-import PopularPosts from "@/components/sharedPosts/PopularPosts";
-import LatestPosts from "@/components/sharedPosts/LatestPosts";
+import RelatedPosts from "@/components/sharedContent/RelatedPosts";
+import PopularPosts from "@/components/sharedContent/PopularPosts";
+import LatestPosts from "@/components/sharedContent/LatestPosts";
 import Categories from "@/components/common/Categories";
-import InternationalPosts from "@/components/sharedPosts/InternationalPosts";
+import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
 
 const PostsSearch = () => {

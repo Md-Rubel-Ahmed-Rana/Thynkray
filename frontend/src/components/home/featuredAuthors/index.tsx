@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { authors } from "@/constants/authors";
 import { Typography, Box, Container } from "@mui/material";
-import AuthorCard from "./AuthorCard";
+import AuthorCard from "../../sharedContent/AuthorCard";
 
 const FeaturedAuthors = () => {
   return (
