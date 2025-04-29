@@ -1,26 +1,89 @@
 import Link from "next/link";
-import { Box, Container, Typography, Stack } from "@mui/material";
+import { Box, Container, Typography, Stack, IconButton } from "@mui/material";
+import {
+  GitHub,
+  LinkedIn,
+  Facebook,
+  Twitter,
+  Email,
+} from "@mui/icons-material";
 
 const Footer = () => {
   return (
     <Box
       component="footer"
       sx={{
-        py: 4,
+        py: 6,
+        px: 2,
         borderTop: "1px solid #e0e0e0",
-        mt: 8,
+        mt: 12,
+        backgroundColor: "background.paper",
       }}
     >
       <Container maxWidth="lg">
         <Stack
-          direction={{ xs: "column", md: "row" }}
-          justifyContent="space-between"
+          spacing={4}
           alignItems="center"
-          spacing={2}
+          justifyContent="center"
+          textAlign="center"
         >
-          <Typography variant="body2" color="text.secondary" align="center">
-            &copy; {new Date().getFullYear()} Thynkray. All rights reserved.
+          <Typography variant="h6" color="text.primary">
+            Thynkray
           </Typography>
+          <Typography variant="body2" color="text.secondary" maxWidth={600}>
+            A blog crafted with passion and precision by Md Rubel Ahmed Rana.
+            Sharing knowledge, thoughts, and ideas on full stack development,
+            design, and tech trends.
+          </Typography>
+
+          <Stack direction="row" spacing={2}>
+            <IconButton
+              component="a"
+              href="mailto:mdrubelahmedrana521@gmail.com"
+              target="_blank"
+              rel="noopener"
+              color="inherit"
+            >
+              <Email />
+            </IconButton>
+            <IconButton
+              component="a"
+              href="https://github.com/Md-Rubel-Ahmed-Rana"
+              target="_blank"
+              rel="noopener"
+              color="inherit"
+            >
+              <GitHub />
+            </IconButton>
+            <IconButton
+              component="a"
+              href="https://www.linkedin.com/in/md-rubel-ahmed-rana"
+              target="_blank"
+              rel="noopener"
+              color="inherit"
+            >
+              <LinkedIn />
+            </IconButton>
+            <IconButton
+              component="a"
+              href="https://www.facebook.com/mdrubel.ahmed.rana.98"
+              target="_blank"
+              rel="noopener"
+              color="inherit"
+            >
+              <Facebook />
+            </IconButton>
+            <IconButton
+              component="a"
+              href="https://twitter.com/MdRubelAhmed521"
+              target="_blank"
+              rel="noopener"
+              color="inherit"
+            >
+              <Twitter />
+            </IconButton>
+          </Stack>
+
           <Stack direction="row" spacing={3}>
             <Link href="/privacy-policy" passHref>
               <Typography
@@ -50,6 +113,11 @@ const Footer = () => {
               </Typography>
             </Link>
           </Stack>
+
+          <Typography variant="caption" color="text.secondary">
+            &copy; {new Date().getFullYear()} Thynkray. Built by Md Rubel Ahmed
+            Rana. All rights reserved.
+          </Typography>
         </Stack>
       </Container>
     </Box>
