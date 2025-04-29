@@ -2,6 +2,7 @@ export const categories = [
   "All Categories",
   "News",
   "Opinion",
+  "International",
   "How-to Guides",
   "Reviews",
   "Tutorials",

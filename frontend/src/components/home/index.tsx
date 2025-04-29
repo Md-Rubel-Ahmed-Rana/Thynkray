@@ -7,17 +7,26 @@ import MiniAbout from "./about";
 import ContactUs from "./contact";
 import International from "./international";
 import LatestPosts from "../sharedPosts/LatestPosts";
+import { Box, Divider } from "@mui/material";
 
 const Home = () => {
   return (
     <main>
       <Banner />
       <MainContent />
-      <LatestPosts />
+      <Divider sx={{ margin: "20px 0px" }} />
+      <Box my={4}>
+        <LatestPosts />
+      </Box>
+      <Divider sx={{ margin: "20px 0px" }} />
       <International />
+      <Divider sx={{ margin: "20px 0px" }} />
       <FeaturedAuthors />
+      <Divider sx={{ margin: "20px 0px" }} />
       <DailyQuote />
+      <Divider sx={{ margin: "20px 0px" }} />
       <MiniAbout />
+      <Divider sx={{ margin: "20px 0px" }} />
       <ContactUs />
     </main>
   );

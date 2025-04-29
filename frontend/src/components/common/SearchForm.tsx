@@ -28,12 +28,16 @@ const SearchForm = () => {
       component={"form"}
       sx={{
         width: "100%",
+        display: "flex",
+        gap: "10px",
+        alignItems: "center",
         marginBottom: { xs: "20px", md: "0px" },
       }}
       onSubmit={handleRedirectToSearch}
     >
       <FormControl sx={{ width: "96%" }} variant="outlined">
         <OutlinedInput
+          title="Enter your favorite words"
           size="small"
           id="search"
           name="search"
@@ -50,6 +54,7 @@ const SearchForm = () => {
         />
       </FormControl>
       <IconButton
+        title="Click to search posts"
         type="submit"
         sx={{ width: "4%" }}
         size="small"
