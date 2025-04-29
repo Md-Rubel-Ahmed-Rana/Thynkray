@@ -1,4 +1,5 @@
 import { Post } from "@/modules/post/types";
+import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
 import { Box, Typography, Stack, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -32,7 +33,7 @@ const RelatedPosts = ({ posts }: Props) => {
             <Typography
               variant="h6"
               component={Link}
-              href={`/posts/${post.slug}`}
+              href={makePostDetailsUrl(post)}
               color="primary"
               sx={{
                 textDecoration: "none",

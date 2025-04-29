@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import Link from "next/link";
+import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
 
 type Props = {
   posts: Post[];
@@ -46,7 +47,7 @@ const CommonPosts = ({ posts }: Props) => {
               <Link
                 className="hover-underline"
                 style={{ textDecoration: "none" }}
-                href={`/posts/${post.slug}`}
+                href={makePostDetailsUrl(post)}
                 passHref
               >
                 <Typography
