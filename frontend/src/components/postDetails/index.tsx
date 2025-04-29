@@ -1,10 +1,11 @@
 import { cardData } from "@/constants/cardData";
 import { Post } from "@/modules/post/types";
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import PostHeader from "./PostHeader";
 import PostDescription from "./PostDescription";
 import PostContent from "./PostContent";
+import Comments from "./Comments";
 
 const PostDetails = () => {
   const { query } = useRouter();
@@ -15,6 +16,8 @@ const PostDetails = () => {
       <PostHeader post={post} />
       <PostDescription description={post?.description || ""} />
       <PostContent content={post?.content || []} />
+      <Divider sx={{ margin: "20px 0px" }} />
+      <Comments />
     </Box>
   );
 };

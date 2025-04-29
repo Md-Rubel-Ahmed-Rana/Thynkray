@@ -8,7 +8,7 @@ const PostDetailsPage = () => {
   const title = query.title as string;
   return (
     <>
-      <SEOHead title={`Post - ${title}`} />
+      <SEOHead title={`Post - ${title || "title"}`} />
       <PostDetails />
     </>
   );
