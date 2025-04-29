@@ -27,11 +27,11 @@ const MainContent = () => {
           flexDirection: { xs: "column-reverse", md: "row" },
         }}
       >
-        <Box sx={{ width: "70%" }}>
+        <Box sx={{ width: { xs: "100%", md: "70%" } }}>
           <Categories />
         </Box>
         {/* search posts  */}
-        <Box sx={{ width: "25%" }}>
+        <Box sx={{ width: { xs: "100%", md: "25%" } }}>
           <SearchForm />
         </Box>
       </Box>
