@@ -18,12 +18,22 @@ const PostsSearch = () => {
     <Box component={"section"}>
       <SearchForm />
       {searchText && (
-        <Typography variant="body1" mt={1} component={"h5"}>
+        <Typography
+          sx={{ fontSize: { xs: "14px", md: "18px" } }}
+          variant="body1"
+          mt={1}
+          component={"h5"}
+        >
           Search result for: <b>{`'${searchText}'`}</b>
         </Typography>
       )}
 
-      <Typography variant="body1" mt={1} component={"h5"}>
+      <Typography
+        sx={{ fontSize: { xs: "13px", md: "16px" } }}
+        variant="body1"
+        mt={1}
+        component={"h5"}
+      >
         We found <b> {cardData?.length || 0} articles</b> for you
       </Typography>
       <Box sx={{ width: "100%", overflow: "auto" }} my={3}>
@@ -35,7 +45,15 @@ const PostsSearch = () => {
       </Box>
       <Divider sx={{ margin: "20px 0px" }} />
       {/* related and popular posts  */}
-      <Box mt={2} sx={{ display: "flex", gap: "2rem" }} component={"div"}>
+      <Box
+        mt={2}
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: "2rem",
+        }}
+        component={"div"}
+      >
         <Box sx={{ width: { xs: "100%", md: "70%" } }} component={"div"}>
           <RelatedPosts posts={cardData} />
         </Box>
