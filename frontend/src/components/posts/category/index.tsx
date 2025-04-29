@@ -1,0 +1,40 @@
+import Categories from "@/components/common/Categories";
+import InternationalPosts from "@/components/sharedPosts/InternationalPosts";
+import { internationalNews } from "@/constants/international";
+import { Box, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import React from "react";
+
+const CategorizedPosts = () => {
+  const { query } = useRouter();
+  const category = query.category as string;
+
+  const data = Array.from({ length: 10 });
+
+  return (
+    <Box>
+      <Categories />
+      <Typography
+        sx={{ fontSize: { xs: "13px", md: "16px" } }}
+        variant="body1"
+        mt={1}
+        component={"h5"}
+      >
+        We found <b> {data?.length || 0} articles</b> for{" "}
+        <b> {`'${category}'`} </b>
+        category
+      </Typography>
+      <Box mt={3}>
+        {category === "International" ? (
+          <InternationalPosts posts={internationalNews} />
+        ) : (
+          <Box>
+            <h1>Show local news</h1>
+          </Box>
+        )}
+      </Box>
+    </Box>
+  );
+};
+
+export default CategorizedPosts;
