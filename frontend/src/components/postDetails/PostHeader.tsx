@@ -1,5 +1,6 @@
 import { Post } from "@/modules/post/types";
 import { Avatar, Box, Chip, Typography } from "@mui/material";
+import dayjs from "dayjs";
 
 type PostHeaderProps = {
   post: Post;
@@ -37,7 +38,7 @@ const PostHeader = ({ post }: PostHeaderProps) => {
             {post?.author?.designation || "Author"}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            {new Date(post?.createdAt).toLocaleDateString()}
+            {dayjs(new Date(post?.createdAt)).format("DD MMM, YYYY hh:mm A")}
           </Typography>
         </Box>
       </Box>
@@ -46,7 +47,7 @@ const PostHeader = ({ post }: PostHeaderProps) => {
       <Box display="flex" flexWrap="wrap" gap={1}>
         <Chip label={post?.category} color="primary" />
         {post?.tags?.map((tag) => (
-          <Chip key={tag} label={tag} variant="outlined" />
+          <Chip key={tag} label={`#${tag}`} variant="outlined" />
         ))}
       </Box>
     </Box>
