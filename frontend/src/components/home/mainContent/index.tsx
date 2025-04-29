@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 import SearchContent from "./SearchContent";
 import { cardData } from "@/constants/cardData";
 import ContentCard from "./ContentCard";
-import Categories from "./Categories";
+import Categories from "../../common/Categories";
 
 const MainContent = () => {
   const firstRowCards = cardData.slice(0, 2);
