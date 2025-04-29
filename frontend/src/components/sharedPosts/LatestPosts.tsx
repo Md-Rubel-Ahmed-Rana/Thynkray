@@ -1,13 +1,13 @@
-import { Box } from "@mui/material";
-import PostCard from "./PostCard";
-import RightPopularPosts from "./RightPopularPosts";
+import { Box, Typography } from "@mui/material";
 import { cardData } from "@/constants/cardData";
-import PaginationContainer from "./Pagination";
+import LatestPostCard from "./LatestPostCard";
 
 const LatestPosts = () => {
   return (
     <Box>
-      <h2>Latest Posts</h2>
+      <Typography mb={2} variant="h5" component={"h2"}>
+        Latest Posts
+      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -17,7 +17,6 @@ const LatestPosts = () => {
       >
         <Box
           sx={{
-            width: { xs: "100%", md: "80%" },
             display: "flex",
             flexDirection: "column",
             gap: "10px",
@@ -32,13 +31,9 @@ const LatestPosts = () => {
             }}
           >
             {cardData.slice(0, 5).map((post) => (
-              <PostCard key={post?.id} post={post} />
+              <LatestPostCard key={post?.id} post={post} />
             ))}
           </Box>
-          <PaginationContainer />
-        </Box>
-        <Box sx={{ width: { xs: "100%", md: "25%" } }}>
-          <RightPopularPosts />
         </Box>
       </Box>
     </Box>

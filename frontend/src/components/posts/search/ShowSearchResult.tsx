@@ -53,7 +53,7 @@ const ShowSearchResult = ({ posts }: Props) => {
                 variant="contained"
                 size="small"
               >
-                Read More
+                Read More →
               </Button>
             </CardContent>
           </Card>

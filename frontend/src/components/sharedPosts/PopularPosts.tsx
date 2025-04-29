@@ -1,72 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Post } from "@/modules/post/types";
 import { Box, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
-const data = [
-  {
-    title: "Computer Filters Noise To Make You A Better Listener",
-    createdAt: new Date("2025-08-20"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Ultimate Guide To Planning Your First Overseas Trip",
-    createdAt: new Date("2025-08-06"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Exploring New Trends In Home Decor And Interior Design",
-    createdAt: new Date("2025-08-05"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Computer Filters Noise To Make You A Better Listener",
-    createdAt: new Date("2025-08-20"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Ultimate Guide To Planning Your First Overseas Trip",
-    createdAt: new Date("2025-08-06"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Exploring New Trends In Home Decor And Interior Design",
-    createdAt: new Date("2025-08-05"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Computer Filters Noise To Make You A Better Listener",
-    createdAt: new Date("2025-08-20"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Ultimate Guide To Planning Your First Overseas Trip",
-    createdAt: new Date("2025-08-06"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-  {
-    title: "Exploring New Trends In Home Decor And Interior Design",
-    createdAt: new Date("2025-08-05"),
-    author: {
-      name: "Jessica Smith",
-    },
-  },
-];
 
 const PopularContainer = styled("div")(({ theme }: any) => ({
   padding: "1rem",
@@ -84,7 +19,11 @@ const PopularContainer = styled("div")(({ theme }: any) => ({
   },
 }));
 
-const RightPopularPosts = () => {
+type Props = {
+  posts: Post[];
+};
+
+const PopularPosts = ({ posts }: Props) => {
   return (
     <PopularContainer>
       <Stack spacing={2}>
@@ -104,7 +43,7 @@ const RightPopularPosts = () => {
         </Stack>
 
         {/* Posts list */}
-        {data.map((post, index) => {
+        {posts.map((post, index) => {
           const day = post.createdAt.getDate().toString().padStart(2, "0");
           const month = post.createdAt.toLocaleString("default", {
             month: "short",
@@ -135,7 +74,6 @@ const RightPopularPosts = () => {
                 </Typography>
               </Box>
 
-              {/* Post Info */}
               <Box>
                 <Typography
                   variant="subtitle2"
@@ -157,4 +95,4 @@ const RightPopularPosts = () => {
   );
 };
 
-export default RightPopularPosts;
+export default PopularPosts;
