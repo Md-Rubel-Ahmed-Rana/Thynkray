@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Post } from "@/modules/post/types";
+import Link from "next/link";
+import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
 
 const StyledCard = styled(Card)<{ bordercolor: string }>(
   ({ theme, bordercolor }: any) => ({
@@ -94,14 +96,19 @@ const LatestPostCard = ({ post }: Props) => {
           }}
         />
         <StyledCardContent>
-          <Typography
-            className="hover-underline"
-            variant="h6"
-            component="h2"
-            sx={{ fontSize: { xs: "1rem", md: "1.3rem" } }}
-          >
-            {post?.title}
-          </Typography>
+          <Link href={makePostDetailsUrl(post)}>
+            <Typography
+              className="hover-underline"
+              variant="h6"
+              component="h2"
+              sx={{
+                fontSize: { xs: "1rem", md: "1.3rem" },
+                color: "text.primary",
+              }}
+            >
+              {post?.title}
+            </Typography>
+          </Link>
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Typography variant="subtitle2" component="p">
               By {post?.author?.name}

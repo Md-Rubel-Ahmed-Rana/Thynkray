@@ -1,6 +1,6 @@
 import { User } from "../user/types";
 
-type ContentItem = {
+export type ContentItem = {
   id: string;
   title: string;
   images: string[];
