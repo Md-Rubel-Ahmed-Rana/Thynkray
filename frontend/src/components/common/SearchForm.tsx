@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   FormControl,
@@ -5,16 +6,18 @@ import {
   InputAdornment,
   OutlinedInput,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { FormEvent } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import RssFeedRoundedIcon from "@mui/icons-material/RssFeedRounded";
 import { useRouter } from "next/router";
 
-const SearchContent = () => {
+const SearchForm = () => {
   const router = useRouter();
-  const [searchText, setSearchText] = useState("");
 
-  const handleRedirectToSearch = () => {
+  const handleRedirectToSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.target as any;
+    const searchText = form.search.value;
     if (searchText) {
       router.push(`/posts/search?q=${searchText}`);
     }
@@ -22,17 +25,18 @@ const SearchContent = () => {
 
   return (
     <Box
+      component={"form"}
       sx={{
-        width: { xs: "100%", md: "fit-content" },
-        overflow: "auto",
+        width: "100%",
         marginBottom: { xs: "20px", md: "0px" },
       }}
+      onSubmit={handleRedirectToSearch}
     >
-      <FormControl sx={{ width: { xs: "90%", md: "auto" } }} variant="outlined">
+      <FormControl sx={{ width: "96%" }} variant="outlined">
         <OutlinedInput
           size="small"
           id="search"
-          onChange={(e) => setSearchText(e.target.value)}
+          name="search"
           placeholder="Search…"
           sx={{ flexGrow: 1 }}
           startAdornment={
@@ -46,8 +50,8 @@ const SearchContent = () => {
         />
       </FormControl>
       <IconButton
-        onClick={handleRedirectToSearch}
-        sx={{ width: { xs: "10%", md: "auto" } }}
+        type="submit"
+        sx={{ width: "4%" }}
         size="small"
         aria-label="RSS feed"
       >
@@ -57,4 +61,4 @@ const SearchContent = () => {
   );
 };
 
-export default SearchContent;
+export default SearchForm;
