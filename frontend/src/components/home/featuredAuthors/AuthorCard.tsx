@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 type Props = {
   author: Partial<User>;
@@ -66,22 +67,26 @@ const AuthorCard = ({ author }: Props) => {
       </Box>
 
       <CardActions sx={{ justifyContent: "center", mt: 3 }}>
-        <Button
-          component={motion.button}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          variant="contained"
-          size="small"
-          sx={{
-            borderRadius: 20,
-            textTransform: "none",
-            px: 3,
-            py: 1,
-            fontWeight: "medium",
-          }}
+        <Link
+          href={`/posts/author/${author?.id}?name=${author?.name}&designation=${author?.designation}&bio=${author?.bio}`}
         >
-          Explore Articles
-        </Button>
+          <Button
+            component={motion.button}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            variant="contained"
+            size="small"
+            sx={{
+              borderRadius: 20,
+              textTransform: "none",
+              px: 3,
+              py: 1,
+              fontWeight: "medium",
+            }}
+          >
+            Explore Articles
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );
