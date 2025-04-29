@@ -49,7 +49,7 @@ const RelatedPosts = ({ posts }: Props) => {
 
             <Button
               component={Link}
-              href={`/posts/${post.slug}`}
+              href={makePostDetailsUrl(post)}
               variant="text"
               size="small"
               sx={{ mt: 1, textTransform: "none" }}
