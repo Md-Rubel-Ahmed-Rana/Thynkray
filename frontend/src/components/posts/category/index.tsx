@@ -1,5 +1,7 @@
 import Categories from "@/components/common/Categories";
+import CommonPosts from "@/components/sharedPosts/CommonPosts";
 import InternationalPosts from "@/components/sharedPosts/InternationalPosts";
+import { cardData } from "@/constants/cardData";
 import { internationalNews } from "@/constants/international";
 import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
@@ -29,7 +31,7 @@ const CategorizedPosts = () => {
           <InternationalPosts posts={internationalNews} />
         ) : (
           <Box>
-            <h1>Show local news</h1>
+            <CommonPosts posts={cardData} />
           </Box>
         )}
       </Box>
