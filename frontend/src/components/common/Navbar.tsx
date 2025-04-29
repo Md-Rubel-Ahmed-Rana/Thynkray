@@ -16,7 +16,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import LoginButton from "./LoginButton";
 
-const pages = ["Home", "Articles", "About", "Contact"];
+const pages = ["Home", "Articles", "Write Article", "Authors", "About"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 const Navbar = () => {

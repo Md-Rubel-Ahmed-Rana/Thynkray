@@ -7,7 +7,7 @@ const AuthorPostsPage = () => {
   const name = query.name as string;
   return (
     <>
-      <SEOHead title={`Posts of - ${name || ""}`} />
+      <SEOHead title={`Posts by ${name || ""}`} />
       <AuthorPosts />
     </>
   );
