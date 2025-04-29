@@ -43,14 +43,19 @@ const CommonPosts = ({ posts }: Props) => {
                 <Chip label={post.category} color="primary" size="small" />
               </Stack>
 
-              <Link href={`/posts/${post.slug}`} passHref>
+              <Link
+                className="hover-underline"
+                style={{ textDecoration: "none" }}
+                href={`/posts/${post.slug}`}
+                passHref
+              >
                 <Typography
                   variant="h6"
                   component="a"
                   sx={{
                     textDecoration: "none",
                     color: "text.primary",
-                    "&:hover": { textDecoration: "underline" },
+                    "&:hover": { textDecoration: "none" },
                   }}
                 >
                   {post.title}
