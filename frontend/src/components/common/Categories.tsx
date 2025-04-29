@@ -1,11 +1,13 @@
 import { categories } from "@/constants/categories";
 import { Box, Chip, IconButton, useTheme } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useRouter } from "next/router";
 
 const Categories = () => {
-  const [active, setActive] = useState(categories[0]);
+  const { query, push } = useRouter();
+  const activeCategory = (query.category as string) || "All Categories";
   const scrollRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
@@ -17,6 +19,14 @@ const Categories = () => {
 
   const fadeGradientLeft = `linear-gradient(to right, ${theme.palette.background.default} 60%, transparent)`;
   const fadeGradientRight = `linear-gradient(to left, ${theme.palette.background.default} 60%, transparent)`;
+
+  const handleRedirectToCategory = (newCategory: string) => {
+    if (newCategory === "All Categories") {
+      push(`/articles`);
+    } else {
+      push(`/posts/category/${newCategory}`);
+    }
+  };
 
   return (
     <Box
@@ -62,19 +72,22 @@ const Categories = () => {
         {categories.map((category, index) => (
           <Chip
             key={index}
-            onClick={() => setActive(category)}
+            onClick={() => handleRedirectToCategory(category)}
             size="medium"
             label={category}
             sx={{
               backgroundColor:
-                category === active
+                category === activeCategory
                   ? theme.palette.primary.main
                   : "transparent",
-              color: category === active ? "#fff" : theme.palette.text.primary,
+              color:
+                category === activeCategory
+                  ? "#fff"
+                  : theme.palette.text.primary,
               fontSize: "1rem",
               fontWeight: 500,
               cursor: "pointer",
-              height: "40px",
+              height: "30px",
             }}
           />
         ))}
