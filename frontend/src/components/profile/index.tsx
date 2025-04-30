@@ -75,7 +75,8 @@ const Profile = () => {
 
       <Stack spacing={2}>
         <Typography variant="body1">
-          <strong>Email:</strong> {user.email}
+          <strong title="Email couldn't be changed!">Email:</strong>{" "}
+          {user.email}
         </Typography>
         <Typography variant="body1">
           <strong>Role:</strong> {user.role}
@@ -84,11 +85,11 @@ const Profile = () => {
           <strong>Bio:</strong> {user.bio}
         </Typography>
         <Typography variant="body1">
-          <strong>Created At:</strong>{" "}
+          <strong>Account created at:</strong>{" "}
           {new Date(user.created_at).toLocaleString()}
         </Typography>
         <Typography variant="body1">
-          <strong>Updated At:</strong>{" "}
+          <strong>last updated at:</strong>{" "}
           {new Date(user.updated_at).toLocaleString()}
         </Typography>
       </Stack>
