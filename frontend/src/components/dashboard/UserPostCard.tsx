@@ -37,16 +37,15 @@ const UserPostCard = ({ post }: Props) => {
           </Typography>
         </Stack>
 
-        <Link href={makePostDetailsUrl(post)} passHref>
-          <Typography
-            variant="h6"
-            component="a"
-            sx={{
-              textDecoration: "none",
-              color: "text.primary",
-              "&:hover": { textDecoration: "underline" },
-            }}
-          >
+        <Link
+          style={{
+            textDecoration: "none",
+            color: "black",
+          }}
+          href={makePostDetailsUrl(post)}
+          passHref
+        >
+          <Typography variant="h6" component="h2">
             {post.title}
           </Typography>
         </Link>

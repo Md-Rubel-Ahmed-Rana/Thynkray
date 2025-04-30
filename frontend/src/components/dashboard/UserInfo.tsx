@@ -52,7 +52,7 @@ const UserInfo = () => {
           Total Posts: <strong>345</strong>
         </Typography>
 
-        <Link href={"/write"}>
+        <Link href={"/write/new"}>
           <Button variant="contained" color="primary">
             Create Post
           </Button>
