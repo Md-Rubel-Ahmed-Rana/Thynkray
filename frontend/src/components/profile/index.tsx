@@ -8,8 +8,13 @@ import {
   IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import EditProfileInfo from "./EditProfileInfo";
+import { useState } from "react";
+import EditProfileImage from "./EditProfileImage";
 
 const Profile = () => {
+  const [isEditProfile, setIsEditProfile] = useState(false);
+  const [isEditProfileImage, setIsEditProfileImage] = useState(false);
   const user: User = {
     id: "abc123",
     name: "Jane Doe",
@@ -43,9 +48,7 @@ const Profile = () => {
               ":hover": { bgcolor: "grey.100" },
             }}
             aria-label="Edit profile image"
-            onClick={() => {
-              // Trigger profile image edit modal
-            }}
+            onClick={() => setIsEditProfileImage(true)}
           >
             <EditIcon fontSize="small" />
           </IconButton>
@@ -57,9 +60,7 @@ const Profile = () => {
           <IconButton
             size="small"
             aria-label="Edit profile info"
-            onClick={() => {
-              // Trigger profile info edit modal
-            }}
+            onClick={() => setIsEditProfile(true)}
           >
             <EditIcon fontSize="small" />
           </IconButton>
@@ -91,6 +92,13 @@ const Profile = () => {
           {new Date(user.updated_at).toLocaleString()}
         </Typography>
       </Stack>
+
+      {/* // profile info edit modal  */}
+      <EditProfileInfo open={isEditProfile} setOpen={setIsEditProfile} />
+      <EditProfileImage
+        open={isEditProfileImage}
+        setOpen={setIsEditProfileImage}
+      />
     </Box>
   );
 };
