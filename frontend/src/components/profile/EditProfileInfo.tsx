@@ -1,3 +1,4 @@
+import compareFieldsChanges from "@/utils/compareFieldsChanges";
 import {
   Backdrop,
   Box,
@@ -6,25 +7,41 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
 };
 
+const originalUser = {
+  name: "Jane Doe",
+  designation: "Senior Software Engineer",
+  bio: "Passionate developer with a love for building scalable web applications. Tech enthusiast and coffee lover.",
+};
+
 const EditProfileInfo = ({ open, setOpen }: Props) => {
-  const user = {
-    name: "Jane Doe",
-    designation: "Senior Software Engineer",
-    bio: "Passionate developer with a love for building scalable web applications. Tech enthusiast and coffee lover.",
+  const [isChanged, setIsChanged] = useState(false);
+  const [user, setUser] = useState(originalUser);
+
+  const handleChangeValues = (field: string, value: string) => {
+    const newValues = { ...user, [field]: value };
+    setUser(newValues);
+    setIsChanged(compareFieldsChanges(originalUser, newValues));
   };
-  const handleClose = () => setOpen(false);
+
+  const handleUpdateUserInfo = () => {
+    console.log({
+      updatedUser: user,
+    });
+  };
+
   return (
     <Modal
       aria-labelledby="Edit Profile"
       aria-describedby="edit your profile information"
       open={open}
-      onClose={handleClose}
+      onClose={() => setOpen(false)}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       sx={{ padding: "0px" }}
@@ -58,17 +75,28 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
         >
           <TextField
             id="name"
-            value={user.name}
+            defaultValue={user.name}
             label="Name"
+            name="name"
+            onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
             variant="outlined"
           />
           <TextField
             id="designation"
-            value={user.designation}
+            name="designation"
+            onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
+            defaultValue={user.designation}
             label="Designation"
             variant="outlined"
           />
-          <TextField id="bio" value={user.bio} label="Bio" variant="outlined" />
+          <TextField
+            onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
+            id="bio"
+            name="bio"
+            defaultValue={user.bio}
+            label="Bio"
+            variant="outlined"
+          />
         </Box>
         <Box
           sx={{
@@ -86,7 +114,13 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
           >
             Cancel
           </Button>
-          <Button size="small" type="button" variant="contained">
+          <Button
+            disabled={!isChanged}
+            size="small"
+            type="button"
+            onClick={handleUpdateUserInfo}
+            variant="contained"
+          >
             Save changes
           </Button>
         </Box>
