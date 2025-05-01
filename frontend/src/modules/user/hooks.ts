@@ -1,42 +1,35 @@
-// hooks/useFetchUsers.ts
 import { useEffect, useRef } from "react";
-import { useStore } from "@/zustand/store";
+import { useUserStore } from "./provider";
+import { User } from "./types";
 import { useSession } from "next-auth/react";
 
-export const useGetUsers = () => {
-  const { getUsers, users, isLoading, error } = useStore((state) => state);
-
-  const hasFetched = useRef(false);
-
-  useEffect(() => {
-    if (!hasFetched.current) {
-      getUsers();
-      hasFetched.current = true;
-    }
-  }, [getUsers]);
-
-  return { users, isLoading, error };
-};
-
-export const useGetUser = (id: string) => {
-  const { getUser, user, isLoading, error } = useStore((state) => state);
-
-  const hasFetched = useRef(false);
+export const useGetSingleUser = (
+  id: string
+): {
+  user: User;
+  isLoading: boolean;
+  error: string | null;
+} => {
+  const { getSingleUser, user, isLoading, error } = useUserStore(
+    (state) => state
+  );
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      getUser(id);
-      hasFetched.current = true;
-    }
-  }, [getUser, id]);
+    getSingleUser(id);
+  }, [id, getSingleUser]);
 
   return { user, isLoading, error };
 };
 
-export const useGetLoggedInUser = () => {
-  const { getAuthenticatedUser, user, isLoading, error } = useStore(
+export const useGetLoggedInUser = (): {
+  user: User;
+  isLoading: boolean;
+  error: string | null;
+} => {
+  const { getAuthenticatedUser, user, isLoading, error } = useUserStore(
     (state) => state
   );
+
   const { data: session, status } = useSession();
   const hasFetched = useRef(false);
 
@@ -50,4 +43,20 @@ export const useGetLoggedInUser = () => {
   }, [status, session?.user?.email, getAuthenticatedUser]);
 
   return { user, isLoading, error };
+};
+
+export const useGetAllUsers = (): {
+  users: User[];
+  isLoading: boolean;
+  error: string | null;
+} => {
+  const { getAllUsers, users, isLoading, error } = useUserStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getAllUsers();
+  }, [getAllUsers]);
+
+  return { users, isLoading, error };
 };
