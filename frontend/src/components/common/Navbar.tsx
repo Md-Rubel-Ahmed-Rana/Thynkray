@@ -21,7 +21,6 @@ const settings = ["Profile", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const { user } = useGetLoggedInUser();
-  console.log({ user });
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -217,7 +216,9 @@ const Navbar = () => {
                   <Link
                     style={{ textDecoration: "none" }}
                     key={setting}
-                    href={`/${setting.toLowerCase()}`}
+                    href={`/${setting.toLowerCase()}?name=${user?.name}&email=${
+                      user?.email
+                    }&designation=${user?.designation || "unknown"}`}
                   >
                     <Typography textAlign="center">{setting}</Typography>
                   </Link>
