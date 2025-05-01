@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,18 +14,15 @@ import Link from "next/link";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import LoginButton from "./LoginButton";
+import { useState } from "react";
 
 const pages = ["Home", "Articles", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const { user } = useGetLoggedInUser();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);

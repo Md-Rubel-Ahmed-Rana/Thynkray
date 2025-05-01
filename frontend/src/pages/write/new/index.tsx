@@ -4,7 +4,7 @@ import CreatePost from "@/components/create-post";
 const CreatePostPage = () => {
   return (
     <>
-      <SEOHead title={`Create Post - Thynkray}`} />
+      <SEOHead title={`Create Post - Thynkray`} />
       <CreatePost />
     </>
   );
