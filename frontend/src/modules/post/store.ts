@@ -15,9 +15,7 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
     ...initialState,
     createNewPost: async (values: CreateNewPost) => {
       set({ isLoading: true, error: null });
-
       const formData = makePostFormData(values);
-
       try {
         await axios.post(`${baseApi}/post`, formData, {
           withCredentials: true,
