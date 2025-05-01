@@ -90,7 +90,6 @@ export class UserController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File
   ) {
-    console.log({ id, file });
     return this.userService.updateProfileImage(id, file);
   }
 }
