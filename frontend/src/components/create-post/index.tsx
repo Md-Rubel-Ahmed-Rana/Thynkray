@@ -2,19 +2,17 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import UploadThumbnail from "./UploadThumbnail";
 import Sections from "./Sections";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import Category from "./Category";
 import Tags from "./Tags";
+import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import { useCreatePostMutation } from "@/modules/post/hooks";
 
 const CreatePost = () => {
   const { user } = useGetLoggedInUser();
-  const { createPost, isLoading, error } = useCreatePostMutation();
-
-  console.log(isLoading, error);
+  const { createPost, isLoading } = useCreatePostMutation();
 
   const {
     register,
@@ -47,7 +45,7 @@ const CreatePost = () => {
   const handleCreatePost = async (data: CreateNewPost) => {
     data.content = content;
     data.thumbnail = thumbnailImage as File;
-    data.authorId = user?.id || "user id";
+    data.authorId = user?.id || "ca47a009-9325-4451-a923-cc9fee43ce89";
 
     await createPost(data);
   };
@@ -113,8 +111,12 @@ const CreatePost = () => {
         color="primary"
         size="large"
         type="submit"
+        disabled={isLoading}
+        loading={isLoading}
+        loadingPosition="start"
+        loadingIndicator
       >
-        Submit Post
+        {isLoading ? "Creating..." : "Submit Post"}
       </Button>
     </Box>
   );

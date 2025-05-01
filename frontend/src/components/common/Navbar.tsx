@@ -21,6 +21,7 @@ const settings = ["Profile", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const { user } = useGetLoggedInUser();
+  console.log({ user });
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
