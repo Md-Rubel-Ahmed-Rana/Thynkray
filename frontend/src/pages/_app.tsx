@@ -13,7 +13,7 @@ import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { useEffect } from "react";
 import "../styles/globals.css";
-import StoreProvider from "@/stores/StoreProvider";
+import StoreProvider from "@/store/StoreProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {

@@ -5,7 +5,7 @@ import { UserStore } from "./types";
 
 export type UserStoreApi = ReturnType<typeof createUserStore>;
 
-export const CounterStoreContext = createContext<UserStoreApi | undefined>(
+export const UserStoreContext = createContext<UserStoreApi | undefined>(
   undefined
 );
 
@@ -21,18 +21,18 @@ export const UserStoreProvider = ({ children }: UserStoreProviderProps) => {
   }
 
   return (
-    <CounterStoreContext.Provider value={storeRef.current}>
+    <UserStoreContext.Provider value={storeRef.current}>
       {children}
-    </CounterStoreContext.Provider>
+    </UserStoreContext.Provider>
   );
 };
 
 export const useUserStore = <T,>(selector: (store: UserStore) => T): T => {
-  const counterStoreContext = useContext(CounterStoreContext);
+  const userStoreContext = useContext(UserStoreContext);
 
-  if (!counterStoreContext) {
+  if (!userStoreContext) {
     throw new Error(`useUserStore must be used within CounterStoreProvider`);
   }
 
-  return useStore(counterStoreContext, selector);
+  return useStore(userStoreContext, selector);
 };

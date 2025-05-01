@@ -1,3 +1,4 @@
+import { PostStoreProvider } from "@/modules/post/provider";
 import { UserStoreProvider } from "@/modules/user/provider";
 import { type ReactNode } from "react";
 
@@ -6,7 +7,11 @@ interface StoreProviderProps {
 }
 
 const StoreProvider = ({ children }: StoreProviderProps) => {
-  return <UserStoreProvider>{children}</UserStoreProvider>;
+  return (
+    <UserStoreProvider>
+      <PostStoreProvider>{children}</PostStoreProvider>
+    </UserStoreProvider>
+  );
 };
 
 export default StoreProvider;
