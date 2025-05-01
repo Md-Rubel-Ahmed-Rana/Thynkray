@@ -3,6 +3,7 @@ export class User {
     id: string;
     name: string;
     email: string;
+    designation: string;
     role: string;
     bio?: string;
     profile_image?: string;
@@ -13,6 +14,7 @@ export class User {
         id: string,
         name: string,
         email: string,
+        designation: string,
         role: string,
         bio?: string,
         profile_image?: string,
@@ -22,6 +24,7 @@ export class User {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.designation = designation
         this.role = role;
         this.bio = bio;
         this.profile_image = profile_image;

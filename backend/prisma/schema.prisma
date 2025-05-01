@@ -14,6 +14,7 @@ model User {
   email         String   @unique
   role          String?   @default("author")
   bio           String?  @db.Text
+  designation           String?  @db.Text
   profile_image String?  @db.Text
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
@@ -29,6 +30,7 @@ model Post {
   slug String @unique @db.Text
   thumbnail String? @db.Text
   category String? @db.Text
+  description String? @db.Text
   tags String[] @db.Text @default([])
   authorId String @db.Uuid
   author User? @relation(fields: [authorId], references: [id])

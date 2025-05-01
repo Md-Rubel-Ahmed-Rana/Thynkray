@@ -26,18 +26,22 @@ export class OwnershipGuard implements CanActivate {
     const resourceId = request.params[options.paramFieldName]
 
     const serviceInstance =await this.getServiceByName(options.service)
-    const resource = await serviceInstance[options.fetchMethod](resourceId);
+    const resourceResponse = await serviceInstance[options.fetchMethod](resourceId);
+    const resource = resourceResponse?.data
 
     if (!resource) {
       throw new ForbiddenException('Resource not found.');
     }
 
-    if (resource[options.ownerField] !== user.id) {
+    console.log({ resourceId, resource, user});
+
+    if (resource[options.ownerField] !== user?.id) {
       throw new ForbiddenException('You are not the owner of this resource.');
     }
 
     return true;
   }
+  
   async getServiceByName(serviceName: string): Promise<any> {
         try {
           const service = this.moduleRef.get(serviceName, { strict: false });
@@ -46,5 +50,5 @@ export class OwnershipGuard implements CanActivate {
           console.error(`Service with name "${serviceName}" not found.`, error);
           return null;
         }
-      }
+  }
 }

@@ -16,13 +16,17 @@ export class CreateUserDto {
     @IsOptional()
     @IsString({ message: 'Profile image must be a string', context: { field: 'profile_image' } })
     profile_image?: string; 
+    @IsOptional()
+    @IsString({ message: 'Designation image must be a string', context: { field: 'designation' } })
+    designation?: string; 
 
-    constructor(name: string, email: string, role: string, bio?: string, profile_image?: string) {
+    constructor(name: string, email: string, role: string, bio?: string, profile_image?: string, designation?: string) {
         this.name = name;
         this.email = email;
         this.role = role;
         this.bio = bio;
         this.profile_image = profile_image;
+        this.designation = designation;
     }
     
 }

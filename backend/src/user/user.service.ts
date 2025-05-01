@@ -46,7 +46,7 @@ export class UserService {
   }
 
 
-  async findAll(): Promise<{ message: string; data: Partial<GetUserDto>[] }> {
+  async findAll(): Promise<{ statusCode: number, message: string; data: Partial<GetUserDto>[] }> {
     const users = await this.prisma.user.findMany({});
 
     const userDtos = users.map((user) =>
@@ -56,6 +56,7 @@ export class UserService {
         user.email,
         user.role,
         user.bio,
+        user.designation,
         user.profile_image,
         user.created_at,
         user.updated_at
@@ -63,6 +64,7 @@ export class UserService {
     );
 
     return {
+       statusCode: 200,
       message: 'Users retrieved successfully!',
       data: userDtos
     };
@@ -83,11 +85,13 @@ export class UserService {
       user.email,
       user.role,
       user.bio,
+      user.designation,
       user.profile_image,
       user.created_at,
       user.updated_at
     ).getFullInfo();
     return {
+       statusCode: 200,
       message: 'User retrieved successfully!',
       data: userDto
     };
@@ -108,11 +112,13 @@ export class UserService {
       user.email,
       user.role,
       user.bio,
+      user.designation,
       user.profile_image,
       user.created_at,
       user.updated_at
     ).getFullInfo();
     return {
+       statusCode: 200,
       message: 'User retrieved successfully!',
       data: userDto
     };
@@ -121,13 +127,19 @@ export class UserService {
   async update(
     id: string,
     updateUserDto: UpdateUserDto
-  ): Promise<{ message: string }> {
+  ) {
+    const isExist = await this.prisma.user.findUnique({where: {id}})
+    if(!isExist){
+      throw new HttpException("User was not found", HttpStatus.NOT_FOUND)
+    }
+
     await this.prisma.user.update({
       where: { id },
-      data: updateUserDto
+      data: {...isExist,...updateUserDto}
     });
 
     return {
+       statusCode: 200,
       message: 'User updated successfully!'
     };
   }
@@ -135,7 +147,7 @@ export class UserService {
   async updateProfileImage(
   id: string,
   file: any
-): Promise<{ message: string }> {
+) {
   const existingUser = await this.prisma.user.findUnique({ where: { id } });
   const oldImageUrl = existingUser?.profile_image;
 
@@ -151,6 +163,7 @@ export class UserService {
   }
 
   return {
+    statusCode: 200,
     message: 'User updated successfully!'
   };
 }
@@ -161,6 +174,7 @@ export class UserService {
       where: { id }
     });
     return {
+       statusCode: 200,
       message: 'User deleted successfully!'
     };
   }

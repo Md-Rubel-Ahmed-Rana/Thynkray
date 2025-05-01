@@ -5,6 +5,7 @@ export class GetPostDto {
     id: string;
     title: string;
     slug: string;
+    description: string;
     thumbnail?: string;
     category?: string;
     tags: string[];
@@ -17,6 +18,7 @@ export class GetPostDto {
         id: string,
         title: string,
         slug: string,
+        description: string,
         thumbnail?: string,
         category?: string,
         tags: string[] = [],
@@ -28,6 +30,7 @@ export class GetPostDto {
         this.id = id;
         this.title = title;
         this.slug = slug;
+        this.description = description;
         this.thumbnail = thumbnail;
         this.category = category;
         this.tags = tags;
@@ -42,6 +45,7 @@ export class GetPostDto {
             entity.id,
             entity.title,
             entity.slug,
+            entity.description,
             entity.thumbnail,
             entity.category,
             entity.tags,

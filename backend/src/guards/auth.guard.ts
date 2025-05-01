@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>() 
      const response = context.switchToHttp().getResponse<Response>();
     const token = this.extractTokenFromCookie(request);
-    console.log({token});
+    
     if (!token) {
        this.logout(response);
       throw new UnauthorizedException();
@@ -31,6 +31,9 @@ export class AuthGuard implements CanActivate {
           secret: this.configService.get<string>("JWT_SECRET")
         }
       );
+
+      console.log({payload});
+
       request['user'] = payload;
     } catch (error: any) {
       console.log({errorName: error?.name});
@@ -51,7 +54,6 @@ export class AuthGuard implements CanActivate {
 
   private extractTokenFromCookie(request: Request): string | undefined {
     const bearerToken = request.cookies[cookieName] as string
-    console.log({bearerToken});
     if(!bearerToken){
       throw new UnauthorizedException();
     }
