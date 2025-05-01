@@ -7,11 +7,10 @@ const makePostFormData = (values: CreateNewPost): FormData => {
   formData.append("thumbnail", values.thumbnail);
   formData.append("description", values.description);
   formData.append("category", values.category);
+  formData.append("slug", values.slug);
+  formData.append("authorId", values.authorId);
 
-  if (values.slug) formData.append("slug", values.slug);
-  if (values.authorId) formData.append("authorId", values.authorId);
-
-  formData.append("tags", JSON.stringify(values.tags));
+  values.tags.forEach((tag) => formData.append("tags", tag));
 
   values.content.forEach((section, index) => {
     formData.append(`content[${index}][title]`, section.title);

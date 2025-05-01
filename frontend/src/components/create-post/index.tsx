@@ -9,6 +9,7 @@ import Category from "./Category";
 import Tags from "./Tags";
 import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import { useCreatePostMutation } from "@/modules/post/hooks";
+import { generatePostSlug } from "@/utils/generatePostSlug";
 
 const CreatePost = () => {
   const { user } = useGetLoggedInUser();
@@ -45,7 +46,8 @@ const CreatePost = () => {
   const handleCreatePost = async (data: CreateNewPost) => {
     data.content = content;
     data.thumbnail = thumbnailImage as File;
-    data.authorId = user?.id || "ca47a009-9325-4451-a923-cc9fee43ce89";
+    data.authorId = user?.id;
+    data.slug = generatePostSlug(data);
 
     await createPost(data);
   };

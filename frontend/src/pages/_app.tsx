@@ -16,6 +16,8 @@ import "../styles/globals.css";
 import StoreProvider from "@/store/StoreProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
+  // if user session available, try to login
+
   useEffect(() => {
     const lenis = new Lenis({
       autoRaf: true,
@@ -36,16 +38,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <StoreProvider>
-      <ContextAPI>
-        <CssBaseline />
-        <CustomCursor />
-        <SessionProvider session={pageProps.session}>
+      <SessionProvider session={pageProps.session}>
+        <ContextAPI>
+          <CssBaseline />
+          <CustomCursor />
           <RootLayout>
             <Component {...pageProps} />
             <ToastContainer />
           </RootLayout>
-        </SessionProvider>
-      </ContextAPI>
+        </ContextAPI>
+      </SessionProvider>
     </StoreProvider>
   );
 }

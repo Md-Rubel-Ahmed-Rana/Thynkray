@@ -2,6 +2,7 @@ import { createStore } from "zustand";
 import { CreateNewPost, PostStore } from "./types";
 import { baseApi } from "..";
 import makePostFormData from "@/utils/makePostFormData";
+import axios from "axios";
 
 export const defaultPostState: PostStore = {
   isLoading: false,
@@ -18,20 +19,13 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
       const formData = makePostFormData(values);
 
       try {
-        const res = await fetch(`${baseApi}/post`, {
-          method: "POST",
-          body: formData,
+        await axios.post(`${baseApi}/post`, formData, {
+          withCredentials: true,
         });
 
-        if (!res.ok) throw new Error("Failed to create post");
-
-        const result = await res.json();
-
         set({ isLoading: false });
-        return result;
-      } catch (err) {
+      } catch {
         set({ error: "Could not create post", isLoading: false });
-        throw err;
       }
     },
   }));

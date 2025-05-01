@@ -1,3 +1,4 @@
+import { useLoginUser } from "@/modules/user/hooks";
 import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
 import React, { createContext, useEffect, useState } from "react";
 
@@ -45,6 +46,8 @@ const ContextAPI = ({ children }: Props) => {
     handleChangeThemeMode,
     themeMode,
   };
+
+  useLoginUser();
 
   return (
     <ContextProvider.Provider value={values}>

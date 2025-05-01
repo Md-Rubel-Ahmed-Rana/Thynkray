@@ -45,6 +45,36 @@ export const useGetLoggedInUser = (): {
   return { user, isLoading, error };
 };
 
+export const useLoginUser = (): void => {
+  const { userLogin, user } = useUserStore((state) => state);
+  const { data: session, status } = useSession();
+  const hasLoggedIn = useRef(false);
+
+  useEffect(() => {
+    if (
+      status === "authenticated" &&
+      session?.user &&
+      !hasLoggedIn.current &&
+      !user.id
+    ) {
+      const email = session.user.email as string;
+      const name = session.user.name as string;
+      const profile_image = session.user.image as string;
+
+      userLogin({ name, email, profile_image });
+      hasLoggedIn.current = true;
+    }
+  }, [
+    session?.user,
+    session?.user?.email,
+    session?.user?.image,
+    session?.user?.name,
+    status,
+    user,
+    userLogin,
+  ]);
+};
+
 export const useGetAllUsers = (): {
   users: User[];
   isLoading: boolean;
