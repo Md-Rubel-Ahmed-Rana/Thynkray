@@ -1,5 +1,5 @@
 import { createStore } from "zustand/vanilla";
-import { User, UserStore } from "./types";
+import { UpdateProfileImage, User, UserStore } from "./types";
 import { baseApi } from "..";
 import axios from "axios";
 
@@ -30,6 +30,7 @@ export const defaultUserState: UserStore = {
     return userInitialValue;
   },
   userLogin: async () => {},
+  updateUserProfileImage: async () => {},
 };
 
 export const createUserStore = (initialState: UserStore = defaultUserState) => {
@@ -96,6 +97,21 @@ export const createUserStore = (initialState: UserStore = defaultUserState) => {
       } catch (err) {
         set({ error: "Could not load users", isLoading: false });
         throw err;
+      }
+    },
+    updateUserProfileImage: async (data: UpdateProfileImage) => {
+      set({ isLoading: true, error: null });
+      try {
+        await axios.post(
+          `${baseApi}/user/update-profile-picture/${data.id}`,
+          data.formData,
+          {
+            withCredentials: true,
+          }
+        );
+        set({ isLoading: false });
+      } catch {
+        set({ error: "Could not load users", isLoading: false });
       }
     },
   }));

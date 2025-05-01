@@ -3,6 +3,10 @@ import { styled } from "@mui/material/styles";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { ImageRounded } from "@mui/icons-material";
+import {
+  useGetLoggedInUser,
+  useUpdateProfileImage,
+} from "@/modules/user/hooks";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -22,8 +26,16 @@ type Props = {
 };
 
 const EditProfileImage = ({ open, setOpen }: Props) => {
+  const { user } = useGetLoggedInUser();
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const { updateProfileImage, isLoading } = useUpdateProfileImage();
+
+  const handleUpdateProfileImage = async () => {
+    const formData = new FormData();
+    formData.append("profile_image", image as File);
+    await updateProfileImage({ id: user.id, formData });
+  };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -126,15 +138,16 @@ const EditProfileImage = ({ open, setOpen }: Props) => {
             Cancel
           </Button>
           <Button
-            disabled={!image}
+            disabled={!image || isLoading}
             sx={{
               cursor: image ? "pointer" : "not-allowed",
             }}
             size="small"
             type="button"
             variant="contained"
+            onClick={handleUpdateProfileImage}
           >
-            Save changes
+            {isLoading ? "Saving..." : " Save changes"}
           </Button>
         </Box>
       </Box>

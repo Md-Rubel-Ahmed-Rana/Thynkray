@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useUserStore } from "./provider";
-import { User } from "./types";
+import { UpdateProfileImage, User } from "./types";
 import { useSession } from "next-auth/react";
 
 export const useGetSingleUser = (
@@ -73,6 +73,17 @@ export const useLoginUser = (): void => {
     user,
     userLogin,
   ]);
+};
+
+export const useUpdateProfileImage = (): {
+  isLoading: boolean;
+  error: string | null;
+  updateProfileImage: (data: UpdateProfileImage) => Promise<void>;
+} => {
+  const { updateUserProfileImage, error, isLoading } = useUserStore(
+    (state) => state
+  );
+  return { updateProfileImage: updateUserProfileImage, isLoading, error };
 };
 
 export const useGetAllUsers = (): {
