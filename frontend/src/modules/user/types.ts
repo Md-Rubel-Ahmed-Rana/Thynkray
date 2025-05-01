@@ -17,6 +17,11 @@ export type UserState = {
   error: string | null;
 };
 
+export type UpdateProfileImage = {
+  id: string;
+  formData: FormData;
+};
+
 export type UserActions = {
   getSingleUser: (id: string) => Promise<User>;
   getAuthenticatedUser: (email: string) => Promise<User>;
@@ -26,6 +31,7 @@ export type UserActions = {
     email: string;
     profile_image: string;
   }) => Promise<void>;
+  updateUserProfileImage: (data: UpdateProfileImage) => Promise<void>;
 };
 
 export type UserStore = UserState & UserActions;

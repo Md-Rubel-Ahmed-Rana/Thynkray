@@ -1,4 +1,3 @@
-import { User } from "@/modules/user/types";
 import {
   Box,
   Typography,
@@ -11,30 +10,21 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditProfileInfo from "./EditProfileInfo";
 import { useState } from "react";
 import EditProfileImage from "./EditProfileImage";
+import { useGetLoggedInUser } from "@/modules/user/hooks";
 
 const Profile = () => {
+  const { user } = useGetLoggedInUser();
+  console.log(user);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditProfileImage, setIsEditProfileImage] = useState(false);
-  const user: User = {
-    id: "abc123",
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    designation: "Senior Software Engineer",
-    role: "admin",
-    bio: "Passionate developer with a love for building scalable web applications. Tech enthusiast and coffee lover.",
-    profile_image: "https://i.pravatar.cc/150?img=47",
-    created_at: new Date("2023-06-15T10:00:00Z"),
-    updated_at: new Date("2024-04-25T18:30:00Z"),
-  };
-
   return (
     <Box p={4} maxWidth={600} mx="auto">
       <Stack spacing={3} alignItems="center" position="relative">
         {/* Profile Image with Edit Icon */}
         <Box position="relative">
           <Avatar
-            src={user.profile_image}
-            alt={user.name}
+            src={user?.profile_image}
+            alt={user?.name}
             sx={{ width: 100, height: 100 }}
           />
           <IconButton
@@ -67,7 +57,7 @@ const Profile = () => {
         </Stack>
 
         <Typography variant="body1" color="text.secondary">
-          {user.designation}
+          {user?.designation || "unknown"}
         </Typography>
       </Stack>
 
@@ -76,13 +66,13 @@ const Profile = () => {
       <Stack spacing={2}>
         <Typography variant="body1">
           <strong title="Email couldn't be changed!">Email:</strong>{" "}
-          {user.email}
+          {user?.email}
         </Typography>
         <Typography variant="body1">
-          <strong>Role:</strong> {user.role}
+          <strong>Role:</strong> {user?.role}
         </Typography>
         <Typography variant="body1">
-          <strong>Bio:</strong> {user.bio}
+          <strong>Bio:</strong> {user?.bio || "unknown"}
         </Typography>
         <Typography variant="body1">
           <strong>Account created at:</strong>{" "}
