@@ -58,14 +58,14 @@ const UploadSectionImages = ({ images, setImages }: Props) => {
         display: "flex",
         flexDirection: "column",
         gap: 1,
-        mt: 2,
+        my: 2,
       }}
     >
       <Typography variant="body1">Images</Typography>
 
       <Button
         component="label"
-        variant="contained"
+        variant="outlined"
         startIcon={<ImageRounded />}
         sx={{ width: "200px" }}
       >

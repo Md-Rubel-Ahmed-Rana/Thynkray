@@ -14,6 +14,7 @@ import { useGetLoggedInUser } from "@/modules/user/hooks";
 
 const Profile = () => {
   const { user } = useGetLoggedInUser();
+  console.log(user);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditProfileImage, setIsEditProfileImage] = useState(false);
   return (
