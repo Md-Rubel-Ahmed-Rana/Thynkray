@@ -1,6 +1,7 @@
 import { createStore } from "zustand/vanilla";
 import { User, UserStore } from "./types";
 import { baseApi } from "..";
+import axios from "axios";
 
 const userInitialValue = {
   id: "",
@@ -28,26 +29,42 @@ export const defaultUserState: UserStore = {
   getAuthenticatedUser: async () => {
     return userInitialValue;
   },
+  userLogin: async () => {},
 };
 
 export const createUserStore = (initialState: UserStore = defaultUserState) => {
   return createStore<UserStore>()((set) => ({
     ...initialState,
+    userLogin: async (user: {
+      name: string;
+      email: string;
+      profile_image: string;
+    }) => {
+      set({ isLoading: true, error: null });
+
+      try {
+        await axios.post(`${baseApi}/user`, user, {
+          withCredentials: true,
+        });
+      } catch (err) {
+        throw err;
+      }
+    },
     getAuthenticatedUser: async (email: string) => {
       set({ isLoading: true, error: null });
 
       try {
-        const res = await fetch(`${baseApi}/user/auth/${email}`);
-        if (!res.ok) throw new Error("Failed to fetch authenticated user");
-        const result = await res.json();
+        const result = await axios.get(`${baseApi}/user/auth/${email}`, {
+          withCredentials: true,
+        });
 
-        const updatedUser = { ...result?.data } as User;
+        const updatedUser = { ...result?.data?.data } as User;
 
         set({ user: updatedUser, isLoading: false });
         return updatedUser;
-      } catch (err) {
+      } catch {
         set({ error: "Could not load authenticated user", isLoading: false });
-        throw err;
+        return userInitialValue;
       }
     },
     getSingleUser: async (id: string) => {
