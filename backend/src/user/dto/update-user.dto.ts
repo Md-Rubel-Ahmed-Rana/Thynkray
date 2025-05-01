@@ -3,7 +3,6 @@ import { CreateUserDto } from './create-user.dto';
 import { IsOptional, IsString, IsEmail } from 'class-validator';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-    id: string;
     @IsOptional()
     @IsString({ message: 'Name must be a string', context: { value: 'name' } })
     name?: string;  
@@ -19,14 +18,16 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsOptional()
     @IsString({ message: 'Profile image must be a string', context: { value: 'profile_image' } })
     profile_image?: string; 
+    @IsString({ message: 'Designation image must be a string', context: { value: 'designation' } })
+    designation?: string;
 
-    constructor(id: string, name?: string, email?: string, role?: string, bio?: string, profile_image?: string) {
+    constructor(id: string, name?: string, email?: string, role?: string, bio?: string, profile_image?: string, designation?: string) {
         super();
-        this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
         this.bio = bio;
         this.profile_image = profile_image;
+        this.designation = designation;
     }
 }

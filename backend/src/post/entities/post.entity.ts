@@ -5,6 +5,7 @@ export class Post {
     id: string;
     title: string;
     slug: string;
+    description: string;
     thumbnail?: string;
     category?: string;
     tags: string[];
@@ -19,6 +20,7 @@ export class Post {
         id: string,
         title: string,
         slug: string,
+        description: string,
         thumbnail?: string,
         category?: string,
         tags: string[] = [],
@@ -30,6 +32,7 @@ export class Post {
         this.id = id;
         this.title = title;
         this.slug = slug;
+        this.description =  description
         this.thumbnail = thumbnail;
         this.category = category;
         this.tags = tags;

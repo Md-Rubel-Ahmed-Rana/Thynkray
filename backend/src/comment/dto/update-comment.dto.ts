@@ -4,7 +4,6 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 
 export class UpdateCommentDto extends PartialType(CreateCommentDto) {
-    id: string;
     @IsNotEmpty({ message: 'Post ID is required', context: { field: 'postId' } })
     @IsString({ message: 'Post ID must be a string', context: { field: 'postId' } })
     postId: string;
@@ -18,7 +17,6 @@ export class UpdateCommentDto extends PartialType(CreateCommentDto) {
     updatedAt?: Date;
 
     constructor(
-        id: string,
         postId: string,
         userId: string,
         content?: string,
@@ -26,7 +24,6 @@ export class UpdateCommentDto extends PartialType(CreateCommentDto) {
         updatedAt?: Date
     ) {
         super(postId, userId, content, createdAt, updatedAt);
-        this.id = id;
         this.postId = postId;
         this.userId = userId;
         this.content = content;
