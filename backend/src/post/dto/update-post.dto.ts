@@ -3,6 +3,36 @@ import { CreatePostDto, CreatePostSectionDto } from './create-post.dto';
 import { IsOptional, IsString, IsArray, IsNotEmpty } from 'class-validator';
 
 
+export class UpdatePostDto extends PartialType(CreatePostDto) {
+    title?: string;
+    slug?: string;
+    description?: string;
+    thumbnail?: string;
+    category?: string;
+    tags?: string[];
+    content?: UpdatePostSectionDto[];
+
+    constructor(
+        title?: string,
+        slug?: string,
+        description?: string,
+        thumbnail?: string,
+        category?: string,
+        tags: string[] = [],
+        content: UpdatePostSectionDto[] = []
+    ) {
+        super();
+        this.title = title;
+        this.slug = slug;
+        this.description = description;
+        this.thumbnail = thumbnail;
+        this.category = category;
+        this.tags = tags;
+        this.content = content;
+    }
+}
+
+
 class UpdatePostSectionDto extends PartialType(CreatePostSectionDto) {
     @IsNotEmpty({message: "ID is required"})
     id: string;
@@ -29,34 +59,5 @@ class UpdatePostSectionDto extends PartialType(CreatePostSectionDto) {
         this.title = title;
         this.images = images;
         this.description = description;
-    }
-}
-
-export class UpdatePostDto extends PartialType(CreatePostDto) {
-    id: string;
-    title?: string;
-    slug?: string;
-    thumbnail?: string;
-    category?: string;
-    tags?: string[];
-    content?: UpdatePostSectionDto[];
-
-    constructor(
-        id: string,
-        title?: string,
-        slug?: string,
-        thumbnail?: string,
-        category?: string,
-        tags: string[] = [],
-        content: UpdatePostSectionDto[] = []
-    ) {
-        super();
-        this.id = id;
-        this.title = title;
-        this.slug = slug;
-        this.thumbnail = thumbnail;
-        this.category = category;
-        this.tags = tags;
-        this.content = content;
     }
 }

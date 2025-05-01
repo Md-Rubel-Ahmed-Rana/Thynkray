@@ -56,6 +56,7 @@ export class UserService {
         user.email,
         user.role,
         user.bio,
+        user.designation,
         user.profile_image,
         user.created_at,
         user.updated_at
@@ -84,6 +85,7 @@ export class UserService {
       user.email,
       user.role,
       user.bio,
+      user.designation,
       user.profile_image,
       user.created_at,
       user.updated_at
@@ -110,6 +112,7 @@ export class UserService {
       user.email,
       user.role,
       user.bio,
+      user.designation,
       user.profile_image,
       user.created_at,
       user.updated_at
@@ -125,9 +128,14 @@ export class UserService {
     id: string,
     updateUserDto: UpdateUserDto
   ) {
+    const isExist = await this.prisma.user.findUnique({where: {id}})
+    if(!isExist){
+      throw new HttpException("User was not found", HttpStatus.NOT_FOUND)
+    }
+
     await this.prisma.user.update({
       where: { id },
-      data: updateUserDto
+      data: {...isExist,...updateUserDto}
     });
 
     return {
