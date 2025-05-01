@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,18 +14,16 @@ import Link from "next/link";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import LoginButton from "./LoginButton";
+import { useState } from "react";
 
 const pages = ["Home", "Articles", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const { user } = useGetLoggedInUser();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  console.log({ user });
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -109,7 +106,13 @@ const Navbar = () => {
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
                     style={{ textDecoration: "none" }}
-                    href={`${page === "Home" ? "/" : `/${page.toLowerCase()}`}`}
+                    href={`${
+                      page === "Home"
+                        ? "/"
+                        : page === "Write"
+                        ? "/write/new"
+                        : `/${page.toLowerCase()}`
+                    }`}
                   >
                     <Typography textAlign="center">{page}</Typography>
                   </Link>
@@ -162,7 +165,13 @@ const Navbar = () => {
               <Link
                 style={{ textDecoration: "none" }}
                 key={page}
-                href={`${page === "Home" ? "/" : `/${page.toLowerCase()}`}`}
+                href={`${
+                  page === "Home"
+                    ? "/"
+                    : page === "Write"
+                    ? "/write/new"
+                    : `/${page.toLowerCase()}`
+                }`}
               >
                 <Button
                   onClick={handleCloseNavMenu}

@@ -20,3 +20,31 @@ export type Post = {
   comments?: [];
   createdAt: Date;
 };
+
+export type CreateNewPost = {
+  title: string;
+  thumbnail: File;
+  tags: string[];
+  category: string;
+  slug: string;
+  description: string;
+  authorId: string;
+  content: CreateSection[];
+};
+
+export type CreateSection = {
+  title: string;
+  images: File[];
+  description: string;
+};
+
+export type PostState = {
+  isLoading: boolean;
+  error: string | null;
+};
+
+export type PostActions = {
+  createNewPost: (values: CreateNewPost) => Promise<void>;
+};
+
+export type PostStore = PostState & PostActions;

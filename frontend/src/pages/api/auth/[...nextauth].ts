@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { baseApi } from "@/zustand/api";
+import { baseApi } from "@/modules";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 

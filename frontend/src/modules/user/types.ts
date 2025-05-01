@@ -9,3 +9,18 @@ export type User = {
   created_at: Date;
   updated_at: Date;
 };
+
+export type UserState = {
+  user: User;
+  users: User[];
+  isLoading: boolean;
+  error: string | null;
+};
+
+export type UserActions = {
+  getSingleUser: (id: string) => Promise<User>;
+  getAuthenticatedUser: (email: string) => Promise<User>;
+  getAllUsers: () => Promise<User[]>;
+};
+
+export type UserStore = UserState & UserActions;

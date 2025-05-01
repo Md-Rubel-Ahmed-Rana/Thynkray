@@ -13,6 +13,7 @@ import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { useEffect } from "react";
 import "../styles/globals.css";
+import StoreProvider from "@/store/StoreProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -34,15 +35,17 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ContextAPI>
-      <CssBaseline />
-      <CustomCursor />
-      <SessionProvider session={pageProps.session}>
-        <RootLayout>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </RootLayout>
-      </SessionProvider>
-    </ContextAPI>
+    <StoreProvider>
+      <ContextAPI>
+        <CssBaseline />
+        <CustomCursor />
+        <SessionProvider session={pageProps.session}>
+          <RootLayout>
+            <Component {...pageProps} />
+            <ToastContainer />
+          </RootLayout>
+        </SessionProvider>
+      </ContextAPI>
+    </StoreProvider>
   );
 }
