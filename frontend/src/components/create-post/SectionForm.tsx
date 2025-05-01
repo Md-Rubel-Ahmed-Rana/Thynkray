@@ -52,11 +52,13 @@ const SectionForm = ({ index, sections, setSections }: Props) => {
         images={section?.images || []}
         setImages={(files) => updateSection("images", files)}
       />
-
-      <RichTextEditor
-        value={section?.description || ""}
-        setValue={(val) => updateSection("description", val)}
-      />
+      <Box sx={{}}>
+        <Typography>Description: </Typography>
+        <RichTextEditor
+          value={section?.description || ""}
+          setValue={(val) => updateSection("description", val)}
+        />
+      </Box>
 
       <Button
         type="button"

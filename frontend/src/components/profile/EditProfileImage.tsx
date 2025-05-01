@@ -95,7 +95,7 @@ const EditProfileImage = ({ open, setOpen }: Props) => {
           <Button
             component="label"
             role={undefined}
-            variant="contained"
+            variant="outlined"
             tabIndex={-1}
             startIcon={<ImageRounded />}
             sx={{
