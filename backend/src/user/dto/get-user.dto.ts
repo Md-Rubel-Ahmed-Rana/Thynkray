@@ -4,6 +4,7 @@ export class GetUserDto {
     email: string;
     role: string;
     bio?: string;
+    designation?: string;
     profile_image?: string;
     created_at: Date;
     updated_at: Date;
@@ -14,6 +15,7 @@ export class GetUserDto {
         email: string,
         role: string,
         bio?: string,
+        designation?: string,
         profile_image?: string,
         created_at?: Date,
         updated_at?: Date
@@ -23,6 +25,7 @@ export class GetUserDto {
         this.email = email;
         this.role = role;
         this.bio = bio;
+        this.designation = designation
         this.profile_image = profile_image;
         this.created_at = created_at || new Date();
         this.updated_at = updated_at || new Date();
@@ -37,6 +40,7 @@ export class GetUserDto {
             email: this.email,
             role: this.role,
             bio: this.bio,
+            designation: this.designation,
             profile_image: this.profile_image,
         };
     }
@@ -48,6 +52,7 @@ export class GetUserDto {
             email: this.email,
             role: this.role,
             bio: this.bio,
+            designation: this.designation,
             profile_image: this.profile_image,
             created_at: this.created_at,
             updated_at: this.updated_at,
@@ -58,6 +63,7 @@ export class GetUserDto {
         return {
             name: this.name,
             bio: this.bio,
+            designation: this.designation,
             profile_image: this.profile_image,
         };
     }

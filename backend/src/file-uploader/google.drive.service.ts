@@ -56,7 +56,7 @@ export class GoogleDriveService {
       });
 
       // Return public viewable link
-      return `https://drive.google.com/uc?export=view&id=${fileId}`;
+      return `https://drive.google.com/thumbnail?id=${fileId}`;
     } catch (error) {
       console.error('Google Drive upload error:', error);
       throw new Error('Failed to upload file to Google Drive');
