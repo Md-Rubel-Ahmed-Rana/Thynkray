@@ -21,6 +21,11 @@ export type UserActions = {
   getSingleUser: (id: string) => Promise<User>;
   getAuthenticatedUser: (email: string) => Promise<User>;
   getAllUsers: () => Promise<User[]>;
+  userLogin: (user: {
+    name: string;
+    email: string;
+    profile_image: string;
+  }) => Promise<void>;
 };
 
 export type UserStore = UserState & UserActions;
