@@ -1,14 +1,22 @@
-import { Avatar, Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Skeleton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 import Link from "next/link";
+import { User } from "@/modules/user/types";
 
-const user = {
-  name: "Jane Doe",
-  designation: "Senior Software Engineer",
-  profile_image: "https://i.pravatar.cc/150?img=47",
+type Props = {
+  user: User;
+  totalPosts: number;
+  isLoading: boolean;
 };
 
-const UserInfo = () => {
+const UserInfo = ({ user, totalPosts, isLoading }: Props) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -18,19 +26,34 @@ const UserInfo = () => {
       sx={{
         display: "flex",
         gap: 2,
-        p: 2,
+        p: { xs: 1, md: 2 },
         backgroundColor: isDark ? "grey.900" : "grey.100",
         borderRadius: 2,
         justifyContent: "space-between",
+        flexDirection: { xs: "column", md: "row" },
       }}
     >
-      <Box>
-        <Avatar
-          src={user.profile_image}
-          alt={user.name}
-          sx={{ width: 64, height: 64 }}
-        />
+      {isLoading ? (
         <Box>
+          <Skeleton variant="circular" width={60} height={60} />
+          <Skeleton
+            variant="text"
+            sx={{ fontSize: "1rem", mt: 1 }}
+            width={"250px"}
+          />
+          <Skeleton
+            variant="text"
+            sx={{ fontSize: "1rem", mt: 1 }}
+            width={"300px"}
+          />
+        </Box>
+      ) : (
+        <Box>
+          <Avatar
+            src={user.profile_image}
+            alt={user.name}
+            sx={{ width: 64, height: 64, mb: 1 }}
+          />
           <Typography variant="h6" fontWeight="bold">
             {user.name}
           </Typography>
@@ -38,7 +61,7 @@ const UserInfo = () => {
             {user.designation}
           </Typography>
         </Box>
-      </Box>
+      )}
       <Box
         p={3}
         borderRadius={2}
@@ -49,7 +72,7 @@ const UserInfo = () => {
         gap={2}
       >
         <Typography variant="body1" color="text.primary">
-          Total Posts: <strong>345</strong>
+          Total Posts: <strong>{totalPosts}</strong>
         </Typography>
 
         <Link href={"/write/new"}>

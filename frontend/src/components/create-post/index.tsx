@@ -10,8 +10,10 @@ import Tags from "./Tags";
 import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import { useCreatePostMutation } from "@/modules/post/hooks";
 import { generatePostSlug } from "@/utils/generatePostSlug";
+import { useRouter } from "next/router";
 
 const CreatePost = () => {
+  const router = useRouter();
   const { user } = useGetLoggedInUser();
   const { createPost, isLoading } = useCreatePostMutation();
 
@@ -50,6 +52,9 @@ const CreatePost = () => {
     data.slug = generatePostSlug(data);
 
     await createPost(data);
+    router.push(
+      `/dashboard?name=${user?.name}&email=${user?.email}&designation=${user?.designation}`
+    );
   };
 
   return (

@@ -1,8 +1,12 @@
-import { cardData } from "@/constants/cardData";
 import { Box } from "@mui/material";
 import UserPostCard from "./UserPostCard";
+import { Post } from "@/modules/post/types";
 
-const UserPosts = () => {
+type Props = {
+  posts: Post[];
+};
+
+const UserPosts = ({ posts }: Props) => {
   return (
     <Box
       display="grid"
@@ -10,7 +14,7 @@ const UserPosts = () => {
       gap={3}
       mt={5}
     >
-      {cardData.map((post) => (
+      {posts.map((post) => (
         <UserPostCard key={post.id} post={post} />
       ))}
     </Box>
