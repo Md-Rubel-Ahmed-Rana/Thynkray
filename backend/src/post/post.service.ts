@@ -119,7 +119,7 @@ export class PostService {
  async findOne(id: string) {
     const postFromCache = await this.cache.getSingleValue(this.cacheKey, id)
 
-    if(postFromCache !== null){
+    if(postFromCache !== null && postFromCache){
       return {
         message: 'Post retrieved from cache successfully!',
         data: postFromCache
@@ -138,6 +138,40 @@ export class PostService {
     if (!post) {
        throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }
+    
+    const postDto = GetPostDto.fromEntity(post);
+
+    return {
+      message: 'Post retrieved successfully!',
+      data: postDto
+    };
+  }
+  
+ async findOneBySlug(slug: string) {
+    const postFromCache = await this.cache.getSinglePostBySlug(this.cacheKey, slug)
+
+    console.log({postFromCache});
+
+    if(postFromCache !== null && postFromCache){
+      return {
+        message: 'Post retrieved from cache successfully!',
+        data: postFromCache
+      }
+    }
+
+    const post = await this.prisma.post.findUnique({
+      where: {
+        slug
+      },
+      include: {
+        author: true,
+        content: true,
+      }
+    });
+    if (!post) {
+       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
+    }
+
     const postDto = GetPostDto.fromEntity(post);
 
     return {
