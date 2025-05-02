@@ -23,9 +23,16 @@ export const defaultPostState: PostStore = {
   isLoading: false,
   error: null,
   posts: [],
+  post: initialPostValue,
   createNewPost: async () => {},
   getPostsByAuthor: async () => {
     return [initialPostValue];
+  },
+  getSinglePostBySlug: async () => {
+    return initialPostValue;
+  },
+  getSinglePostById: async () => {
+    return initialPostValue;
   },
 };
 
@@ -58,6 +65,38 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         return posts;
       } catch (err) {
         set({ error: "Could not create post", isLoading: false });
+        throw err;
+      }
+    },
+    getSinglePostBySlug: async (slug: string) => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post/slug/${slug}`, {
+          withCredentials: true,
+        });
+
+        const post = data?.data?.data as Post;
+
+        set({ isLoading: false, post });
+        return post;
+      } catch (err) {
+        set({ error: "Could not fetch post", isLoading: false });
+        throw err;
+      }
+    },
+    getSinglePostById: async (id: string) => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post/${id}`, {
+          withCredentials: true,
+        });
+
+        const post = data?.data?.data as Post;
+
+        set({ isLoading: false, post });
+        return post;
+      } catch (err) {
+        set({ error: "Could not fetch post", isLoading: false });
         throw err;
       }
     },
