@@ -4,7 +4,7 @@ const makePostDetailsUrl = (post: Post): string => {
   const sectionTitles = post.content.map(
     (section) => section?.title + section?.description
   );
-  return `/post/${post?.slug}?id=${post?.id}&title=${post?.title}&desc=${
+  return `/post/${post?.slug}?title=${post?.title}&desc=${
     post?.description
   }&sections=${sectionTitles.join("-")}`;
 };

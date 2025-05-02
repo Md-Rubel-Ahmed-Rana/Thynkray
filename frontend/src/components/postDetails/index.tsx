@@ -1,5 +1,5 @@
 import { cardData } from "@/constants/cardData";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Skeleton, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import PostHeader from "./PostHeader";
 import PostDescription from "./PostDescription";
@@ -9,56 +9,81 @@ import RelatedPosts from "../sharedContent/RelatedPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
-import { useGetPostById } from "@/modules/post/hooks";
+import NoDataFound from "../common/NoDataFound";
+import { useGetPostBySlug } from "@/modules/post/hooks";
 
 const PostDetails = () => {
-  const { query } = useRouter();
-  // const slug = query?.slug as string;
-  const id = query?.id as string;
-  const { post } = useGetPostById(id);
-
-  console.log({ post });
-
-  // const post = cardData.find((post) => post?.slug === slug) as Post;
+  const { query, back } = useRouter();
+  const slug = query?.slug as string;
+  const title = query?.title as string;
+  const { post, isLoading } = useGetPostBySlug(slug);
 
   return (
-    <Box>
-      <PostHeader post={post} />
-      <PostDescription description={post?.description || ""} />
-      <PostContent content={post?.content || []} />
-      <Divider sx={{ margin: "20px 0px" }} />
-      <Comments />
-      <Divider sx={{ margin: "20px 0px" }} />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "20px",
-          flexDirection: { xs: "column", md: "row" },
-        }}
-        my={4}
-      >
-        <Box sx={{ width: { xs: "100%", md: "70%" } }}>
-          <RelatedPosts posts={cardData} />
-        </Box>
-        <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
-          <PopularPosts posts={cardData} />
-        </Box>
-      </Box>
-      <Divider sx={{ margin: "20px 0px" }} />
-      <Box>
-        <Typography
-          variant="h4"
-          component="h2"
-          fontWeight="bold"
-          sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" } }}
-          mb={2}
-        >
-          International News
-        </Typography>
-        <InternationalPosts posts={internationalNews} />
-      </Box>
-    </Box>
+    <>
+      {isLoading ? (
+        <Skeleton variant="rectangular" width={"100%"} height={300} />
+      ) : (
+        <>
+          {!post?.id ? (
+            <NoDataFound message={"Post was not found!"}>
+              <Typography variant="subtitle1">
+                The post <b>{`'${title}'`}</b> was not found.
+              </Typography>
+              <Typography variant="body2">
+                The post you are looking for might be removed from database or
+                restricted
+              </Typography>
+              <Button
+                sx={{ mt: 2 }}
+                size="small"
+                variant="outlined"
+                onClick={() => back()}
+              >
+                Go Back
+              </Button>
+            </NoDataFound>
+          ) : (
+            <Box>
+              <PostHeader post={post} />
+              <PostDescription description={post?.description || ""} />
+              <PostContent content={post?.content || []} />
+              <Divider sx={{ margin: "20px 0px" }} />
+              <Comments />
+              <Divider sx={{ margin: "20px 0px" }} />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "20px",
+                  flexDirection: { xs: "column", md: "row" },
+                }}
+                my={4}
+              >
+                <Box sx={{ width: { xs: "100%", md: "70%" } }}>
+                  <RelatedPosts posts={cardData} />
+                </Box>
+                <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
+                  <PopularPosts posts={cardData} />
+                </Box>
+              </Box>
+              <Divider sx={{ margin: "20px 0px" }} />
+              <Box>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  fontWeight="bold"
+                  sx={{ fontSize: { xs: "1.2rem", md: "1.5rem" } }}
+                  mb={2}
+                >
+                  International News
+                </Typography>
+                <InternationalPosts posts={internationalNews} />
+              </Box>
+            </Box>
+          )}
+        </>
+      )}
+    </>
   );
 };
 

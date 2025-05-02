@@ -47,3 +47,20 @@ export const useGetPostById = (
 
   return { post, error, isLoading };
 };
+export const useGetPostBySlug = (
+  slug: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  post: Post;
+} => {
+  const { getSinglePostBySlug, error, isLoading, post } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getSinglePostBySlug(slug);
+  }, [getSinglePostBySlug, slug]);
+
+  return { post, error, isLoading };
+};
