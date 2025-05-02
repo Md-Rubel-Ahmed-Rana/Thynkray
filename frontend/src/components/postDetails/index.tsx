@@ -1,5 +1,4 @@
 import { cardData } from "@/constants/cardData";
-import { Post } from "@/modules/post/types";
 import { Box, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import PostHeader from "./PostHeader";
@@ -10,11 +9,18 @@ import RelatedPosts from "../sharedContent/RelatedPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
+import { useGetPostById } from "@/modules/post/hooks";
 
 const PostDetails = () => {
   const { query } = useRouter();
-  const slug = query.slug as string;
-  const post = cardData.find((post) => post?.slug === slug) as Post;
+  // const slug = query?.slug as string;
+  const id = query?.id as string;
+  const { post } = useGetPostById(id);
+
+  console.log({ post });
+
+  // const post = cardData.find((post) => post?.slug === slug) as Post;
+
   return (
     <Box>
       <PostHeader post={post} />

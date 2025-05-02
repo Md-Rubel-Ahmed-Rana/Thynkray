@@ -42,11 +42,14 @@ export type PostState = {
   isLoading: boolean;
   error: string | null;
   posts: Post[];
+  post: Post;
 };
 
 export type PostActions = {
   createNewPost: (values: CreateNewPost) => Promise<void>;
   getPostsByAuthor: (id: string) => Promise<Post[]>;
+  getSinglePostBySlug: (slug: string) => Promise<Post>;
+  getSinglePostById: (id: string) => Promise<Post>;
 };
 
 export type PostStore = PostState & PostActions;
