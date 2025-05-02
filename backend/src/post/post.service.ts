@@ -58,7 +58,7 @@ export class PostService {
     let postsData = []
     let message = 'Posts retrieved successfully!'
     const postsFromCache = await this.cache.get(this.cacheKey)
-    if(postsFromCache !== null){
+    if(postsFromCache !== null && postsFromCache){
       postsData = postsFromCache
       message = 'Posts retrieved from cache!'
     }else{
@@ -66,6 +66,9 @@ export class PostService {
           include: {
             author: true,
             content: true,
+          },
+          orderBy: {
+            createdAt: "desc"
           }
         });
       const postDtos = GetPostDto.fromEntities(posts)
@@ -75,7 +78,8 @@ export class PostService {
     
     return {
       message,
-      data: postsData
+      data: postsData,
+       statusCode: 200,
     }
   }
 
@@ -99,20 +103,44 @@ export class PostService {
       include: {
         author: true,
         content: true,
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
     return {
       message: "Posts retrieved successfully",
-      data: posts
+      data: posts,
+       statusCode: 200,
     }
   }
 
+  async getLatestPosts(limit = 5) {
+    const latestPosts = await this.prisma.post.findMany({
+       include: {
+        author: true,
+        content: true
+       },
+        take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+
+    return {
+      message: "Latest posts fetched successfully!",
+      statusCode: 200,
+      data: latestPosts
+    }
+  }
 
   async search(searchText: string, filters: string[] = []) {
     const response = await meiliSearchService.search(searchText, filters);
     return {
       message: 'Posts retrieved successfully!',
-      data: response.hits
+      data: response.hits,
+       statusCode: 200,
     }
   }
 
@@ -122,7 +150,8 @@ export class PostService {
     if(postFromCache !== null && postFromCache){
       return {
         message: 'Post retrieved from cache successfully!',
-        data: postFromCache
+        data: postFromCache,
+         statusCode: 200,
       }
     }
 
@@ -143,19 +172,19 @@ export class PostService {
 
     return {
       message: 'Post retrieved successfully!',
-      data: postDto
+      data: postDto,
+       statusCode: 200,
     };
   }
-  
+
  async findOneBySlug(slug: string) {
     const postFromCache = await this.cache.getSinglePostBySlug(this.cacheKey, slug)
-
-    console.log({postFromCache});
 
     if(postFromCache !== null && postFromCache){
       return {
         message: 'Post retrieved from cache successfully!',
-        data: postFromCache
+        data: postFromCache,
+         statusCode: 200,
       }
     }
 
@@ -176,7 +205,8 @@ export class PostService {
 
     return {
       message: 'Post retrieved successfully!',
-      data: postDto
+      data: postDto,
+       statusCode: 200,
     };
   }
 
