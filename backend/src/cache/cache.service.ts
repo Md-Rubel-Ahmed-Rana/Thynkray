@@ -33,6 +33,16 @@ export class RedisCacheService {
     }
     return null;
   }
+
+  async getSinglePostBySlug(key: string, slug: string) {
+    console.log(`Getting single value for key: ${key} and slug: ${slug}`);
+    const values = await this.get(key);
+    if (values) {
+      const singleValue = values.find((item: any) => item.slug === slug);
+      return singleValue;
+    }
+    return null;
+  }
   // add new value to existing values
   async addNewValue(key: string, value: any) {
     console.log(`Adding new value to key: ${key} and id: ${value.id}`);
