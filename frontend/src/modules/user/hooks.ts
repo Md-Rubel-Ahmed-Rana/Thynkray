@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
 import { useUserStore } from "./provider";
 import { UpdateProfileImage, User } from "./types";
@@ -78,12 +79,38 @@ export const useLoginUser = (): void => {
 export const useUpdateProfileImage = (): {
   isLoading: boolean;
   error: string | null;
-  updateProfileImage: (data: UpdateProfileImage) => Promise<void>;
+  isError: boolean;
+  updateProfileImage: (data: UpdateProfileImage) => Promise<any>;
+  response: any;
 } => {
-  const { updateUserProfileImage, error, isLoading } = useUserStore(
+  const { updateUserProfileImage, error, isLoading, response, isError } =
+    useUserStore((state) => state);
+  return {
+    updateProfileImage: updateUserProfileImage,
+    isLoading,
+    error,
+    response,
+    isError,
+  };
+};
+
+export const useUpdateUser = (): {
+  isLoading: boolean;
+  error: string | null;
+  isError: boolean;
+  updateUser: (id: string, data: Partial<User>) => Promise<any>;
+  response: any;
+} => {
+  const { updateUser, error, isLoading, response, isError } = useUserStore(
     (state) => state
   );
-  return { updateProfileImage: updateUserProfileImage, isLoading, error };
+  return {
+    updateUser,
+    isLoading,
+    error,
+    response,
+    isError,
+  };
 };
 
 export const useGetAllUsers = (): {

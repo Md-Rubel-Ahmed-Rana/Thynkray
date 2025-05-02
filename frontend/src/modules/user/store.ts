@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createStore } from "zustand/vanilla";
 import { UpdateProfileImage, User, UserStore } from "./types";
 import { baseApi } from "..";
@@ -19,7 +20,9 @@ export const defaultUserState: UserStore = {
   user: userInitialValue,
   users: [userInitialValue],
   isLoading: false,
+  isError: false,
   error: null,
+  response: null,
   getSingleUser: async () => {
     return userInitialValue;
   },
@@ -31,10 +34,12 @@ export const defaultUserState: UserStore = {
   },
   userLogin: async () => {},
   updateUserProfileImage: async () => {},
+  refetchUser: async () => {},
+  updateUser: async () => {},
 };
 
 export const createUserStore = (initialState: UserStore = defaultUserState) => {
-  return createStore<UserStore>()((set) => ({
+  return createStore<UserStore>()((set, get) => ({
     ...initialState,
     userLogin: async (user: {
       name: string;
@@ -99,19 +104,63 @@ export const createUserStore = (initialState: UserStore = defaultUserState) => {
         throw err;
       }
     },
-    updateUserProfileImage: async (data: UpdateProfileImage) => {
+    updateUserProfileImage: async (data: UpdateProfileImage): Promise<any> => {
       set({ isLoading: true, error: null });
       try {
-        await axios.post(
+        const res = await axios.post(
           `${baseApi}/user/update-profile-picture/${data.id}`,
           data.formData,
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
-        set({ isLoading: false });
-      } catch {
-        set({ error: "Could not load users", isLoading: false });
+        await get().refetchUser();
+        return set({
+          isLoading: false,
+          response: res?.data,
+        });
+      } catch (err: any) {
+        set({
+          error: err?.message || "Could not update user profile image",
+          isLoading: false,
+          isError: true,
+        });
+        return null;
+      }
+    },
+    refetchUser: async () => {
+      try {
+        const email = get().user.email;
+        const result = await axios.get(`${baseApi}/user/auth/${email}`, {
+          withCredentials: true,
+        });
+
+        const updatedUser = { ...result?.data?.data } as User;
+        return set({ user: updatedUser });
+      } catch (error: any) {
+        set({
+          error: error?.message || "Failed to refetch user",
+          isLoading: false,
+          isError: true,
+        });
+      }
+    },
+    updateUser: async (id: string, data: Partial<User>): Promise<any> => {
+      set({ isLoading: true, error: null });
+      try {
+        const res = await axios.patch(`${baseApi}/user/${id}`, data, {
+          withCredentials: true,
+        });
+        await get().refetchUser();
+        return set({
+          isLoading: false,
+          response: res?.data,
+        });
+      } catch (err: any) {
+        set({
+          error: err?.message || "Could not update user",
+          isLoading: false,
+          isError: true,
+        });
+        return null;
       }
     },
   }));

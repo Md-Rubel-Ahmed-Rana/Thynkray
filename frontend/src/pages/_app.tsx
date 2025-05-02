@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import RootLayout from "@/layout/RootLayout";
 import { SessionProvider } from "next-auth/react";
-import { ToastContainer } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -44,7 +44,19 @@ export default function App({ Component, pageProps }: AppProps) {
           <CustomCursor />
           <RootLayout>
             <Component {...pageProps} />
-            <ToastContainer />
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Bounce}
+            />
           </RootLayout>
         </ContextAPI>
       </SessionProvider>
