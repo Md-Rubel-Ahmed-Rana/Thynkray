@@ -38,10 +38,18 @@ export class PostController {
   }
 
   @SkipThrottle()
+  @Get('latest')
+  getLatestPosts(@Query('limit') limit: number) {
+    return this.postService.getLatestPosts(Number(limit || 5));
+  }
+
+  @SkipThrottle()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postService.findOne(id);
   }
+
+  
   
   @SkipThrottle()
   @Get('slug/:slug')
