@@ -11,6 +11,7 @@ export const useCreatePostMutation = (): {
 
   return { createPost: createNewPost, error, isLoading };
 };
+
 export const useGetPostsByAuthor = (
   id: string
 ): {
@@ -27,4 +28,22 @@ export const useGetPostsByAuthor = (
   }, [getPostsByAuthor, id]);
 
   return { posts, error, isLoading };
+};
+
+export const useGetPostById = (
+  id: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  post: Post;
+} => {
+  const { getSinglePostById, error, isLoading, post } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getSinglePostById(id);
+  }, [getSinglePostById, id]);
+
+  return { post, error, isLoading };
 };
