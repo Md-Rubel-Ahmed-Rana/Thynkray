@@ -4,7 +4,7 @@ import { UpdateProfileImage, User, UserStore } from "./types";
 import { baseApi } from "..";
 import axios from "axios";
 
-const userInitialValue = {
+export const userInitialValue = {
   id: "",
   name: "",
   email: "",
