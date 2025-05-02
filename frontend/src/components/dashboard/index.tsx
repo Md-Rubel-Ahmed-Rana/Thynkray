@@ -11,8 +11,12 @@ const Dashboard = () => {
   const { isLoading, posts } = useGetPostsByAuthor(user?.id);
   return (
     <Box component={"section"}>
-      <UserInfo user={user} totalPosts={posts?.length || 0} />
-      {!isLoading ? (
+      <UserInfo
+        user={user}
+        totalPosts={posts?.length || 0}
+        isLoading={isLoading}
+      />
+      {isLoading ? (
         <CommonPostLoadingSkeleton />
       ) : (
         <UserPosts posts={posts || []} />
