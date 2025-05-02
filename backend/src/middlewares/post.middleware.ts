@@ -74,6 +74,7 @@ export class ManipulatePostMiddleware implements NestMiddleware {
     const bodyData = {
       title: req.body?.title,
       slug: req.body?.slug,
+      description: req.body?.description,
       thumbnail: req.body?.thumbnail,
       authorId: req.body?.authorId,
       category: req.body?.category,
