@@ -4,15 +4,19 @@ import UserInfo from "./UserInfo";
 import UserPosts from "./UserPosts";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import { useGetPostsByAuthor } from "@/modules/post/hooks";
+import CommonPostLoadingSkeleton from "../common/CommonPostLoadingSkeleton";
 
 const Dashboard = () => {
   const { user } = useGetLoggedInUser();
   const { isLoading, posts } = useGetPostsByAuthor(user?.id);
-  console.log({ isLoading, posts });
   return (
     <Box component={"section"}>
       <UserInfo user={user} totalPosts={posts?.length || 0} />
-      <UserPosts posts={posts || []} />
+      {!isLoading ? (
+        <CommonPostLoadingSkeleton />
+      ) : (
+        <UserPosts posts={posts || []} />
+      )}
     </Box>
   );
 };
