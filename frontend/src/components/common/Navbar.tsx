@@ -15,12 +15,14 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import LoginButton from "./LoginButton";
 import { useState } from "react";
+import LogoutButton from "./LogoutButton";
+import { CircularProgress } from "@mui/material";
 
 const pages = ["Home", "Articles", "Write", "Authors", "About"];
-const settings = ["Profile", "Dashboard", "Logout"];
+const settings = ["Profile", "Dashboard"];
 
 const Navbar = () => {
-  const { user } = useGetLoggedInUser();
+  const { user, isLoading } = useGetLoggedInUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -183,18 +185,23 @@ const Navbar = () => {
           </Box>
 
           {/* User Avatar */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: "flex", flexGrow: 0, alignItems: "center" }}>
             <ThemeSwitcher />
-            {user && user?.id ? (
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User" src={user?.profile_image} />
-                </IconButton>
-              </Tooltip>
+            {isLoading ? (
+              <CircularProgress size="20px" />
             ) : (
-              <LoginButton />
+              <>
+                {user && user?.id ? (
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar alt="User" src={user?.profile_image} />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <LoginButton />
+                )}
+              </>
             )}
-
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -214,16 +221,23 @@ const Navbar = () => {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Link
-                    style={{ textDecoration: "none" }}
+                    style={{
+                      textDecoration: "none",
+                      color: "black",
+                      width: "100%",
+                    }}
                     key={setting}
                     href={`/${setting.toLowerCase()}?name=${user?.name}&email=${
                       user?.email
                     }&designation=${user?.designation || "unknown"}`}
                   >
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Typography width={"100%"}>{setting}</Typography>
                   </Link>
                 </MenuItem>
               ))}
+              <MenuItem>
+                <LogoutButton />
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
