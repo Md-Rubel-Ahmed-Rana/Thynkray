@@ -45,7 +45,12 @@ const Profile = () => {
 
         {/* Name with Edit Icon */}
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography variant="h4">{user.name}</Typography>
+          <Typography
+            sx={{ fontSize: { xs: "18px", md: "24px" } }}
+            variant="h4"
+          >
+            {user.name}
+          </Typography>
           <IconButton
             size="small"
             aria-label="Edit profile info"
