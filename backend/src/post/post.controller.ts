@@ -42,6 +42,12 @@ export class PostController {
   findOne(@Param('id') id: string) {
     return this.postService.findOne(id);
   }
+  
+  @SkipThrottle()
+  @Get('slug/:slug')
+  findOneBySlug(@Param('slug') slug: string) {
+    return this.postService.findOneBySlug(slug);
+  }
 
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
