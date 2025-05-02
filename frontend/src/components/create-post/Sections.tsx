@@ -42,7 +42,7 @@ const Sections = ({ content, setContent }: Props) => {
             mt: 2,
           }}
           type="button"
-          variant="contained"
+          variant="outlined"
           onClick={handleAddSection}
         >
           Add Section

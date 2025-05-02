@@ -35,6 +35,7 @@ export const defaultUserState: UserStore = {
   userLogin: async () => {},
   updateUserProfileImage: async () => {},
   refetchUser: async () => {},
+  updateUser: async () => {},
 };
 
 export const createUserStore = (initialState: UserStore = defaultUserState) => {
@@ -140,6 +141,26 @@ export const createUserStore = (initialState: UserStore = defaultUserState) => {
           isLoading: false,
           isError: true,
         });
+      }
+    },
+    updateUser: async (id: string, data: Partial<User>): Promise<any> => {
+      set({ isLoading: true, error: null });
+      try {
+        const res = await axios.patch(`${baseApi}/user/${id}`, data, {
+          withCredentials: true,
+        });
+        await get().refetchUser();
+        return set({
+          isLoading: false,
+          response: res?.data,
+        });
+      } catch (err: any) {
+        set({
+          error: err?.message || "Could not update user",
+          isLoading: false,
+          isError: true,
+        });
+        return null;
       }
     },
   }));
