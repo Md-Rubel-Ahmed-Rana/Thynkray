@@ -18,10 +18,11 @@ const UserInfo = ({ user, totalPosts }: Props) => {
       sx={{
         display: "flex",
         gap: 2,
-        p: 2,
+        p: { xs: 1, md: 2 },
         backgroundColor: isDark ? "grey.900" : "grey.100",
         borderRadius: 2,
         justifyContent: "space-between",
+        flexDirection: { xs: "column", md: "row" },
       }}
     >
       <Box>
