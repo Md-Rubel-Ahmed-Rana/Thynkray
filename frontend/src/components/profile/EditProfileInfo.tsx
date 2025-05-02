@@ -1,39 +1,48 @@
+import { useGetLoggedInUser, useUpdateUser } from "@/modules/user/hooks";
+import { User } from "@/modules/user/types";
 import compareFieldsChanges from "@/utils/compareFieldsChanges";
 import {
   Backdrop,
   Box,
   Button,
+  CircularProgress,
   Modal,
   TextField,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
 };
 
-const originalUser = {
-  name: "Jane Doe",
-  designation: "Senior Software Engineer",
-  bio: "Passionate developer with a love for building scalable web applications. Tech enthusiast and coffee lover.",
-};
-
 const EditProfileInfo = ({ open, setOpen }: Props) => {
+  const { user } = useGetLoggedInUser();
   const [isChanged, setIsChanged] = useState(false);
-  const [user, setUser] = useState(originalUser);
+  const [updatedUser, setUpdatedUser] = useState<Partial<User>>(user);
+  const { updateUser, isLoading, isError, error, response } = useUpdateUser();
 
   const handleChangeValues = (field: string, value: string) => {
     const newValues = { ...user, [field]: value };
-    setUser(newValues);
-    setIsChanged(compareFieldsChanges(originalUser, newValues));
+    setUpdatedUser(newValues);
+    setIsChanged(compareFieldsChanges(user, newValues));
   };
 
-  const handleUpdateUserInfo = () => {
-    console.log({
-      updatedUser: user,
+  const handleUpdateUserInfo = async () => {
+    await updateUser(user?.id, {
+      name: updatedUser.name,
+      designation: updatedUser.designation,
+      bio: updatedUser.bio,
     });
+
+    if (isError) {
+      toast.error(error);
+    } else {
+      toast.success(response?.message);
+    }
+    setOpen(false);
   };
 
   return (
@@ -111,17 +120,21 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
             type="button"
             variant="outlined"
             size="small"
+            disabled={isLoading}
           >
             Cancel
           </Button>
           <Button
-            disabled={!isChanged}
+            disabled={!isChanged || isLoading}
             size="small"
             type="button"
             onClick={handleUpdateUserInfo}
             variant="contained"
+            loading={isLoading}
+            loadingPosition="start"
+            loadingIndicator={<CircularProgress color="inherit" size={16} />}
           >
-            Save changes
+            {isLoading ? "Saving..." : "Save changes"}
           </Button>
         </Box>
       </Box>

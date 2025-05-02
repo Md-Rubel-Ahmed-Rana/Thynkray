@@ -30,6 +30,7 @@ export type UserActions = {
   getAuthenticatedUser: (email: string) => Promise<User>;
   getAllUsers: () => Promise<User[]>;
   refetchUser: () => Promise<any>;
+  updateUser: (id: string, data: Partial<User>) => Promise<any>;
   userLogin: (user: {
     name: string;
     email: string;

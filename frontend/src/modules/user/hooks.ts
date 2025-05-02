@@ -94,6 +94,25 @@ export const useUpdateProfileImage = (): {
   };
 };
 
+export const useUpdateUser = (): {
+  isLoading: boolean;
+  error: string | null;
+  isError: boolean;
+  updateUser: (id: string, data: Partial<User>) => Promise<any>;
+  response: any;
+} => {
+  const { updateUser, error, isLoading, response, isError } = useUserStore(
+    (state) => state
+  );
+  return {
+    updateUser,
+    isLoading,
+    error,
+    response,
+    isError,
+  };
+};
+
 export const useGetAllUsers = (): {
   users: User[];
   isLoading: boolean;
