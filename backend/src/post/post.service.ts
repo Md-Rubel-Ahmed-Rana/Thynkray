@@ -15,7 +15,7 @@ export class PostService {
   constructor(private readonly cache: RedisCacheService,private readonly googleDriveService: GoogleDriveService, private readonly prisma: PrismaService) {}
 
   async create(createPostDto: CreatePostDto) {
-    const {title, slug, tags, content, category, thumbnail, authorId} = createPostDto;
+    const {title, slug, tags, content, category, thumbnail, authorId, description} = createPostDto;
    await this.prisma.post.create({data: {
       title,
       slug,
@@ -23,6 +23,7 @@ export class PostService {
       category,
       thumbnail,
       authorId,
+      description,
       content: {
         create: content.map((section) => ({
           title: section.title,
