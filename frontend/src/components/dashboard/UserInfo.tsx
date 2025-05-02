@@ -1,4 +1,11 @@
-import { Avatar, Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Skeleton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 import Link from "next/link";
 import { User } from "@/modules/user/types";
@@ -6,9 +13,10 @@ import { User } from "@/modules/user/types";
 type Props = {
   user: User;
   totalPosts: number;
+  isLoading: boolean;
 };
 
-const UserInfo = ({ user, totalPosts }: Props) => {
+const UserInfo = ({ user, totalPosts, isLoading }: Props) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -25,13 +33,27 @@ const UserInfo = ({ user, totalPosts }: Props) => {
         flexDirection: { xs: "column", md: "row" },
       }}
     >
-      <Box>
-        <Avatar
-          src={user.profile_image}
-          alt={user.name}
-          sx={{ width: 64, height: 64 }}
-        />
+      {isLoading ? (
         <Box>
+          <Skeleton variant="circular" width={60} height={60} />
+          <Skeleton
+            variant="text"
+            sx={{ fontSize: "1rem", mt: 1 }}
+            width={"250px"}
+          />
+          <Skeleton
+            variant="text"
+            sx={{ fontSize: "1rem", mt: 1 }}
+            width={"300px"}
+          />
+        </Box>
+      ) : (
+        <Box>
+          <Avatar
+            src={user.profile_image}
+            alt={user.name}
+            sx={{ width: 64, height: 64, mb: 1 }}
+          />
           <Typography variant="h6" fontWeight="bold">
             {user.name}
           </Typography>
@@ -39,7 +61,7 @@ const UserInfo = ({ user, totalPosts }: Props) => {
             {user.designation}
           </Typography>
         </Box>
-      </Box>
+      )}
       <Box
         p={3}
         borderRadius={2}
