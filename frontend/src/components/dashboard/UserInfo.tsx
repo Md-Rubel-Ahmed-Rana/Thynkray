@@ -1,14 +1,14 @@
 import { Avatar, Box, Button, Typography, useTheme } from "@mui/material";
 import React from "react";
 import Link from "next/link";
+import { User } from "@/modules/user/types";
 
-const user = {
-  name: "Jane Doe",
-  designation: "Senior Software Engineer",
-  profile_image: "https://i.pravatar.cc/150?img=47",
+type Props = {
+  user: User;
+  totalPosts: number;
 };
 
-const UserInfo = () => {
+const UserInfo = ({ user, totalPosts }: Props) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
@@ -49,7 +49,7 @@ const UserInfo = () => {
         gap={2}
       >
         <Typography variant="body1" color="text.primary">
-          Total Posts: <strong>345</strong>
+          Total Posts: <strong>{totalPosts}</strong>
         </Typography>
 
         <Link href={"/write/new"}>

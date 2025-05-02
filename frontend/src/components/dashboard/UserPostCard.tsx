@@ -27,6 +27,10 @@ const UserPostCard = ({ post }: Props) => {
         height="180"
         image={post.thumbnail}
         alt={post.title}
+        sx={{
+          border: "1px solid #D0DDD0",
+          borderRadius: "5px 5px 0px 0px",
+        }}
       />
 
       <CardContent sx={{ flexGrow: 1 }}>
@@ -51,7 +55,7 @@ const UserPostCard = ({ post }: Props) => {
         </Link>
 
         <Typography variant="body2" color="text.secondary" mt={1}>
-          {post.description.slice(0, 100)}...
+          {post?.description && post?.description?.slice(0, 100)}...
         </Typography>
 
         <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">
