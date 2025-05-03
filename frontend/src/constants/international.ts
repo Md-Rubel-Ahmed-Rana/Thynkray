@@ -1,16 +1,4 @@
-export type InternationalPost = {
-  source: {
-    id: string | null;
-    name: string;
-  };
-  author: string | null;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage: string;
-  publishedAt: string;
-  content: string;
-};
+import { InternationalPost } from "@/modules/post/types";
 
 export const internationalNews: InternationalPost[] = [
   {
@@ -22,8 +10,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.bbc.com/news/world-12345678",
     urlToImage: "https://ichef.bbci.co.uk/news/1024/branded_news/12345.jpg",
     publishedAt: "2025-04-27T10:30:00Z",
-    content:
-      "Leaders around the world gathered in New York to commit to new climate targets...",
   },
   {
     source: { id: "cnn", name: "CNN" },
@@ -34,8 +20,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.cnn.com/2025/04/26/health/cancer-breakthrough",
     urlToImage: "https://cdn.cnn.com/cnnnext/dam/assets/health-cancer.jpg",
     publishedAt: "2025-04-26T16:45:00Z",
-    content:
-      "Researchers say the new treatment could significantly improve survival rates...",
   },
   {
     source: { id: "the-verge", name: "The Verge" },
@@ -46,8 +30,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.theverge.com/2025/04/26/apple-mixed-reality",
     urlToImage: "https://cdn.theverge.com/apple-headset.jpg",
     publishedAt: "2025-04-26T14:20:00Z",
-    content:
-      "The headset features breakthrough technology blending VR and AR seamlessly...",
   },
   {
     source: { id: "reuters", name: "Reuters" },
@@ -58,7 +40,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.reuters.com/markets/stocks-rally-2025",
     urlToImage: "https://static.reuters.com/stock-market-rally.jpg",
     publishedAt: "2025-04-26T12:00:00Z",
-    content: "Central banks cut interest rates to boost slowing economies...",
   },
   {
     source: { id: "al-jazeera-english", name: "Al Jazeera English" },
@@ -68,8 +49,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.aljazeera.com/news/2025/4/26/sudan-peace",
     urlToImage: "https://www.aljazeera.com/sudan-peace-talks.jpg",
     publishedAt: "2025-04-26T09:15:00Z",
-    content:
-      "Negotiators express optimism as ceasefire agreements hold for third week...",
   },
   {
     source: { id: "techcrunch", name: "TechCrunch" },
@@ -80,8 +59,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://techcrunch.com/2025/04/26/openai-gpt-5",
     urlToImage: "https://techcrunch.com/gpt-5-launch.jpg",
     publishedAt: "2025-04-26T08:00:00Z",
-    content:
-      "OpenAI's new model sets new benchmarks across a range of tasks...",
   },
   {
     source: { id: "bbc-news", name: "BBC News" },
@@ -92,8 +69,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.bbc.com/news/science-environment-567890",
     urlToImage: "https://ichef.bbci.co.uk/news/1024/mars-landing.jpg",
     publishedAt: "2025-04-26T07:45:00Z",
-    content:
-      "The rover will begin its two-year mission studying the Martian surface...",
   },
   {
     source: { id: "the-new-york-times", name: "New York Times" },
@@ -105,8 +80,6 @@ export const internationalNews: InternationalPost[] = [
     urlToImage:
       "https://static01.nyt.com/images/2025/04/26/climate-protest.jpg",
     publishedAt: "2025-04-26T06:30:00Z",
-    content:
-      "Crowds in major cities called for governments to declare climate emergencies...",
   },
   {
     source: { id: "bbc-news", name: "BBC News" },
@@ -117,7 +90,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.bbc.com/news/technology-234567",
     urlToImage: "https://ichef.bbci.co.uk/news/tech-forum-ai.jpg",
     publishedAt: "2025-04-26T04:00:00Z",
-    content: "Startups and tech giants alike showcased AI-driven solutions...",
   },
   {
     source: { id: "cnn", name: "CNN" },
@@ -128,7 +100,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.cnn.com/2025/04/26/business/economic-outlook-2025",
     urlToImage: "https://cdn.cnn.com/economy-recovery.jpg",
     publishedAt: "2025-04-26T03:15:00Z",
-    content: "The report suggests growth could stabilize by late 2025...",
   },
   {
     source: { id: "the-guardian", name: "The Guardian" },
@@ -139,8 +110,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.theguardian.com/environment/2025/apr/26/net-zero-targets",
     urlToImage: "https://media.guim.co.uk/net-zero-targets.jpg",
     publishedAt: "2025-04-26T02:00:00Z",
-    content:
-      "Urban leaders outlined strategies for transportation, energy, and housing reforms...",
   },
   {
     source: { id: "al-jazeera-english", name: "Al Jazeera English" },
@@ -150,7 +119,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.aljazeera.com/news/2025/4/26/food-prices",
     urlToImage: "https://www.aljazeera.com/food-prices.jpg",
     publishedAt: "2025-04-26T01:30:00Z",
-    content: "UN agencies warn of critical shortages in multiple regions...",
   },
   {
     source: { id: "reuters", name: "Reuters" },
@@ -160,8 +128,6 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.reuters.com/business/energy/oil-prices-plunge-2025",
     urlToImage: "https://static.reuters.com/oil-market.jpg",
     publishedAt: "2025-04-26T00:00:00Z",
-    content:
-      "Prices fell sharply after a surprise surge in global oil reserves...",
   },
   {
     source: { id: "cnn", name: "CNN" },
@@ -172,7 +138,5 @@ export const internationalNews: InternationalPost[] = [
     url: "https://www.cnn.com/2025/04/25/tech/ethical-ai-standards",
     urlToImage: "https://cdn.cnn.com/ethical-ai.jpg",
     publishedAt: "2025-04-25T23:00:00Z",
-    content:
-      "The move is seen as a response to growing concerns over AI misuse...",
   },
 ];

@@ -5,7 +5,6 @@ import Categories from "../common/Categories";
 import CommonPosts from "../sharedContent/CommonPosts";
 import { cardData } from "@/constants/cardData";
 import InternationalPosts from "../sharedContent/InternationalPosts";
-import { internationalNews } from "@/constants/international";
 import LatestPosts from "../sharedContent/LatestPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import { useAllGetPosts } from "@/modules/post/hooks";
@@ -63,7 +62,7 @@ const Articles = () => {
         >
           International Highlights
         </Typography>
-        <InternationalPosts posts={internationalNews} />
+        <InternationalPosts />
         <Box
           sx={{
             display: "flex",
