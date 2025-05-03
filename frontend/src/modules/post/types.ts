@@ -53,6 +53,7 @@ export type PostActions = {
   getAllPosts: () => Promise<Post[]>;
   getLatestPosts: () => Promise<Post[]>;
   getPostsByCategory: (category: string) => Promise<Post[]>;
+  getPostsBySearched: (searchText: string) => Promise<Post[]>;
 };
 
 export type PostStore = PostState & PostActions;
