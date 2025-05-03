@@ -52,6 +52,7 @@ export type PostActions = {
   getSinglePostById: (id: string) => Promise<Post>;
   getAllPosts: () => Promise<Post[]>;
   getLatestPosts: () => Promise<Post[]>;
+  getPostsByCategory: (category: string) => Promise<Post[]>;
 };
 
 export type PostStore = PostState & PostActions;
