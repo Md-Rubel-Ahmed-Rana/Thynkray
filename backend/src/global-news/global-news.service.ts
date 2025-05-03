@@ -1,18 +1,24 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { GetGlobalNewsDto } from './dto/get-global-new.dto';
-import  NewsAPI from 'newsapi'
+import NewsAPI from 'newsapi';
 import { GlobalNews } from './entities/global-news.entity';
 
 @Injectable()
 export class GlobalNewsService {
-  private readonly newsapi = new NewsAPI('9b1009f0c7734fad829a5805999fabbd');
+  private newsapi: NewsAPI;
+
+  constructor(private configService: ConfigService) {
+    const apiKey = this.configService.get<string>('NEWS_API_KEY');
+    this.newsapi = new NewsAPI(apiKey);
+  }
 
   async findAll(query: GetGlobalNewsDto) {
     try {
       const response = await this.newsapi.v2.topHeadlines({
         category: query.category,
         language: 'en',
-        country: query.country || 'us',  
+        country: query.country || 'us',
         pageSize: query.pageSize || 10,
         page: query.page || 1,
       });
@@ -36,10 +42,9 @@ export class GlobalNewsService {
 
       return {
         statusCode: 200,
-        message: "International news retrieved successfully",
-        data: news
-      }
-
+        message: 'International news retrieved successfully',
+        data: news,
+      };
     } catch (error: any) {
       throw new HttpException(error?.message || 'News API error', HttpStatus.BAD_REQUEST);
     }
