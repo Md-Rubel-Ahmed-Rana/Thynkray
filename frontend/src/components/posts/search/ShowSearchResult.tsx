@@ -44,12 +44,19 @@ const ShowSearchResult = ({ posts }: Props) => {
               <Typography variant="h6" component="h2" gutterBottom noWrap>
                 {post.title}
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {post.description.slice(0, 100)}...
-              </Typography>
+              {post.description && (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  {post.description.slice(0, 100)}...
+                </Typography>
+              )}
+
               <Button
                 component={Link}
-                href={`/posts/${post.slug}`}
+                href={`/posts/${post?.slug}`}
                 variant="contained"
                 size="small"
               >

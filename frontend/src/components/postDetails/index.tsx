@@ -8,7 +8,6 @@ import Comments from "./Comments";
 import RelatedPosts from "../sharedContent/RelatedPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
-import { internationalNews } from "@/constants/international";
 import NoDataFound from "../common/NoDataFound";
 import { useGetPostBySlug } from "@/modules/post/hooks";
 
@@ -77,7 +76,7 @@ const PostDetails = () => {
                 >
                   International News
                 </Typography>
-                <InternationalPosts posts={internationalNews} />
+                <InternationalPosts />
               </Box>
             </Box>
           )}

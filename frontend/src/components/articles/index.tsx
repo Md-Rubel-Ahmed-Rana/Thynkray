@@ -5,11 +5,10 @@ import Categories from "../common/Categories";
 import CommonPosts from "../sharedContent/CommonPosts";
 import { cardData } from "@/constants/cardData";
 import InternationalPosts from "../sharedContent/InternationalPosts";
-import { internationalNews } from "@/constants/international";
 import LatestPosts from "../sharedContent/LatestPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import { useAllGetPosts } from "@/modules/post/hooks";
-import CommonPostLoadingSkeleton from "../loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "../../loadingSkeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
 
@@ -63,7 +62,7 @@ const Articles = () => {
         >
           International Highlights
         </Typography>
-        <InternationalPosts posts={internationalNews} />
+        <InternationalPosts />
         <Box
           sx={{
             display: "flex",

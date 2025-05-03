@@ -1,5 +1,4 @@
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
-import { internationalNews } from "@/constants/international";
 import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
@@ -37,7 +36,7 @@ const InternationalNewsSection = () => {
         connected with what&apos;s shaping the world today.
       </Typography>
 
-      <InternationalPosts posts={internationalNews} />
+      <InternationalPosts />
     </Box>
   );
 };

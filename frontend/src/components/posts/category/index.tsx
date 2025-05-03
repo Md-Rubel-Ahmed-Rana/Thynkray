@@ -1,50 +1,91 @@
 import Categories from "@/components/common/Categories";
+import NoDataFound from "@/components/common/NoDataFound";
 import SearchForm from "@/components/common/SearchForm";
+import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
 import CommonPosts from "@/components/sharedContent/CommonPosts";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
 import RelatedPosts from "@/components/sharedContent/RelatedPosts";
 import { cardData } from "@/constants/cardData";
-import { internationalNews } from "@/constants/international";
-import { Box, Divider, Typography } from "@mui/material";
+import { useGetPostsByCategory } from "@/modules/post/hooks";
+import { Box, Button, Divider, Typography } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
 
 const CategorizedPosts = () => {
   const { query } = useRouter();
   const category = query.category as string;
-
-  const data = Array.from({ length: 10 });
+  const { isLoading, posts } = useGetPostsByCategory(category);
 
   return (
     <Box>
       <Categories />
-      <Box
-        display={"flex"}
-        justifyContent={"space-between"}
-        flexDirection={{ xs: "column-reverse", md: "row" }}
-        alignItems={"center"}
-      >
-        <Typography
-          sx={{ fontSize: { xs: "14px", md: "16px" } }}
-          variant="body1"
-          mt={1}
-          component={"h5"}
-        >
-          We found <b> {data?.length || 0} articles</b> for{" "}
-          <b> {`'${category}'`} </b>
-          category
-        </Typography>
-        <Box sx={{ width: { xs: "100%", md: "30%" } }}>
+
+      {category === "International" ? (
+        <Box sx={{ width: "100%" }}>
           <SearchForm />
         </Box>
-      </Box>
+      ) : (
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          flexDirection={{ xs: "column-reverse", md: "row" }}
+          alignItems={"center"}
+        >
+          <Typography
+            sx={{ fontSize: { xs: "14px", md: "16px" } }}
+            variant="body1"
+            mt={1}
+            component={"h5"}
+          >
+            We found <b> {posts?.length || 0} articles</b> for{" "}
+            <b> {`'${category}'`} </b>
+            category
+          </Typography>
+          <Box sx={{ width: { xs: "100%", md: "30%" } }}>
+            <SearchForm />
+          </Box>
+        </Box>
+      )}
+
       <Box mt={3}>
         {category === "International" ? (
-          <InternationalPosts posts={internationalNews} />
+          <InternationalPosts />
         ) : (
           <Box>
-            <CommonPosts posts={cardData} />
+            {isLoading ? (
+              <CommonPostLoadingSkeleton />
+            ) : (
+              <>
+                {posts?.length <= 0 ? (
+                  <NoDataFound message="No articles found!">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                      }}
+                    >
+                      <Typography>
+                        Articles you are looking for the category of{" "}
+                        <b>{`"${category}"`}</b> were not available.
+                      </Typography>
+                      <Typography>
+                        If you are interested to create posts on the category of{" "}
+                        <b>{`"${category}"`}</b>, Please click below button.
+                      </Typography>
+                      <Link href={"/write/new"}>
+                        <Button variant="contained" size="small">
+                          Create Post
+                        </Button>
+                      </Link>
+                    </Box>
+                  </NoDataFound>
+                ) : (
+                  <CommonPosts posts={posts} />
+                )}
+              </>
+            )}
           </Box>
         )}
       </Box>
@@ -68,7 +109,7 @@ const CategorizedPosts = () => {
             >
               International Highlights
             </Typography>
-            <InternationalPosts posts={internationalNews} />
+            <InternationalPosts />
           </Box>
         </>
       )}

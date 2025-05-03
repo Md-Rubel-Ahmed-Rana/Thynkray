@@ -1,9 +1,19 @@
 import { createStore } from "zustand";
-import { CreateNewPost, Post, PostStore } from "./types";
+import { CreateNewPost, InternationalPost, Post, PostStore } from "./types";
 import { baseApi } from "..";
 import makePostFormData from "@/utils/makePostFormData";
 import axios from "axios";
 import { userInitialValue } from "../user/store";
+
+const globalInitialValue: InternationalPost = {
+  source: { id: "", name: "" },
+  author: "",
+  title: "T",
+  description: "",
+  url: "",
+  urlToImage: "",
+  publishedAt: "",
+};
 
 const initialPostValue: Post = {
   id: "",
@@ -24,6 +34,7 @@ export const defaultPostState: PostStore = {
   error: null,
   posts: [],
   post: initialPostValue,
+  news: [],
   createNewPost: async () => {},
   getPostsByAuthor: async () => {
     return [initialPostValue];
@@ -32,6 +43,15 @@ export const defaultPostState: PostStore = {
     return [initialPostValue];
   },
   getLatestPosts: async () => {
+    return [initialPostValue];
+  },
+  getPostsBySearched: async () => {
+    return [initialPostValue];
+  },
+  getInternationalPosts: async () => {
+    return [globalInitialValue];
+  },
+  getPostsByCategory: async () => {
     return [initialPostValue];
   },
   getSinglePostBySlug: async () => {
@@ -135,6 +155,54 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         return posts;
       } catch (err) {
         set({ error: "Could not fetch posts", isLoading: false });
+        throw err;
+      }
+    },
+    getPostsByCategory: async (category: string) => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post/category/${category}`, {
+          withCredentials: true,
+        });
+
+        const posts = data?.data?.data as Post[];
+
+        set({ isLoading: false, posts });
+        return posts;
+      } catch (err) {
+        set({ error: "Could not fetch posts", isLoading: false });
+        throw err;
+      }
+    },
+    getPostsBySearched: async (searchText: string) => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post/search?q=${searchText}`, {
+          withCredentials: true,
+        });
+
+        const posts = data?.data?.data as Post[];
+
+        set({ isLoading: false, posts });
+        return posts;
+      } catch (err) {
+        set({ error: "Could not fetch posts", isLoading: false });
+        throw err;
+      }
+    },
+    getInternationalPosts: async () => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/global-news`, {
+          withCredentials: true,
+        });
+
+        const posts = data?.data?.data as InternationalPost[];
+
+        set({ isLoading: false, news: posts });
+        return posts;
+      } catch (err) {
+        set({ error: "Could not fetch news", isLoading: false });
         throw err;
       }
     },

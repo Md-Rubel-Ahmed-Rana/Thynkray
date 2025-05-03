@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import LatestPostCard from "./LatestPostCard";
 import { useGetLatestPosts } from "@/modules/post/hooks";
-import LatestPostLoadingSkeleton from "../loadingSkeletons/LatestPostLoadingSkeleton";
+import LatestPostLoadingSkeleton from "../../loadingSkeletons/LatestPostLoadingSkeleton";
 
 const LatestPosts = () => {
   const { isLoading, posts } = useGetLatestPosts();

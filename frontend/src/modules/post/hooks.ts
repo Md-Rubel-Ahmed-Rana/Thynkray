@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { usePostStore } from "./provider";
-import { CreateNewPost, Post } from "./types";
+import { CreateNewPost, InternationalPost, Post } from "./types";
 
 export const useCreatePostMutation = (): {
   isLoading: boolean;
@@ -81,6 +81,7 @@ export const useAllGetPosts = (): {
 
   return { posts, error, isLoading };
 };
+
 export const useGetLatestPosts = (): {
   isLoading: boolean;
   error: string | null;
@@ -95,4 +96,56 @@ export const useGetLatestPosts = (): {
   }, [getLatestPosts]);
 
   return { posts, error, isLoading };
+};
+
+export const useGetPostsByCategory = (
+  category: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getPostsByCategory, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getPostsByCategory(category);
+  }, [category, getPostsByCategory]);
+
+  return { posts, error, isLoading };
+};
+
+export const useGetPostsBySearched = (
+  searchText: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getPostsBySearched, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getPostsBySearched(searchText);
+  }, [searchText, getPostsBySearched]);
+
+  return { posts, error, isLoading };
+};
+
+export const useGetInternationalPosts = (): {
+  isLoading: boolean;
+  error: string | null;
+  news: InternationalPost[];
+} => {
+  const { getInternationalPosts, error, isLoading, news } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getInternationalPosts();
+  }, [getInternationalPosts]);
+
+  return { news, error, isLoading };
 };
