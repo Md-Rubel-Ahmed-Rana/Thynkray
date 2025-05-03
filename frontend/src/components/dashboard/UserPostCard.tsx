@@ -28,7 +28,6 @@ const UserPostCard = ({ post }: Props) => {
         image={post.thumbnail}
         alt={post.title}
         sx={{
-          border: "1px solid #D0DDD0",
           borderRadius: "5px 5px 0px 0px",
         }}
       />
@@ -44,12 +43,17 @@ const UserPostCard = ({ post }: Props) => {
         <Link
           style={{
             textDecoration: "none",
-            color: "black",
           }}
           href={makePostDetailsUrl(post)}
           passHref
         >
-          <Typography variant="h6" component="h2">
+          <Typography
+            sx={{
+              color: "text.primary",
+            }}
+            variant="h6"
+            component="h2"
+          >
             {post.title}
           </Typography>
         </Link>
