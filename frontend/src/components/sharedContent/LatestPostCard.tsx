@@ -44,6 +44,7 @@ const StyledContentBody = styled(CardContent)(({ theme }: any) => ({
 
 const StyledCardContent = styled(CardContent)(({ theme }: any) => ({
   height: "100%",
+  width: "100%",
   backgroundColor: (theme?.vars || theme).palette.background.paper,
   display: "flex",
   flexDirection: "column",
