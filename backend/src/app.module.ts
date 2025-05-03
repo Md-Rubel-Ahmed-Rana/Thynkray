@@ -15,6 +15,7 @@ import { FileUploaderModule } from './file-uploader/fileUploader.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { GlobalNewsModule } from './global-news/global-news.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }), UserModule, PostModule, CommentModule, CacheModule, FileUploaderModule, PrismaModule, 
@@ -36,7 +37,7 @@ import { AuthModule } from './auth/auth.module';
             limit: 100
           }
       ],
-    }), AuthModule],
+    }), AuthModule, GlobalNewsModule],
   controllers: [AppController],
   providers: [AppService, RedisConfigService, RedisCacheService, CacheModule, GoogleDriveService, PrismaService, {
       provide: APP_GUARD,

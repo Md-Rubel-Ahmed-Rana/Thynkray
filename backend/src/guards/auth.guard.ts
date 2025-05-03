@@ -32,11 +32,8 @@ export class AuthGuard implements CanActivate {
         }
       );
 
-      console.log({payload});
-
       request['user'] = payload;
     } catch (error: any) {
-      console.log({errorName: error?.name});
       if (error.name === 'TokenExpiredError') {
         console.log('JWT expired:', error);
       } else {

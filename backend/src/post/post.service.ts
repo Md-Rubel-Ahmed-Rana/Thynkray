@@ -79,7 +79,7 @@ export class PostService {
     return {
       message,
       data: postsData,
-       statusCode: 200,
+      statusCode: 200,
     }
   }
 
@@ -108,9 +108,10 @@ export class PostService {
         createdAt: "desc"
       }
     })
+    const postDtos = GetPostDto.fromEntities(posts)
     return {
       message: "Posts retrieved successfully",
-      data: posts,
+      data: postDtos,
        statusCode: 200,
     }
   }
@@ -127,11 +128,36 @@ export class PostService {
       },
     });
 
+     const postDtos = GetPostDto.fromEntities(latestPosts)
 
     return {
       message: "Latest posts fetched successfully!",
       statusCode: 200,
-      data: latestPosts
+      data: postDtos
+    }
+  }
+
+  async getPostsByCategory(category: string) {
+    const categorizedPosts = await this.prisma.post.findMany({
+      where: {
+        category: category
+      },
+       include: {
+        author: true,
+        content: true
+       },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+
+     const postDtos = GetPostDto.fromEntities(categorizedPosts)
+
+    return {
+      message: "Categorized posts fetched successfully!",
+      statusCode: 200,
+      data: postDtos
     }
   }
 
