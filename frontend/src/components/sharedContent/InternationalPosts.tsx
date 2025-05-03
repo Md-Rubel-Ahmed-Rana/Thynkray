@@ -11,7 +11,7 @@ import {
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import React from "react";
-import CommonPostLoadingSkeleton from "../loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "../../loadingSkeletons/CommonPostLoadingSkeleton";
 
 const InternationalPosts = () => {
   const { news, isLoading } = useGetInternationalPosts();

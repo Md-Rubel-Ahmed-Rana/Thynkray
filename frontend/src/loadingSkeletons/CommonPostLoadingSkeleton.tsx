@@ -17,7 +17,7 @@ const CommonPostLoadingSkeleton = () => {
           <Box
             sx={{
               width: "100%",
-              border: "1px solid #D0DDD0",
+              border: "1px solid rgb(103, 107, 103)",
               p: 1,
               borderRadius: "5px",
             }}
