@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { usePostStore } from "./provider";
-import { CreateNewPost, Post } from "./types";
+import { CreateNewPost, InternationalPost, Post } from "./types";
 
 export const useCreatePostMutation = (): {
   isLoading: boolean;
@@ -132,4 +132,20 @@ export const useGetPostsBySearched = (
   }, [searchText, getPostsBySearched]);
 
   return { posts, error, isLoading };
+};
+
+export const useGetInternationalPosts = (): {
+  isLoading: boolean;
+  error: string | null;
+  news: InternationalPost[];
+} => {
+  const { getInternationalPosts, error, isLoading, news } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getInternationalPosts();
+  }, [getInternationalPosts]);
+
+  return { news, error, isLoading };
 };

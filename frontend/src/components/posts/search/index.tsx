@@ -1,7 +1,6 @@
 import SearchForm from "@/components/common/SearchForm";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
 import ShowSearchResult from "./ShowSearchResult";
 import { cardData } from "@/constants/cardData";
 import RelatedPosts from "@/components/sharedContent/RelatedPosts";
@@ -9,7 +8,6 @@ import PopularPosts from "@/components/sharedContent/PopularPosts";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
 import Categories from "@/components/common/Categories";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
-import { internationalNews } from "@/constants/international";
 import { useGetPostsBySearched } from "@/modules/post/hooks";
 import CommonPostLoadingSkeleton from "@/components/loadingSkeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "@/components/common/NoDataFound";
@@ -123,7 +121,7 @@ const PostsSearch = () => {
             Explore news out of the box. Gain knowledge world widely!
           </Typography>
         </Box>
-        <InternationalPosts posts={internationalNews} />
+        <InternationalPosts />
       </Box>
     </Box>
   );

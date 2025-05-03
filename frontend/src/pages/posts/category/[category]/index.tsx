@@ -8,7 +8,7 @@ const CategorizedPostsPage = () => {
   const category = query.category as string;
   return (
     <>
-      <SEOHead title={`Posts - ${category}`} />
+      <SEOHead title={`Posts - ${category || "unknown"}`} />
       <CategorizedPosts />
     </>
   );

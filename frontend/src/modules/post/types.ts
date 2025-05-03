@@ -1,5 +1,18 @@
 import { User } from "../user/types";
 
+export type InternationalPost = {
+  source: {
+    id: string | null;
+    name: string;
+  };
+  author: string | null;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+};
+
 export type ContentItem = {
   id: string;
   title: string;
@@ -43,6 +56,7 @@ export type PostState = {
   error: string | null;
   posts: Post[];
   post: Post;
+  news: InternationalPost[];
 };
 
 export type PostActions = {
@@ -54,6 +68,7 @@ export type PostActions = {
   getLatestPosts: () => Promise<Post[]>;
   getPostsByCategory: (category: string) => Promise<Post[]>;
   getPostsBySearched: (searchText: string) => Promise<Post[]>;
+  getInternationalPosts: () => Promise<InternationalPost[]>;
 };
 
 export type PostStore = PostState & PostActions;

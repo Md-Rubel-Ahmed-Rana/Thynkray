@@ -7,12 +7,10 @@ import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
 import RelatedPosts from "@/components/sharedContent/RelatedPosts";
 import { cardData } from "@/constants/cardData";
-import { internationalNews } from "@/constants/international";
 import { useGetPostsByCategory } from "@/modules/post/hooks";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
 
 const CategorizedPosts = () => {
   const { query } = useRouter();
@@ -22,29 +20,37 @@ const CategorizedPosts = () => {
   return (
     <Box>
       <Categories />
-      <Box
-        display={"flex"}
-        justifyContent={"space-between"}
-        flexDirection={{ xs: "column-reverse", md: "row" }}
-        alignItems={"center"}
-      >
-        <Typography
-          sx={{ fontSize: { xs: "14px", md: "16px" } }}
-          variant="body1"
-          mt={1}
-          component={"h5"}
-        >
-          We found <b> {posts?.length || 0} articles</b> for{" "}
-          <b> {`'${category}'`} </b>
-          category
-        </Typography>
-        <Box sx={{ width: { xs: "100%", md: "30%" } }}>
+
+      {category === "International" ? (
+        <Box sx={{ width: "100%" }}>
           <SearchForm />
         </Box>
-      </Box>
+      ) : (
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          flexDirection={{ xs: "column-reverse", md: "row" }}
+          alignItems={"center"}
+        >
+          <Typography
+            sx={{ fontSize: { xs: "14px", md: "16px" } }}
+            variant="body1"
+            mt={1}
+            component={"h5"}
+          >
+            We found <b> {posts?.length || 0} articles</b> for{" "}
+            <b> {`'${category}'`} </b>
+            category
+          </Typography>
+          <Box sx={{ width: { xs: "100%", md: "30%" } }}>
+            <SearchForm />
+          </Box>
+        </Box>
+      )}
+
       <Box mt={3}>
         {category === "International" ? (
-          <InternationalPosts posts={internationalNews} />
+          <InternationalPosts />
         ) : (
           <Box>
             {isLoading ? (
@@ -103,7 +109,7 @@ const CategorizedPosts = () => {
             >
               International Highlights
             </Typography>
-            <InternationalPosts posts={internationalNews} />
+            <InternationalPosts />
           </Box>
         </>
       )}
