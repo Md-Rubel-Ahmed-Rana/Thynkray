@@ -64,7 +64,7 @@ const CommonPosts = ({ posts }: Props) => {
               </Link>
 
               <Typography variant="body2" color="text.secondary" mt={1}>
-                {post.description.slice(0, 100)}...
+                {post?.description && post?.description?.slice(0, 100)}...
               </Typography>
 
               <Stack direction="row" spacing={1} mt={2} flexWrap="wrap">

@@ -47,6 +47,7 @@ export const useGetPostById = (
 
   return { post, error, isLoading };
 };
+
 export const useGetPostBySlug = (
   slug: string
 ): {
@@ -63,4 +64,35 @@ export const useGetPostBySlug = (
   }, [getSinglePostBySlug, slug]);
 
   return { post, error, isLoading };
+};
+
+export const useAllGetPosts = (): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getAllPosts, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getAllPosts();
+  }, [getAllPosts]);
+
+  return { posts, error, isLoading };
+};
+export const useGetLatestPosts = (): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getLatestPosts, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getLatestPosts();
+  }, [getLatestPosts]);
+
+  return { posts, error, isLoading };
 };

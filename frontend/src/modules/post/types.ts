@@ -50,6 +50,8 @@ export type PostActions = {
   getPostsByAuthor: (id: string) => Promise<Post[]>;
   getSinglePostBySlug: (slug: string) => Promise<Post>;
   getSinglePostById: (id: string) => Promise<Post>;
+  getAllPosts: () => Promise<Post[]>;
+  getLatestPosts: () => Promise<Post[]>;
 };
 
 export type PostStore = PostState & PostActions;
