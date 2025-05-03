@@ -9,7 +9,7 @@ import { internationalNews } from "@/constants/international";
 import LatestPosts from "../sharedContent/LatestPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import { useAllGetPosts } from "@/modules/post/hooks";
-import CommonPostLoadingSkeleton from "../common/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "../loadingSkeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
 

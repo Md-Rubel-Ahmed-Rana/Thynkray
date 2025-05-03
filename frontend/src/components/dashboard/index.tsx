@@ -4,7 +4,7 @@ import UserInfo from "./UserInfo";
 import UserPosts from "./UserPosts";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import { useGetPostsByAuthor } from "@/modules/post/hooks";
-import CommonPostLoadingSkeleton from "../common/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "../loadingSkeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
 
