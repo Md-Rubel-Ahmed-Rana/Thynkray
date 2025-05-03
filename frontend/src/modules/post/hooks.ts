@@ -115,3 +115,21 @@ export const useGetPostsByCategory = (
 
   return { posts, error, isLoading };
 };
+
+export const useGetPostsBySearched = (
+  searchText: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getPostsBySearched, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getPostsBySearched(searchText);
+  }, [searchText, getPostsBySearched]);
+
+  return { posts, error, isLoading };
+};

@@ -1,5 +1,5 @@
 import SearchForm from "@/components/common/SearchForm";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
 import ShowSearchResult from "./ShowSearchResult";
@@ -10,10 +10,15 @@ import LatestPosts from "@/components/sharedContent/LatestPosts";
 import Categories from "@/components/common/Categories";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import { internationalNews } from "@/constants/international";
+import { useGetPostsBySearched } from "@/modules/post/hooks";
+import CommonPostLoadingSkeleton from "@/components/loadingSkeletons/CommonPostLoadingSkeleton";
+import NoDataFound from "@/components/common/NoDataFound";
+import Link from "next/link";
 
 const PostsSearch = () => {
   const { query } = useRouter();
-  const searchText = query.q as string;
+  const searchText = query?.q as string;
+  const { isLoading, posts } = useGetPostsBySearched(searchText);
   return (
     <Box component={"section"}>
       <SearchForm />
@@ -34,14 +39,51 @@ const PostsSearch = () => {
         mt={1}
         component={"h5"}
       >
-        We found <b> {cardData?.length || 0} articles</b> for you
+        We found <b> {posts?.length || 0} articles</b> for you
       </Typography>
       <Box sx={{ width: "100%", overflow: "auto" }} my={3}>
         <Categories />
       </Box>
 
       <Box mt={2} component={"div"}>
-        <ShowSearchResult posts={cardData} />
+        {isLoading ? (
+          <CommonPostLoadingSkeleton />
+        ) : (
+          <>
+            {posts?.length <= 0 ? (
+              <NoDataFound message="No Articles Found!">
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography>
+                    We did not found any posts for you by the text of{" "}
+                    <b>{`"${searchText}"`}</b>
+                  </Typography>
+                  <Typography>
+                    Your search criterias were not matched to your available
+                    content.
+                  </Typography>
+                  <Typography>
+                    We appreciate your patient. Please try with different
+                    keywords
+                  </Typography>
+                  <b>OR</b>
+                  <Link href={"/write/new"}>
+                    <Button variant="contained" size="small">
+                      Create Post
+                    </Button>
+                  </Link>
+                </Box>
+              </NoDataFound>
+            ) : (
+              <ShowSearchResult posts={posts} />
+            )}
+          </>
+        )}
       </Box>
       <Divider sx={{ margin: "20px 0px" }} />
       {/* related and popular posts  */}

@@ -8,7 +8,7 @@ const PostsSearchPage = () => {
   const searchText = query.q as string;
   return (
     <>
-      <SEOHead title={`Posts - ${searchText}`} />
+      <SEOHead title={`Posts - ${searchText || "unknown"}`} />
       <PostsSearch />
     </>
   );
