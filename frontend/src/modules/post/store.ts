@@ -31,6 +31,9 @@ export const defaultPostState: PostStore = {
   getAllPosts: async () => {
     return [initialPostValue];
   },
+  getLatestPosts: async () => {
+    return [initialPostValue];
+  },
   getSinglePostBySlug: async () => {
     return initialPostValue;
   },
@@ -115,7 +118,23 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         set({ isLoading: false, posts });
         return posts;
       } catch (err) {
-        set({ error: "Could not fetch post", isLoading: false });
+        set({ error: "Could not fetch posts", isLoading: false });
+        throw err;
+      }
+    },
+    getLatestPosts: async () => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post/latest`, {
+          withCredentials: true,
+        });
+
+        const posts = data?.data?.data as Post[];
+
+        set({ isLoading: false, posts });
+        return posts;
+      } catch (err) {
+        set({ error: "Could not fetch posts", isLoading: false });
         throw err;
       }
     },
