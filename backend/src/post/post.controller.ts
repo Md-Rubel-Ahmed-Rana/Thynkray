@@ -24,6 +24,12 @@ export class PostController {
     return this.postService.findAll()
   }
 
+  @SkipThrottle()
+  @Get("/category/:category")
+  getPostsByCategory(@Param("category") category: string) {
+    return this.postService.getPostsByCategory(category);
+  }
+  
   @UseGuards(AuthGuard)
   @Get("/author/:authorId")
   findAllByAuthorId(@Param("authorId") authorId: string) {
