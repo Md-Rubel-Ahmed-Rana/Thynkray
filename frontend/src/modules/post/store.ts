@@ -28,6 +28,9 @@ export const defaultPostState: PostStore = {
   getPostsByAuthor: async () => {
     return [initialPostValue];
   },
+  getAllPosts: async () => {
+    return [initialPostValue];
+  },
   getSinglePostBySlug: async () => {
     return initialPostValue;
   },
@@ -95,6 +98,22 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
 
         set({ isLoading: false, post });
         return post;
+      } catch (err) {
+        set({ error: "Could not fetch post", isLoading: false });
+        throw err;
+      }
+    },
+    getAllPosts: async () => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post`, {
+          withCredentials: true,
+        });
+
+        const posts = data?.data?.data as Post[];
+
+        set({ isLoading: false, posts });
+        return posts;
       } catch (err) {
         set({ error: "Could not fetch post", isLoading: false });
         throw err;
