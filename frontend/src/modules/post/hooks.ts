@@ -81,3 +81,18 @@ export const useAllGetPosts = (): {
 
   return { posts, error, isLoading };
 };
+export const useGetLatestPosts = (): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getLatestPosts, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getLatestPosts();
+  }, [getLatestPosts]);
+
+  return { posts, error, isLoading };
+};
