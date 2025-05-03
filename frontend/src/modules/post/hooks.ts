@@ -81,6 +81,7 @@ export const useAllGetPosts = (): {
 
   return { posts, error, isLoading };
 };
+
 export const useGetLatestPosts = (): {
   isLoading: boolean;
   error: string | null;
@@ -93,6 +94,24 @@ export const useGetLatestPosts = (): {
   useEffect(() => {
     getLatestPosts();
   }, [getLatestPosts]);
+
+  return { posts, error, isLoading };
+};
+
+export const useGetPostsByCategory = (
+  category: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getPostsByCategory, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getPostsByCategory(category);
+  }, [category, getPostsByCategory]);
 
   return { posts, error, isLoading };
 };
