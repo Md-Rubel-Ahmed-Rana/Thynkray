@@ -53,6 +53,16 @@ export class UserController {
     return this.userService.findOneByEmail(email);
   }
 
+  @Delete('/auth/logout')
+  logout( @Res({ passthrough: true }) res: Response) {
+    res.clearCookie(cookieName, cookieOptions)
+    return  {
+      statusCode: 200,
+      message: "User logged out successfully",
+      data: null
+    }
+  }
+
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: UserService,
