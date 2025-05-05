@@ -6,7 +6,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 
 import { Box, Typography, Avatar, Stack, Chip } from "@mui/material";
-import { demoPostsData } from "@/constants/posts";
+import { bannerPostsData } from "@/constants/posts";
 
 const Banner = () => {
   return (
@@ -30,7 +30,7 @@ const Banner = () => {
         speed={1000}
         style={{ height: "100%", width: "100%" }}
       >
-        {demoPostsData.map((post) => (
+        {bannerPostsData.map((post) => (
           <SwiperSlide key={post?.id}>
             <Box
               sx={{

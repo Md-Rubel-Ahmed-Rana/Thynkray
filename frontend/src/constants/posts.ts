@@ -1,13 +1,15 @@
-export const demoPostsData = [
+import { v4 as UUID4 } from "uuid";
+
+export const bannerPostsData = [
   {
-    id: "1",
-    title: "AI Revolution: How Bangladesh is Adapting",
-    thumbnail: "https://images.unsplash.com/photo-1581091870620-3b6de61c0506",
+    id: UUID4(),
+    title: "AI Revolution: How Bangladesh is Embracing the Future",
+    thumbnail: "./banner-images/AI-Revulation.png",
     tag: ["AI", "Technology", "Bangladesh"],
     category: "Technology",
-    slug: "ai-revolution-bangladesh",
+    slug: "ai-revolution-in-bangladesh",
     description:
-      "Exploring how Bangladesh is embracing AI innovations across industries.",
+      "Discover how Bangladesh is integrating AI into key sectors like education, agriculture, and healthcare.",
     author: {
       name: "Raihan Chowdhury",
       profile_image: "https://randomuser.me/api/portraits/men/32.jpg",
@@ -15,24 +17,24 @@ export const demoPostsData = [
     content: [
       {
         id: "c1",
-        title: "The AI Boom in BD",
+        title: "The AI Boom in Bangladesh",
         images: [
-          "https://images.unsplash.com/photo-1682686581663-179efad2b6fa",
+          "https://images.unsplash.com/photo-1636977822883-ea20b37a7b16?q=80&auto=format&fit=crop&w=1600",
         ],
         description:
-          "The country's IT sector is quickly integrating AI solutions to meet global standards.",
+          "Startups and government initiatives are driving Bangladesh’s AI journey, creating jobs and innovation hubs.",
       },
     ],
   },
   {
-    id: "2",
-    title: "NASA's Artemis II Mission: Ready for the Moon",
-    thumbnail: "https://images.unsplash.com/photo-1589571894960-20bbe2828f71",
+    id: UUID4(),
+    title: "NASA's Artemis II: Humanity's Return to the Moon",
+    thumbnail: "./banner-images/nasa-artemis.png",
     tag: ["Space", "NASA", "Science"],
     category: "Science",
-    slug: "nasa-artemis-2-moon-mission",
+    slug: "nasa-artemis-ii-moon-mission",
     description:
-      "NASA's Artemis II crew is preparing for the historic return to the Moon after 50 years.",
+      "Artemis II prepares to send astronauts around the Moon—marking a historic leap in space exploration.",
     author: {
       name: "Sophia Allen",
       profile_image: "https://randomuser.me/api/portraits/women/44.jpg",
@@ -40,24 +42,24 @@ export const demoPostsData = [
     content: [
       {
         id: "c2",
-        title: "Artemis II Details",
+        title: "Mission Details and Objectives",
         images: [
-          "https://images.unsplash.com/photo-1580428185903-0c17e6e6d86d",
+          "https://images.unsplash.com/photo-1554475901-4538ddfbccc6?q=80&auto=format&fit=crop&w=1600",
         ],
         description:
-          "The mission marks humanity's return to the lunar surface, paving the way for Mars exploration.",
+          "The mission builds toward permanent lunar bases and eventual Mars exploration.",
       },
     ],
   },
   {
-    id: "3",
-    title: "T20 World Cup 2024: Bangladesh's Dream Run",
-    thumbnail: "https://images.unsplash.com/photo-1618689275461-72b98b7cf3b5",
+    id: UUID4(),
+    title: "T20 World Cup 2024: Bangladesh’s Inspiring Run",
+    thumbnail: "./banner-images/t20-2024.jpg",
     tag: ["Cricket", "Sports", "Bangladesh"],
     category: "Sports",
-    slug: "t20-world-cup-bangladesh-2024",
+    slug: "t20-world-cup-2024-bangladesh",
     description:
-      "Bangladesh stuns cricket fans worldwide with their performance in the T20 World Cup 2024.",
+      "Bangladesh surprises the cricketing world with an unforgettable World Cup campaign.",
     author: {
       name: "Farhan Hossain",
       profile_image: "https://randomuser.me/api/portraits/men/48.jpg",
@@ -65,24 +67,24 @@ export const demoPostsData = [
     content: [
       {
         id: "c3",
-        title: "Historic Wins",
+        title: "Historic Victories and Records",
         images: [
-          "https://images.unsplash.com/photo-1580136607769-0f6d82e508ca",
+          "https://images.unsplash.com/photo-1608897013039-18df184d73b9?q=80&auto=format&fit=crop&w=1600",
         ],
         description:
-          "The Tigers have shown outstanding teamwork and skill, becoming serious contenders.",
+          "Unbeaten streaks, sensational wickets, and fan frenzy—the Tigers left a mark on 2024.",
       },
     ],
   },
   {
-    id: "4",
-    title: "Meta's Latest AI Chatbot Surpasses Expectations",
-    thumbnail: "https://images.unsplash.com/photo-1602526217365-3d83c13b2460",
+    id: UUID4(),
+    title: "Meta Unveils Groundbreaking AI Chatbot",
+    thumbnail: "./banner-images/meta-ai-chatbot.jpg",
     tag: ["AI", "Meta", "Tech News"],
     category: "Technology",
-    slug: "meta-new-ai-chatbot",
+    slug: "meta-ai-chatbot-launch",
     description:
-      "Meta releases a powerful new AI chatbot that outperforms ChatGPT in specific tasks.",
+      "Meta’s new AI assistant redefines chatbot interactions with superior language understanding.",
     author: {
       name: "Jonathan Park",
       profile_image: "https://randomuser.me/api/portraits/men/21.jpg",
@@ -90,24 +92,24 @@ export const demoPostsData = [
     content: [
       {
         id: "c4",
-        title: "Meta vs OpenAI",
+        title: "Meta vs. OpenAI: The Race for AI Supremacy",
         images: [
-          "https://images.unsplash.com/photo-1589820296151-2456a146a6c1",
+          "https://images.unsplash.com/photo-1624377631482-377dd5ac46dc?q=80&auto=format&fit=crop&w=1600",
         ],
         description:
-          "The competition in the AI space is heating up with Meta’s new releases.",
+          "With performance benchmarks exceeding expectations, Meta heats up the AI arms race.",
       },
     ],
   },
   {
-    id: "5",
-    title: "Padma Bridge: Bangladesh's Mega Project Changing Lives",
-    thumbnail: "https://images.unsplash.com/photo-1623571610876-c9e4b07d7a9e",
+    id: UUID4(),
+    title: "Padma Bridge: A Milestone in Bangladesh's Infrastructure",
+    thumbnail: "./banner-images/padma-bridge.jpg",
     tag: ["Infrastructure", "Bangladesh", "Development"],
     category: "Development",
-    slug: "padma-bridge-changes-bangladesh",
+    slug: "padma-bridge-bangladesh-impact",
     description:
-      "Padma Bridge opens a new era for connectivity, economy, and regional development in Bangladesh.",
+      "The Padma Bridge redefines connectivity, reducing travel time and boosting the economy.",
     author: {
       name: "Momena Khan",
       profile_image: "https://randomuser.me/api/portraits/women/47.jpg",
@@ -115,24 +117,24 @@ export const demoPostsData = [
     content: [
       {
         id: "c5",
-        title: "Economic Impact",
+        title: "Transforming Southern Bangladesh",
         images: [
-          "https://images.unsplash.com/photo-1592890286455-e3eb7cf04a05",
+          "https://images.unsplash.com/photo-1602233158242-dcbed6fe5c13?q=80&auto=format&fit=crop&w=1600",
         ],
         description:
-          "The bridge dramatically cuts travel time and boosts trade across southern Bangladesh.",
+          "From trade to tourism, the mega project has had a far-reaching socio-economic impact.",
       },
     ],
   },
   {
-    id: "6",
-    title: "Taylor Swift's 2025 World Tour: A Cultural Phenomenon",
-    thumbnail: "https://images.unsplash.com/photo-1519999482648-25049ddd37b1",
+    id: UUID4(),
+    title: "Taylor Swift’s 2025 World Tour Shakes the Globe",
+    thumbnail: "./banner-images/taylor-swift.jpg",
     tag: ["Entertainment", "Music", "Taylor Swift"],
     category: "Entertainment",
-    slug: "taylor-swift-2025-tour",
+    slug: "taylor-swift-2025-world-tour",
     description:
-      "Taylor Swift’s world tour becomes one of the biggest global music events in history.",
+      "Taylor Swift’s latest tour sets attendance records and redefines global pop culture influence.",
     author: {
       name: "Ariana Silva",
       profile_image: "https://randomuser.me/api/portraits/women/52.jpg",
@@ -140,12 +142,12 @@ export const demoPostsData = [
     content: [
       {
         id: "c6",
-        title: "Record Breaking Shows",
+        title: "Behind the Phenomenon",
         images: [
-          "https://images.unsplash.com/photo-1497032205916-ac775f0649ae",
+          "https://images.unsplash.com/photo-1589810268143-d390d1f8a2f3?q=80&auto=format&fit=crop&w=1600",
         ],
         description:
-          "Millions attend worldwide as Swift’s influence continues to dominate pop culture.",
+          "With jaw-dropping performances and storytelling, Swift captivates fans around the world.",
       },
     ],
   },
