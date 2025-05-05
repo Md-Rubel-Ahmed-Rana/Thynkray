@@ -65,6 +65,7 @@ export class GetUserDto {
 
     getPublicProfile() {
         return {
+            id: this.id,
             name: this.name,
             bio: this.bio,
             designation: this.designation,
@@ -73,6 +74,7 @@ export class GetUserDto {
     }
     getAuthorsProfile() {
         return {
+            id: this.id,
             name: this.name,
             bio: this.bio,
             designation: this.designation,

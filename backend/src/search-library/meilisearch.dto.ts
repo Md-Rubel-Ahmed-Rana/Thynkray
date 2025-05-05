@@ -2,6 +2,7 @@
 export class MeiliSearchDto {
   id: string;
   title: string;  
+  thumbnail: string;  
   titles: string;  
   description: string;  
   slug: string;  
@@ -14,6 +15,7 @@ export class MeiliSearchDto {
   constructor(
     id: string,
     title: string,
+    thumbnail: string,
     titles: string,
     description: string,
     slug: string,
@@ -25,6 +27,7 @@ export class MeiliSearchDto {
   ) {
     this.id = id;
     this.title = title;
+    this.thumbnail = thumbnail;
     this.titles = titles;
     this.description = description;
     this.slug = slug;
@@ -49,6 +52,7 @@ export class MeiliSearchDto {
     return new MeiliSearchDto(
       post.id,
       post.title,
+      post.thumbnail,
       titles,
       post.description,
       post.slug,
