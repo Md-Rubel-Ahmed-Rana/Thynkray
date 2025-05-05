@@ -48,6 +48,9 @@ export const defaultPostState: PostStore = {
   getPostsBySearched: async () => {
     return [initialPostValue];
   },
+  getRelatedPosts: async () => {
+    return [initialPostValue];
+  },
   getInternationalPosts: async () => {
     return [globalInitialValue];
   },
@@ -144,10 +147,10 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         throw err;
       }
     },
-    getLatestPosts: async () => {
+    getLatestPosts: async (limit: number = 5) => {
       set({ isLoading: true, error: null });
       try {
-        const data = await axios.get(`${baseApi}/post/latest`, {
+        const data = await axios.get(`${baseApi}/post/latest?limit=${limit}`, {
           withCredentials: true,
         });
 
@@ -177,6 +180,22 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
       }
     },
     getPostsBySearched: async (searchText: string) => {
+      set({ isLoading: true, error: null });
+      try {
+        const data = await axios.get(`${baseApi}/post/search?q=${searchText}`, {
+          withCredentials: true,
+        });
+
+        const posts = data?.data?.data as Post[];
+
+        set({ isLoading: false, posts });
+        return posts;
+      } catch (err) {
+        set({ error: "Could not fetch posts", isLoading: false });
+        throw err;
+      }
+    },
+    getRelatedPosts: async (searchText: string) => {
       set({ isLoading: true, error: null });
       try {
         const data = await axios.get(`${baseApi}/post/search?q=${searchText}`, {

@@ -67,6 +67,7 @@ const ContentCard = ({
   return (
     <>
       <StyledCard
+        key={post?.id}
         variant="outlined"
         onFocus={() => handleFocus(index)}
         onBlur={handleBlur}
@@ -77,7 +78,7 @@ const ContentCard = ({
           <CardMedia
             component="img"
             alt={post?.title}
-            image={post.thumbnail}
+            image={post?.thumbnail || ""}
             sx={{
               aspectRatio: "16 / 9",
               borderBottom: "1px solid",
@@ -113,7 +114,7 @@ const ContentCard = ({
             gutterBottom
             sx={{ fontSize: { xs: "0.8rem", md: "0.9rem" } }}
           >
-            {post?.description}
+            {post?.description || ""}
           </StyledTypography>
         </StyledCardContent>
         <Author author={post?.author} publishedAt={post?.createdAt} />

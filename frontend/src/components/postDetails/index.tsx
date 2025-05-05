@@ -41,7 +41,7 @@ const PostDetails = () => {
                 my={4}
               >
                 <Box sx={{ width: { xs: "100%", md: "70%" } }}>
-                  <RelatedPosts posts={cardData} />
+                  <RelatedPosts post={post} />
                 </Box>
                 <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
                   <PopularPosts posts={cardData} />

@@ -3,7 +3,7 @@ import { User } from "@/modules/user/types";
 import AuthorCard from "./AuthorCard";
 
 type Props = {
-  authors: Partial<User>[];
+  authors: User[];
 };
 
 const Authors = ({ authors }: Props) => {
