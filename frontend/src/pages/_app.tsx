@@ -14,6 +14,7 @@ import "lenis/dist/lenis.css";
 import { useEffect } from "react";
 import "../styles/globals.css";
 import StoreProvider from "@/store/StoreProvider";
+import ScrollToTopButton from "@/components/common/BottomToTopScrollButton";
 
 export default function App({ Component, pageProps }: AppProps) {
   // if user session available, try to login
@@ -57,6 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
               theme="light"
               transition={Bounce}
             />
+            <ScrollToTopButton />
           </RootLayout>
         </ContextAPI>
       </SessionProvider>
