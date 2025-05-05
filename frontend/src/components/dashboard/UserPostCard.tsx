@@ -44,6 +44,7 @@ const UserPostCard = ({ post }: Props) => {
           style={{
             textDecoration: "none",
           }}
+          className="hover-underline"
           href={makePostDetailsUrl(post)}
           passHref
         >

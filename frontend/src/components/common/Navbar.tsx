@@ -223,7 +223,6 @@ const Navbar = () => {
                   <Link
                     style={{
                       textDecoration: "none",
-                      color: "black",
                       width: "100%",
                     }}
                     key={setting}
@@ -231,7 +230,14 @@ const Navbar = () => {
                       user?.email
                     }&designation=${user?.designation || "unknown"}`}
                   >
-                    <Typography width={"100%"}>{setting}</Typography>
+                    <Typography
+                      sx={{
+                        color: "color.paper",
+                      }}
+                      width={"100%"}
+                    >
+                      {setting}
+                    </Typography>
                   </Link>
                 </MenuItem>
               ))}
