@@ -17,6 +17,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   
   const port = configService.get("PORT") && Number(configService.get("PORT"))
+
   
   // cors configuration
   app.enableCors({
