@@ -1,8 +1,6 @@
 import CommonPosts from "@/components/sharedContent/CommonPosts";
-import PopularPosts from "@/components/sharedContent/PopularPosts";
-import RelatedPosts from "@/components/sharedContent/RelatedPosts";
 import { cardData } from "@/constants/cardData";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -22,23 +20,6 @@ const AuthorPosts = () => {
         </Link>
       </Box>
       <CommonPosts posts={cardData} />
-      <Divider sx={{ margin: "20px 0px" }} />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "20px",
-          flexDirection: { xs: "column", md: "row" },
-        }}
-        my={4}
-      >
-        <Box sx={{ width: { xs: "100%", md: "70%" } }}>
-          <RelatedPosts posts={cardData} />
-        </Box>
-        <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
-          <PopularPosts posts={cardData} />
-        </Box>
-      </Box>
     </Box>
   );
 };

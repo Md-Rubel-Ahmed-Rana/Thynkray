@@ -5,8 +5,6 @@ import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkele
 import CommonPosts from "@/components/sharedContent/CommonPosts";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
-import RelatedPosts from "@/components/sharedContent/RelatedPosts";
-import { cardData } from "@/constants/cardData";
 import { useGetPostsByCategory } from "@/modules/post/hooks";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import Link from "next/link";
@@ -89,8 +87,6 @@ const CategorizedPosts = () => {
           </Box>
         )}
       </Box>
-      <Divider sx={{ margin: "20px 0px" }} />
-      <RelatedPosts posts={cardData} />
       <Divider sx={{ margin: "20px 0px" }} />
       <Box my={3}>
         <LatestPosts />

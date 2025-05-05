@@ -1,14 +1,16 @@
 import { Box, Grid } from "@mui/material";
-import { cardData } from "@/constants/cardData";
 import ContentCard from "./ContentCard";
 import Categories from "../../common/Categories";
 import SearchForm from "@/components/common/SearchForm";
+import { useGetLatestPosts } from "@/modules/post/hooks";
+import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
 
 const MainContent = () => {
-  const firstRowCards = cardData.slice(0, 2);
-  const leftCard = cardData[2];
-  const middleCards = [cardData[3], cardData[4]];
-  const rightCard = cardData[5];
+  const { isLoading, posts } = useGetLatestPosts(6);
+  const firstRowCards = posts.slice(0, 2);
+  const leftCard = posts[2];
+  const middleCards = [posts[3], posts[4]];
+  const rightCard = posts[5];
   return (
     <Box
       sx={{
@@ -36,47 +38,50 @@ const MainContent = () => {
         </Box>
       </Box>
 
-      {/* posts cards  */}
-      <Grid container spacing={2} columns={12}>
-        {firstRowCards.map((card, index: number) => {
-          return (
-            <Grid key={card?.id} size={{ xs: 12, md: 6 }}>
-              <ContentCard post={card} index={index} />
-            </Grid>
-          );
-        })}
+      {isLoading ? (
+        <CommonPostLoadingSkeleton />
+      ) : (
+        <Grid container spacing={2} columns={12}>
+          {firstRowCards.map((card, index: number) => {
+            return (
+              <Grid key={card?.id} size={{ xs: 12, md: 6 }}>
+                <ContentCard post={card} index={index} />
+              </Grid>
+            );
+          })}
 
-        {/* left card  */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <ContentCard post={leftCard} index={2} />
-        </Grid>
+          {/* left card  */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <ContentCard post={leftCard} index={2} />
+          </Grid>
 
-        {/* middle two cards  */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              height: "500px",
-            }}
-          >
-            {middleCards.map((card, index: number) => (
-              <ContentCard
-                key={card?.id}
-                post={card}
-                index={index + 3}
-                shouldShowThumbnail={false}
-              />
-            ))}
-          </Box>
-        </Grid>
+          {/* middle two cards  */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                height: "500px",
+              }}
+            >
+              {middleCards.map((card, index: number) => (
+                <ContentCard
+                  key={card?.id}
+                  post={card}
+                  index={index + 3}
+                  shouldShowThumbnail={false}
+                />
+              ))}
+            </Box>
+          </Grid>
 
-        {/* right card  */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <ContentCard post={rightCard} index={2} />
+          {/* right card  */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <ContentCard post={rightCard} index={2} />
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Box>
   );
 };
