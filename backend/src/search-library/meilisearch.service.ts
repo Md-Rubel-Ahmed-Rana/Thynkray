@@ -11,7 +11,7 @@ class MeiliSearchService {
 
    async configureIndex(): Promise<void> {
     try {
-      await this.index.updateSearchableAttributes(["title", "content", "tags", "author", "category", "published"]);
+      await this.index.updateSearchableAttributes(["titles" ,"content", "tags", "author", "category", "published"]);
       await this.index.updateFilterableAttributes(["author", "tags", "published", "category"]);
       console.log("MeiliSearch index configured successfully.");
     } catch (error) {
@@ -21,10 +21,12 @@ class MeiliSearchService {
   }
 
   async addBlogsToMeiliSearch(blogs: any[] = []): Promise<void> {
+
     try {
         const blogDtos = blogs.map((blog) => {
             return MeiliSearchDto.fromPost(blog);
         })
+        console.log({blogs, blogDtos});
       const response = await this.index.addDocuments(blogDtos);
       console.log({
         message: "Documents added to MeiliSearch",
@@ -40,8 +42,8 @@ class MeiliSearchService {
     try {
       const response = await this.index.search(searchText, {
         filter: filters,
-        attributesToHighlight: ['title', 'content'],
-        attributesToRetrieve: ['id', 'title', 'content', 'tags', 'author', 'category', 'published'],
+        attributesToHighlight: ['title', "titles", "description", 'content'],
+        attributesToRetrieve: ['id', 'title', 'description', 'tags', 'author', 'category', 'published'],
       });
       return response;
     } catch (error) {

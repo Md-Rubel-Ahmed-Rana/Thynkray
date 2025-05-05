@@ -1,7 +1,11 @@
+
 export class MeiliSearchDto {
   id: string;
-  title: string; // blog title + sections titles
-  content: string; // sections descriptions
+  title: string;  
+  titles: string;  
+  description: string;  
+  slug: string;  
+  content: string;  
   tags: string[];
   author: string;
   category: string;
@@ -10,6 +14,9 @@ export class MeiliSearchDto {
   constructor(
     id: string,
     title: string,
+    titles: string,
+    description: string,
+    slug: string,
     content: string,
     tags: string[],
     author: string,
@@ -18,6 +25,9 @@ export class MeiliSearchDto {
   ) {
     this.id = id;
     this.title = title;
+    this.titles = titles;
+    this.description = description;
+    this.slug = slug;
     this.content = content;
     this.tags = tags;
     this.author = author;
@@ -34,11 +44,14 @@ export class MeiliSearchDto {
       ?.map((section: any) => section?.description)
       .join(' ') || '';
 
-    const title = `${post.title} ${sectionTitles}`;
+    const titles = `${post.title} ${sectionTitles}`;
 
     return new MeiliSearchDto(
       post.id,
-      title,
+      post.title,
+      titles,
+      post.description,
+      post.slug,
       sectionDescriptions,
       post.tags || [],
       post.author.name,
