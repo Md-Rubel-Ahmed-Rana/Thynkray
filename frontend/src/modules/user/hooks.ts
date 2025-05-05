@@ -128,3 +128,19 @@ export const useGetAllUsers = (): {
 
   return { users, isLoading, error };
 };
+
+export const useGetAuthors = (): {
+  users: User[];
+  isLoading: boolean;
+  error: string | null;
+} => {
+  const { getAuthors, users, isLoading, error } = useUserStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    getAuthors();
+  }, [getAuthors]);
+
+  return { users, isLoading, error };
+};

@@ -1,4 +1,5 @@
 import { Post } from "@/modules/post/types";
+import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
 import {
   Box,
   Card,
@@ -56,7 +57,7 @@ const ShowSearchResult = ({ posts }: Props) => {
 
               <Button
                 component={Link}
-                href={`/posts/${post?.slug}`}
+                href={makePostDetailsUrl(post)}
                 variant="contained"
                 size="small"
               >
