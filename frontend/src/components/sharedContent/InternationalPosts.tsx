@@ -43,7 +43,7 @@ const InternationalPosts = () => {
             >
               <CardMedia
                 component="img"
-                image={post.urlToImage}
+                image={post.urlToImage || ""}
                 alt={post.title}
                 sx={{
                   width: { xs: "100%", sm: "40%" },

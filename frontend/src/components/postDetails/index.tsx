@@ -20,28 +20,10 @@ const PostDetails = () => {
   return (
     <>
       {isLoading ? (
-        <Skeleton variant="rectangular" width={"100%"} height={300} />
+        <Skeleton width={"100%"} height={"300px"} variant="rounded" />
       ) : (
         <>
-          {!post?.id ? (
-            <NoDataFound message={"Post was not found!"}>
-              <Typography variant="subtitle1">
-                The post <b>{`'${title}'`}</b> was not found.
-              </Typography>
-              <Typography variant="body2">
-                The post you are looking for might be removed from database or
-                restricted
-              </Typography>
-              <Button
-                sx={{ mt: 2 }}
-                size="small"
-                variant="outlined"
-                onClick={() => back()}
-              >
-                Go Back
-              </Button>
-            </NoDataFound>
-          ) : (
+          {post?.id ? (
             <Box>
               <PostHeader post={post} />
               <PostDescription description={post?.description || ""} />
@@ -79,6 +61,24 @@ const PostDetails = () => {
                 <InternationalPosts />
               </Box>
             </Box>
+          ) : (
+            <NoDataFound message={"Post was not found!"}>
+              <Typography variant="subtitle1">
+                The post <b>{`'${title}'`}</b> was not found.
+              </Typography>
+              <Typography variant="body2">
+                The post you are looking for might be removed from database or
+                restricted
+              </Typography>
+              <Button
+                sx={{ mt: 2 }}
+                size="small"
+                variant="outlined"
+                onClick={() => back()}
+              >
+                Go Back
+              </Button>
+            </NoDataFound>
           )}
         </>
       )}

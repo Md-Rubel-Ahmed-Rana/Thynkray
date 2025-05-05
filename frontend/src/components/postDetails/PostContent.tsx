@@ -30,7 +30,7 @@ const PostContent = ({ content }: PostContentProps) => {
                 <Box
                   key={index}
                   component="img"
-                  src={src}
+                  src={src || ""}
                   alt={`Image ${index + 1}`}
                   sx={{
                     width: { xs: "100%", sm: "48%", md: "32%" },

@@ -139,13 +139,17 @@ export const useGetInternationalPosts = (): {
   error: string | null;
   news: InternationalPost[];
 } => {
-  const { getInternationalPosts, error, isLoading, news } = usePostStore(
-    (state) => state
+  const getInternationalPosts = usePostStore(
+    (state) => state.getInternationalPosts
   );
 
+  const { error, isLoading, news } = usePostStore((state) => state);
+
   useEffect(() => {
-    getInternationalPosts();
-  }, [getInternationalPosts]);
+    if (news?.length === 0) {
+      getInternationalPosts();
+    }
+  }, [getInternationalPosts, news?.length]);
 
   return { news, error, isLoading };
 };
