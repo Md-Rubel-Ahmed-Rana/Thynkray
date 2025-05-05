@@ -76,6 +76,8 @@ export class PostService {
       postsData = postDtos
     }
 
+    await meiliSearchService.addBlogsToMeiliSearch(postsData)
+
     return {
       message,
       data: postsData,
