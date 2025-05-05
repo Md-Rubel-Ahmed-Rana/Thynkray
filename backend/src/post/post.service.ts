@@ -75,7 +75,7 @@ export class PostService {
       await this.cache.set(this.cacheKey, postDtos)
       postsData = postDtos
     }
-    
+
     return {
       message,
       data: postsData,

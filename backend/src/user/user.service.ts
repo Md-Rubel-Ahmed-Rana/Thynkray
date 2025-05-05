@@ -58,9 +58,39 @@ export class UserService {
         user.bio,
         user.designation,
         user.profile_image,
+        0,
         user.created_at,
         user.updated_at
       ).getBasicInfo()
+    );
+
+    return {
+       statusCode: 200,
+      message: 'Users retrieved successfully!',
+      data: userDtos
+    };
+  }
+
+  async findAuthors(){
+    const users = await this.prisma.user.findMany({
+      include: {
+        _count: {select: {posts: true}}
+      }
+    });
+
+    const userDtos = users.map((user) =>
+      new GetUserDto(
+        user.id,
+        user.name,
+        user.email,
+        user.role,
+        user.bio,
+        user.designation,
+        user.profile_image,
+        user._count.posts,
+        user.created_at,
+        user.updated_at
+      ).getAuthorsProfile()
     );
 
     return {
@@ -74,7 +104,7 @@ export class UserService {
     const user = await this.prisma.user.findUnique({
       where: {
         id
-      }
+      },
     });
     if (!user) {
      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -87,6 +117,7 @@ export class UserService {
       user.bio,
       user.designation,
       user.profile_image,
+      0,
       user.created_at,
       user.updated_at
     ).getFullInfo();
@@ -101,7 +132,7 @@ export class UserService {
     const user = await this.prisma.user.findUnique({
       where: {
         email
-      }
+      },
     });
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -114,6 +145,7 @@ export class UserService {
       user.bio,
       user.designation,
       user.profile_image,
+      0,
       user.created_at,
       user.updated_at
     ).getFullInfo();
