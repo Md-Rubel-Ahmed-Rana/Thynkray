@@ -1,5 +1,5 @@
 import { cardData } from "@/constants/cardData";
-import { Box, Button, Divider, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import PostHeader from "./PostHeader";
 import PostDescription from "./PostDescription";
@@ -10,6 +10,7 @@ import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import NoDataFound from "../common/NoDataFound";
 import { useGetPostBySlug } from "@/modules/post/hooks";
+import PostDetailsLoadingSkeleton from "@/loadingSkeletons/PostDetailsLoadingSkeleton";
 
 const PostDetails = () => {
   const { query, back } = useRouter();
@@ -20,7 +21,7 @@ const PostDetails = () => {
   return (
     <>
       {isLoading ? (
-        <Skeleton width={"100%"} height={"300px"} variant="rounded" />
+        <PostDetailsLoadingSkeleton />
       ) : (
         <>
           {post?.id ? (
