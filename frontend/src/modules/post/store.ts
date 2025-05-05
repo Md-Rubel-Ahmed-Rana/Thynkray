@@ -94,6 +94,7 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         throw err;
       }
     },
+
     getSinglePostBySlug: async (slug: string) => {
       set({ isLoading: true, error: null });
       try {
@@ -110,6 +111,7 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         throw err;
       }
     },
+
     getSinglePostById: async (id: string) => {
       set({ isLoading: true, error: null });
       try {

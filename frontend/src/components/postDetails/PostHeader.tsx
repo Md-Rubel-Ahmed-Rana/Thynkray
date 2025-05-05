@@ -13,7 +13,7 @@ const PostHeader = ({ post }: PostHeaderProps) => {
     <Box sx={{ mb: 4 }}>
       <Box
         component="img"
-        src={post?.thumbnail}
+        src={post?.thumbnail || ""}
         alt={post?.title}
         sx={{
           width: "100%",
