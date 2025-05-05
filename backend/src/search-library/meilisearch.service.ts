@@ -43,7 +43,7 @@ class MeiliSearchService {
       const response = await this.index.search(searchText, {
         filter: filters,
         attributesToHighlight: ['title', "titles", "description", 'content'],
-        attributesToRetrieve: ['id', 'title', 'description', 'tags', 'author', 'category', 'published'],
+        attributesToRetrieve: ['id', 'title', "slug", 'description', 'tags', 'author', 'category', 'published'],
       });
       return response;
     } catch (error) {
