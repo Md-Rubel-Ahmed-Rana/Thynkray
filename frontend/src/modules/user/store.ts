@@ -11,6 +11,7 @@ export const userInitialValue = {
   designation: "",
   role: "",
   bio: "",
+  posts: 0,
   profile_image: "",
   created_at: new Date(),
   updated_at: new Date(),
@@ -27,6 +28,9 @@ export const defaultUserState: UserStore = {
     return userInitialValue;
   },
   getAllUsers: async () => {
+    return [userInitialValue];
+  },
+  getAuthors: async () => {
     return [userInitialValue];
   },
   getAuthenticatedUser: async () => {
@@ -92,6 +96,20 @@ export const createUserStore = (initialState: UserStore = defaultUserState) => {
       set({ isLoading: true, error: null });
       try {
         const res = await axios.get(`${baseApi}/user`, {
+          withCredentials: true,
+        });
+        const users = [...res?.data?.data] as User[];
+        set({ users: users, isLoading: false });
+        return users;
+      } catch (err) {
+        set({ error: "Could not load users", isLoading: false });
+        throw err;
+      }
+    },
+    getAuthors: async () => {
+      set({ isLoading: true, error: null });
+      try {
+        const res = await axios.get(`${baseApi}/user/authors`, {
           withCredentials: true,
         });
         const users = [...res?.data?.data] as User[];
