@@ -1,9 +1,11 @@
+
 export class GetUserDto {
     id: string;
     name: string;
     email: string;
     role: string;
     bio?: string;
+    posts?: number;
     designation?: string;
     profile_image?: string;
     created_at: Date;
@@ -17,6 +19,7 @@ export class GetUserDto {
         bio?: string,
         designation?: string,
         profile_image?: string,
+        posts?: number,
         created_at?: Date,
         updated_at?: Date
     ) {
@@ -27,6 +30,7 @@ export class GetUserDto {
         this.bio = bio;
         this.designation = designation
         this.profile_image = profile_image;
+        this.posts = posts;
         this.created_at = created_at || new Date();
         this.updated_at = updated_at || new Date();
     }
@@ -65,6 +69,15 @@ export class GetUserDto {
             bio: this.bio,
             designation: this.designation,
             profile_image: this.profile_image,
+        };
+    }
+    getAuthorsProfile() {
+        return {
+            name: this.name,
+            bio: this.bio,
+            designation: this.designation,
+            profile_image: this.profile_image,
+            posts: this.posts || 0,
         };
     }
 }

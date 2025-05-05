@@ -41,6 +41,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get("authors")
+  findAuthors() {
+    return this.userService.findAuthors();
+  }
+
   @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
