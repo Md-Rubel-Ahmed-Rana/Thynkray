@@ -77,12 +77,10 @@ export const createUserStore = (initialState: UserStore = defaultUserState) => {
       set({ isLoading: true, error: null });
 
       try {
-        const res = await fetch(`${baseApi}/user/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch user");
-        const result = await res.json();
-
-        const updatedUser = { ...result?.data } as User;
-
+        const res = await axios.get(`${baseApi}/user/${id}`, {
+          withCredentials: true,
+        });
+        const updatedUser = { ...res?.data?.data } as User;
         set({ user: updatedUser, isLoading: false });
         return updatedUser;
       } catch (err) {
@@ -93,10 +91,10 @@ export const createUserStore = (initialState: UserStore = defaultUserState) => {
     getAllUsers: async () => {
       set({ isLoading: true, error: null });
       try {
-        const res = await fetch(`${baseApi}/user`, { credentials: "include" });
-        if (!res.ok) throw new Error("Failed to fetch user");
-        const result = await res.json();
-        const users = [...result?.data] as User[];
+        const res = await axios.get(`${baseApi}/user`, {
+          withCredentials: true,
+        });
+        const users = [...res?.data?.data] as User[];
         set({ users: users, isLoading: false });
         return users;
       } catch (err) {
