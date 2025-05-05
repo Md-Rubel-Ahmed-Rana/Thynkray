@@ -68,6 +68,7 @@ export type PostActions = {
   getLatestPosts: () => Promise<Post[]>;
   getPostsByCategory: (category: string) => Promise<Post[]>;
   getPostsBySearched: (searchText: string) => Promise<Post[]>;
+  getRelatedPosts: (searchText: string) => Promise<Post[]>;
   getInternationalPosts: () => Promise<InternationalPost[]>;
 };
 

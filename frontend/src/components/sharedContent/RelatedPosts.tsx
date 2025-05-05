@@ -1,14 +1,21 @@
+import { useGetRelatedPosts } from "@/modules/post/hooks";
 import { Post } from "@/modules/post/types";
 import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
+import makeSearchTextFromPostForRelatedPosts from "@/utils/makeSearchTextFromPostForRelatedPosts";
 import { Box, Typography, Stack, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
 type Props = {
-  posts: Post[];
+  post: Post;
 };
 
-const RelatedPosts = ({ posts }: Props) => {
+const RelatedPosts = ({ post }: Props) => {
+  const { isLoading, posts } = useGetRelatedPosts(
+    makeSearchTextFromPostForRelatedPosts(post)
+  );
+  console.log({ isLoading, posts });
+
   return (
     <Box component="section" mt={4}>
       <Typography variant="h5" component="h3" mb={2}>
@@ -44,7 +51,7 @@ const RelatedPosts = ({ posts }: Props) => {
             </Typography>
 
             <Typography variant="body2" color="text.secondary" mt={0.5}>
-              {post.description.slice(0, 100)}...
+              {post.description ? `${post.description.slice(0, 100)}...` : ""}
             </Typography>
 
             <Button
