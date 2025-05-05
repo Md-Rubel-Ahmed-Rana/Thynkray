@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import Authors from "../sharedContent/Authors";
-import { useGetAllUsers } from "@/modules/user/hooks";
+import { useGetAuthors } from "@/modules/user/hooks";
 import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import LoginButton from "../common/LoginButton";
 
 const AllAuthors = () => {
-  const { isLoading, users } = useGetAllUsers();
+  const { isLoading, users } = useGetAuthors();
   return (
     <Box>
       <Typography variant="h4" gutterBottom>

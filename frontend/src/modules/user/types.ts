@@ -6,6 +6,7 @@ export type User = {
   designation: string;
   role: string;
   bio: string;
+  posts?: number;
   profile_image: string;
   created_at: Date;
   updated_at: Date;
@@ -29,6 +30,7 @@ export type UserActions = {
   getSingleUser: (id: string) => Promise<User>;
   getAuthenticatedUser: (email: string) => Promise<User>;
   getAllUsers: () => Promise<User[]>;
+  getAuthors: () => Promise<User[]>;
   refetchUser: () => Promise<any>;
   updateUser: (id: string, data: Partial<User>) => Promise<any>;
   userLogin: (user: {
