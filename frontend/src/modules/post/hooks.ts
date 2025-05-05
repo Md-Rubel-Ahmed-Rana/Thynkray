@@ -134,6 +134,26 @@ export const useGetPostsBySearched = (
   return { posts, error, isLoading };
 };
 
+export const useGetRelatedPosts = (
+  searchText: string
+): {
+  isLoading: boolean;
+  error: string | null;
+  posts: Post[];
+} => {
+  const { getRelatedPosts, error, isLoading, posts } = usePostStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    if (posts?.length === 0) {
+      getRelatedPosts(searchText);
+    }
+  }, [searchText, getRelatedPosts, posts?.length]);
+
+  return { posts, error, isLoading };
+};
+
 export const useGetInternationalPosts = (): {
   isLoading: boolean;
   error: string | null;
