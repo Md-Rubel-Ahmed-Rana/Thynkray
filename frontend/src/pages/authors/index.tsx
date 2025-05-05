@@ -4,7 +4,7 @@ import SEOHead from "@/components/common/SEOHead";
 const AuthorsPage = () => {
   return (
     <>
-      <SEOHead title={`Authors - Thynkray}`} />
+      <SEOHead title={`Authors - Thynkray`} />
       <AllAuthors />
     </>
   );

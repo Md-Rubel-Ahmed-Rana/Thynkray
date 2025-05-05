@@ -1,7 +1,5 @@
-import Grid from "@mui/material/Grid";
-import { authors } from "@/constants/authors";
 import { Typography, Box, Container } from "@mui/material";
-import AuthorCard from "../../sharedContent/AuthorCard";
+import AllAuthors from "@/components/authors";
 
 const FeaturedAuthors = () => {
   return (
@@ -39,17 +37,7 @@ const FeaturedAuthors = () => {
           </Typography>
         </Box>
 
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 2, sm: 8, md: 12 }}
-        >
-          {authors.map((author) => (
-            <Grid key={author?.id} size={{ xs: 2, sm: 4, md: 4 }}>
-              <AuthorCard author={author} />
-            </Grid>
-          ))}
-        </Grid>
+        <AllAuthors />
       </Container>
     </Box>
   );

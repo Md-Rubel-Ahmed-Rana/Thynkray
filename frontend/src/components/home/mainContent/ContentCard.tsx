@@ -67,6 +67,7 @@ const ContentCard = ({
   return (
     <>
       <StyledCard
+        key={post?.id}
         variant="outlined"
         onFocus={() => handleFocus(index)}
         onBlur={handleBlur}

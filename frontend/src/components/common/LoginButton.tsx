@@ -1,10 +1,22 @@
 import { Button } from "@mui/material";
 import { signIn } from "next-auth/react";
 
-const LoginButton = () => {
+type Props = {
+  buttonText?: string;
+  buttonSize?: "large" | "medium" | "small";
+};
+
+const LoginButton = ({
+  buttonSize = "medium",
+  buttonText = "Sign in",
+}: Props) => {
   return (
-    <Button onClick={() => signIn("google")} variant="contained">
-      Sign in
+    <Button
+      size={buttonSize}
+      onClick={() => signIn("google")}
+      variant="contained"
+    >
+      {buttonText}
     </Button>
   );
 };
