@@ -1,3 +1,4 @@
+import { useGetPostsByAuthor } from "@/modules/post/hooks";
 import { User } from "@/modules/user/types";
 import {
   Avatar,
@@ -5,16 +6,19 @@ import {
   Button,
   Card,
   CardActions,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
 type Props = {
-  author: Partial<User>;
+  author: User;
 };
 
 const AuthorCard = ({ author }: Props) => {
+  const { isLoading, posts } = useGetPostsByAuthor(author?.id);
+  console.log({ isLoading, posts });
   return (
     <Card
       component={motion.div}
@@ -64,9 +68,13 @@ const AuthorCard = ({ author }: Props) => {
       </Box>
 
       <Box sx={{ mt: 2 }}>
-        <Typography variant="caption" color="text.secondary">
-          Articles: <b>50</b>
-        </Typography>
+        {isLoading ? (
+          <Skeleton width={"100%"} height={"30px"} variant="rounded" />
+        ) : (
+          <Typography variant="caption" color="text.secondary">
+            Articles: <b>{posts?.length || 0}</b>
+          </Typography>
+        )}
       </Box>
 
       <CardActions sx={{ justifyContent: "center", mt: 3 }}>
