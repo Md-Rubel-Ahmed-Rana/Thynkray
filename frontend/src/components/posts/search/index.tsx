@@ -2,9 +2,6 @@ import SearchForm from "@/components/common/SearchForm";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import ShowSearchResult from "./ShowSearchResult";
-import { cardData } from "@/constants/cardData";
-import RelatedPosts from "@/components/sharedContent/RelatedPosts";
-import PopularPosts from "@/components/sharedContent/PopularPosts";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
 import Categories from "@/components/common/Categories";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
@@ -82,24 +79,6 @@ const PostsSearch = () => {
             )}
           </>
         )}
-      </Box>
-      <Divider sx={{ margin: "20px 0px" }} />
-      {/* related and popular posts  */}
-      <Box
-        mt={2}
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: "2rem",
-        }}
-        component={"div"}
-      >
-        <Box sx={{ width: { xs: "100%", md: "70%" } }} component={"div"}>
-          <RelatedPosts posts={cardData} />
-        </Box>
-        <Box sx={{ width: { xs: "100%", md: "30%" } }} component={"div"}>
-          <PopularPosts posts={cardData} />
-        </Box>
       </Box>
 
       <Divider sx={{ margin: "20px 0px" }} />

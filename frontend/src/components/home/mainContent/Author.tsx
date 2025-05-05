@@ -29,11 +29,11 @@ const Author = ({
         }}
       >
         <Avatar
-          alt={author.name}
-          src={author.profile_image}
+          alt={author?.name || "Author"}
+          src={author?.profile_image || ""}
           sx={{ width: 24, height: 24 }}
         />
-        <Typography variant="caption">{author.name}</Typography>
+        <Typography variant="caption">{author?.name || ""}</Typography>
       </Box>
       <Typography variant="caption">
         {dayjs(new Date(publishedAt)).format("MMM D, YYYY")}

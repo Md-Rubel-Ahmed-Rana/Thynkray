@@ -147,10 +147,10 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         throw err;
       }
     },
-    getLatestPosts: async () => {
+    getLatestPosts: async (limit: number = 5) => {
       set({ isLoading: true, error: null });
       try {
-        const data = await axios.get(`${baseApi}/post/latest`, {
+        const data = await axios.get(`${baseApi}/post/latest?limit=${limit}`, {
           withCredentials: true,
         });
 
