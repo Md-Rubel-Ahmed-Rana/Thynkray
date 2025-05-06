@@ -84,7 +84,7 @@ const InternationalPosts = () => {
                     color="text.secondary"
                     sx={{ mb: 2 }}
                   >
-                    {post.description}
+                    {post.description && post.description.slice(0, 100)}...
                   </Typography>
                 </Box>
 
@@ -112,6 +112,9 @@ const InternationalPosts = () => {
                     rel="noopener noreferrer"
                     size="small"
                     variant="outlined"
+                    sx={{
+                      mt: 1,
+                    }}
                   >
                     Read More
                   </Button>
