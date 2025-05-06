@@ -15,7 +15,7 @@ const globalInitialValue: InternationalPost = {
   publishedAt: "",
 };
 
-const initialPostValue: Post = {
+export const initialPostValue: Post = {
   id: "",
   title: "",
   category: "",

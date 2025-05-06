@@ -9,3 +9,16 @@ export type Comment = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type CommentState = {
+  isLoading: boolean;
+  error: string | null;
+  comment: Comment;
+  comments: Comment[];
+};
+
+export type CommentActions = {
+  getCommentsByPostId: (id: string) => Promise<Comment[]>;
+};
+
+export type CommentStore = CommentState & CommentActions;
