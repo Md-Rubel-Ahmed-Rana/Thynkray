@@ -3,7 +3,7 @@ import ContentCard from "./ContentCard";
 import Categories from "../../common/Categories";
 import SearchForm from "@/components/common/SearchForm";
 import { useGetLatestPosts } from "@/modules/post/hooks";
-import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 
 const MainContent = () => {
   const { isLoading, posts } = useGetLatestPosts(6);

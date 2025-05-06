@@ -61,12 +61,12 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 400,
+          width: { xs: "95%", sm: 400 },
           bgcolor: "background.paper",
           border: "2px solid gray",
           borderRadius: "10px",
           boxShadow: 24,
-          p: 2,
+          p: { xs: 1, md: 2 },
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
@@ -89,6 +89,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
             name="name"
             onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
             variant="outlined"
+            size="small"
           />
           <TextField
             id="designation"
@@ -97,6 +98,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
             defaultValue={user.designation}
             label="Designation"
             variant="outlined"
+            size="small"
           />
           <TextField
             onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
@@ -105,6 +107,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
             defaultValue={user.bio}
             label="Bio"
             variant="outlined"
+            size="small"
           />
         </Box>
         <Box
