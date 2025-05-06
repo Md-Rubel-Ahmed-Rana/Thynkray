@@ -25,7 +25,13 @@ const PostHeader = ({ post }: PostHeaderProps) => {
       />
 
       {/* Title */}
-      <Typography variant="h3" gutterBottom>
+      <Typography
+        sx={{
+          fontSize: { xs: "24px", md: "30px" },
+        }}
+        variant="h3"
+        gutterBottom
+      >
         {post?.title}
       </Typography>
 
