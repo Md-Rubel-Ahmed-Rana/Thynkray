@@ -10,7 +10,7 @@ import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import NoDataFound from "../common/NoDataFound";
 import { useGetPostBySlug } from "@/modules/post/hooks";
-import PostDetailsLoadingSkeleton from "@/loadingSkeletons/PostDetailsLoadingSkeleton";
+import PostDetailsLoadingSkeleton from "@/skeletons/PostDetailsLoadingSkeleton";
 
 const PostDetails = () => {
   const { query, back } = useRouter();

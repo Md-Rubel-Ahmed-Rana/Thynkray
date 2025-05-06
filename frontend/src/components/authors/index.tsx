@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import Authors from "../sharedContent/Authors";
 import { useGetAuthors } from "@/modules/user/hooks";
-import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import LoginButton from "../common/LoginButton";
 
