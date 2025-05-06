@@ -30,7 +30,7 @@ const PostDetails = () => {
               <PostDescription description={post?.description || ""} />
               <PostContent content={post?.content || []} />
               <Divider sx={{ margin: "20px 0px" }} />
-              <Comments />
+              <Comments postId={post?.id} />
               <Divider sx={{ margin: "20px 0px" }} />
               <Box
                 sx={{

@@ -1,15 +1,27 @@
 import { comments } from "@/constants/comments";
 import { Box, Typography, Avatar, Paper, Stack, Button } from "@mui/material";
 import moment from "moment";
+import { useState } from "react";
+import CommentModal from "../common/CommentModal";
 
-const Comments = () => {
+type Props = {
+  postId: string;
+};
+
+const Comments = ({ postId }: Props) => {
+  const [isComment, setIsComment] = useState(false);
   return (
     <Box>
       <Box display={"flex"} gap={2} mb={2}>
         <Typography variant="h6">
           {comments.length} Comment{comments.length !== 1 ? "s" : ""}
         </Typography>
-        <Button type="button" variant="contained" size="small">
+        <Button
+          onClick={() => setIsComment(true)}
+          type="button"
+          variant="contained"
+          size="small"
+        >
           Leave comment
         </Button>
       </Box>
@@ -43,6 +55,10 @@ const Comments = () => {
           </Paper>
         ))}
       </Stack>
+
+      {isComment && (
+        <CommentModal postId={postId} open={isComment} setOpen={setIsComment} />
+      )}
     </Box>
   );
 };
