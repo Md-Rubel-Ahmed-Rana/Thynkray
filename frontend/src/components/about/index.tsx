@@ -16,20 +16,33 @@ import {
 
 const AboutUs = () => {
   return (
-    <Box sx={{ p: 4, maxWidth: 800, mx: "auto" }}>
+    <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: 800, mx: "auto" }}>
       <Stack spacing={3} alignItems="center">
         <Avatar
           alt="Md Rubel Ahmed Rana"
           src="https://ozdfjxhqdgcddulnrscf.supabase.co/storage/v1/object/public/portfolio/personal/Md-Rubel-Ahmed-Rana-1745142808400-Profile_short.jpeg"
           sx={{ width: 120, height: 120 }}
         />
-        <Typography variant="h4" component="h1" align="center">
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            fontSize: { xs: "20px", md: "28px" },
+          }}
+          align="center"
+        >
           Md Rubel Ahmed Rana
         </Typography>
         <Typography variant="subtitle1" align="center">
           Full Stack Developer
         </Typography>
-        <Typography variant="body1" align="center">
+        <Typography
+          variant="body1"
+          sx={{
+            textAlign: { xs: "start", md: "center" },
+            fontSize: { xs: "14px", md: "20px" },
+          }}
+        >
           I am a passionate Full Stack Developer with over 3 years of experience
           in designing, developing, and maintaining scalable web applications.
           My expertise spans frontend frameworks like Next.js and React, backend
@@ -41,7 +54,13 @@ const AboutUs = () => {
         <Typography variant="h6" component="h2" align="center">
           Skills
         </Typography>
-        <Typography variant="body2" align="center">
+        <Typography
+          variant="body2"
+          sx={{
+            textAlign: { xs: "start", md: "center" },
+            fontSize: { xs: "14px", md: "20px" },
+          }}
+        >
           Tailwind CSS, Bootstrap, TypeScript, React.js, Redux.js, Next.js, REST
           API, Express.js, Nest.js, Prisma ORM, MongoDB, PostgreSQL, Docker,
           AWS, Redis, RabbitMQ, JWT, Google OAuth, Passport.js, Firebase, MVC
