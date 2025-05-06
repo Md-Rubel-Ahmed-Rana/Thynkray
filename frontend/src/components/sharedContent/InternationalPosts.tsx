@@ -11,14 +11,14 @@ import {
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import React from "react";
-import CommonPostLoadingSkeleton from "../../skeletons/CommonPostLoadingSkeleton";
+import GlobalNewsLoadingSkeleton from "@/skeletons/GlobalNewsLoadingSkeleton";
 
 const InternationalPosts = () => {
   const { news, isLoading } = useGetInternationalPosts();
   return (
     <>
       {isLoading ? (
-        <CommonPostLoadingSkeleton />
+        <GlobalNewsLoadingSkeleton />
       ) : (
         <Box
           display="grid"
@@ -84,7 +84,7 @@ const InternationalPosts = () => {
                     color="text.secondary"
                     sx={{ mb: 2 }}
                   >
-                    {post.description}
+                    {post.description && post.description.slice(0, 100)}...
                   </Typography>
                 </Box>
 
@@ -112,6 +112,9 @@ const InternationalPosts = () => {
                     rel="noopener noreferrer"
                     size="small"
                     variant="outlined"
+                    sx={{
+                      mt: 1,
+                    }}
                   >
                     Read More
                   </Button>

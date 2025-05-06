@@ -24,25 +24,47 @@ const CommonPostLoadingSkeleton = () => {
           >
             <Skeleton variant="rounded" height={180} />
             <Box sx={{ pt: 1 }}>
-              <Skeleton height={28} />
-              <Skeleton width="60%" height={24} />
+              <Skeleton
+                sx={{
+                  width: { xs: "70%", md: "80%" },
+                }}
+                height={28}
+              />
+              <Skeleton
+                sx={{
+                  width: { xs: "80%", md: "90%" },
+                }}
+                height={24}
+              />
+              <Skeleton height={24} />
             </Box>
             <Box
               sx={{
                 mt: 2,
                 display: "flex",
-                justifyContent: "space-between",
+                gap: "10px",
                 p: 1,
               }}
             >
-              {Array.from({ length: 2 }).map((_, index) => (
+              {Array.from({ length: 4 }).map((_, index) => (
                 <Skeleton
                   key={index}
-                  height={40}
-                  width={40}
-                  variant="circular"
+                  height={20}
+                  width={"100%"}
+                  variant="rounded"
                 />
               ))}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+                mt: 3,
+              }}
+            >
+              <Skeleton width={30} height={30} variant="circular" />
+              <Skeleton width={"50%"} />
+              <Skeleton width={"30%"} />
             </Box>
           </Box>
         </Grid>
