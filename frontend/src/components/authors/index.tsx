@@ -1,12 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import Authors from "../sharedContent/Authors";
 import { useGetAuthors } from "@/modules/user/hooks";
-import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import LoginButton from "../common/LoginButton";
+import AuthorLoadingSkeleton from "@/skeletons/AuthorLoadingSkeleton";
 
 const AllAuthors = () => {
   const { isLoading, users } = useGetAuthors();
+
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
@@ -17,7 +18,7 @@ const AllAuthors = () => {
         unique perspectives and expertise to the platform.
       </Typography>
       {isLoading ? (
-        <CommonPostLoadingSkeleton />
+        <AuthorLoadingSkeleton />
       ) : (
         <>
           {users.length <= 0 ? (
