@@ -1,3 +1,4 @@
+import { CommentStoreProvider } from "@/modules/comment/provider";
 import { PostStoreProvider } from "@/modules/post/provider";
 import { UserStoreProvider } from "@/modules/user/provider";
 import { type ReactNode } from "react";
@@ -9,7 +10,9 @@ interface StoreProviderProps {
 const StoreProvider = ({ children }: StoreProviderProps) => {
   return (
     <UserStoreProvider>
-      <PostStoreProvider>{children}</PostStoreProvider>
+      <PostStoreProvider>
+        <CommentStoreProvider>{children}</CommentStoreProvider>
+      </PostStoreProvider>
     </UserStoreProvider>
   );
 };
