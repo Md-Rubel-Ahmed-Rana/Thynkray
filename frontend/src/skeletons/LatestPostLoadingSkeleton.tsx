@@ -23,10 +23,17 @@ const LatestPostLoadingSkeleton = () => {
               sx={{
                 width: "100%",
                 display: "flex",
+                flexDirection: { xs: "column", md: "row" },
                 gap: "20px",
               }}
             >
-              <Skeleton variant="rounded" height={180} width={180} />
+              <Skeleton
+                variant="rounded"
+                height={180}
+                sx={{
+                  width: { xs: "100%", md: 180 },
+                }}
+              />
               <Box
                 sx={{
                   pt: 1,
@@ -48,7 +55,11 @@ const LatestPostLoadingSkeleton = () => {
                   }}
                   height={24}
                 />
-                <Box>
+                <Box
+                  sx={{
+                    display: { xs: "none", md: "block" },
+                  }}
+                >
                   <Skeleton
                     sx={{
                       width: { xs: "95%", md: "80%" },
