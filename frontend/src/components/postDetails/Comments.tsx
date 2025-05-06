@@ -3,13 +3,26 @@ import { Box, Typography, Avatar, Paper, Stack, Button } from "@mui/material";
 import moment from "moment";
 import { useState } from "react";
 import CommentModal from "../common/CommentModal";
+import LoginModal from "../common/LoginModal";
+import { useGetLoggedInUser } from "@/modules/user/hooks";
 
 type Props = {
   postId: string;
 };
 
 const Comments = ({ postId }: Props) => {
+  const { user } = useGetLoggedInUser();
   const [isComment, setIsComment] = useState(false);
+  const [shouldLogin, setShouldLogin] = useState(false);
+
+  const handleOpenCommentModal = () => {
+    if (user?.id) {
+      setIsComment(true);
+    } else {
+      setShouldLogin(true);
+    }
+  };
+
   return (
     <Box>
       <Box display={"flex"} gap={2} mb={2}>
@@ -17,7 +30,7 @@ const Comments = ({ postId }: Props) => {
           {comments.length} Comment{comments.length !== 1 ? "s" : ""}
         </Typography>
         <Button
-          onClick={() => setIsComment(true)}
+          onClick={handleOpenCommentModal}
           type="button"
           variant="contained"
           size="small"
@@ -58,6 +71,9 @@ const Comments = ({ postId }: Props) => {
 
       {isComment && (
         <CommentModal postId={postId} open={isComment} setOpen={setIsComment} />
+      )}
+      {shouldLogin && (
+        <LoginModal open={shouldLogin} setOpen={setShouldLogin} />
       )}
     </Box>
   );
