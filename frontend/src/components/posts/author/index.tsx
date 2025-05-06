@@ -1,6 +1,6 @@
 import NoDataFound from "@/components/common/NoDataFound";
 import CommonPosts from "@/components/sharedContent/CommonPosts";
-import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 import { useGetPostsByAuthor } from "@/modules/post/hooks";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";

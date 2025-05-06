@@ -10,7 +10,7 @@ import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import NoDataFound from "../common/NoDataFound";
 import { useGetPostBySlug } from "@/modules/post/hooks";
-import PostDetailsLoadingSkeleton from "@/loadingSkeletons/PostDetailsLoadingSkeleton";
+import PostDetailsLoadingSkeleton from "@/skeletons/PostDetailsLoadingSkeleton";
 
 const PostDetails = () => {
   const { query, back } = useRouter();
@@ -30,7 +30,7 @@ const PostDetails = () => {
               <PostDescription description={post?.description || ""} />
               <PostContent content={post?.content || []} />
               <Divider sx={{ margin: "20px 0px" }} />
-              <Comments />
+              <Comments postId={post?.id} />
               <Divider sx={{ margin: "20px 0px" }} />
               <Box
                 sx={{

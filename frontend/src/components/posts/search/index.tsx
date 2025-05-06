@@ -6,7 +6,7 @@ import LatestPosts from "@/components/sharedContent/LatestPosts";
 import Categories from "@/components/common/Categories";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import { useGetPostsBySearched } from "@/modules/post/hooks";
-import CommonPostLoadingSkeleton from "@/loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "@/components/common/NoDataFound";
 import Link from "next/link";
 

@@ -8,7 +8,7 @@ import InternationalPosts from "../sharedContent/InternationalPosts";
 import LatestPosts from "../sharedContent/LatestPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import { useAllGetPosts } from "@/modules/post/hooks";
-import CommonPostLoadingSkeleton from "../../loadingSkeletons/CommonPostLoadingSkeleton";
+import CommonPostLoadingSkeleton from "../../skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
 
