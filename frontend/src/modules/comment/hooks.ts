@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { useCommentStore } from "./provider";
-import { Comment } from "./types";
+import { Comment, NewComment } from "./types";
 
 export const useGetCommentsByPostId = (
   postId: string
@@ -17,4 +18,14 @@ export const useGetCommentsByPostId = (
   }, [getCommentsByPostId, postId]);
 
   return { comments, isLoading };
+};
+
+export const useAddNewComment = (): {
+  response: any;
+  isLoading: boolean;
+  addComment: (data: NewComment) => any;
+} => {
+  const { addComment, isLoading, response } = useCommentStore((state) => state);
+
+  return { addComment, isLoading, response };
 };

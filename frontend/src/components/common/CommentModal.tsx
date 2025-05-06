@@ -1,3 +1,4 @@
+import { useAddNewComment } from "@/modules/comment/hooks";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
 import {
   Backdrop,
@@ -8,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {
   open: boolean;
@@ -20,6 +22,7 @@ const MAX_CHAR = 200;
 const CommentModal = ({ open, setOpen, postId }: Props) => {
   const { user } = useGetLoggedInUser();
   const [content, setContent] = useState("");
+  const { addComment, isLoading, response } = useAddNewComment();
 
   const handleUpdateUserInfo = async () => {
     const data = {
@@ -27,7 +30,19 @@ const CommentModal = ({ open, setOpen, postId }: Props) => {
       userId: user?.id,
       content,
     };
-    console.log(data);
+    await addComment(data);
+
+    if (response?.statusCode === 201) {
+      toast.success(response?.message || "Comment added successfully");
+    } else {
+      toast.error(
+        response?.message ||
+          response?.error?.message ||
+          response?.data?.error?.message ||
+          "Failed to add comment"
+      );
+    }
+    setOpen(false);
   };
 
   return (
@@ -73,6 +88,7 @@ const CommentModal = ({ open, setOpen, postId }: Props) => {
           rows={2}
           fullWidth
           value={content}
+          disabled={isLoading}
           onChange={(e) => {
             if (e.target.value.length <= MAX_CHAR) {
               setContent(e.target.value);
@@ -86,16 +102,17 @@ const CommentModal = ({ open, setOpen, postId }: Props) => {
             onClick={() => setOpen(false)}
             variant="outlined"
             size="small"
+            disabled={isLoading}
           >
             Cancel
           </Button>
           <Button
-            disabled={!content}
+            disabled={!content || isLoading}
             variant="contained"
             size="small"
             onClick={handleUpdateUserInfo}
           >
-            Add comment
+            {isLoading ? "Posting..." : "Add comment"}
           </Button>
         </Box>
       </Box>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Post } from "../post/types";
 import { User } from "../user/types";
 
@@ -15,10 +16,18 @@ export type CommentState = {
   error: string | null;
   comment: Comment;
   comments: Comment[];
+  response: any;
+};
+
+export type NewComment = {
+  postId: string;
+  userId: string;
+  content: string;
 };
 
 export type CommentActions = {
   getCommentsByPostId: (id: string) => Promise<Comment[]>;
+  addComment: (data: NewComment) => Promise<void>;
 };
 
 export type CommentStore = CommentState & CommentActions;
