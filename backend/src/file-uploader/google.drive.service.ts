@@ -81,6 +81,10 @@ export class GoogleDriveService {
   }
 
   async deleteFile(link: string): Promise<void> {
+    console.log({
+      from: "Delete file from Google Drive",
+      link
+    });
     const fileId =  this.extractFileIdFromLink(link)
 
     if(!fileId) {

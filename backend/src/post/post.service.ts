@@ -66,6 +66,11 @@ export class PostService {
           include: {
             author: true,
             content: true,
+             _count: {
+              select: {
+                comments: true
+              }
+             }
           },
           orderBy: {
             createdAt: "desc"
@@ -86,11 +91,11 @@ export class PostService {
   }
 
   async findAllByAuthorId(authorId: string) {
-    // stage-1:  find from cache
+
     const postsFromCache = await this.cache.get(this.cacheKey)
     if(postsFromCache !== null){
       const posts = postsFromCache.filter((post: any) => post?.author?.id === authorId)
-      if(posts.length > 0){
+      if(posts?.length > 0){
         return {
           message: 'Posts retrieved from cache!',
           data: posts
@@ -105,6 +110,11 @@ export class PostService {
       include: {
         author: true,
         content: true,
+        _count: {
+          select: {
+            comments: true
+          }
+        }
       },
       orderBy: {
         createdAt: "desc"
@@ -190,8 +200,14 @@ export class PostService {
       include: {
         author: true,
         content: true,
+        _count: {
+          select: {
+            comments: true
+          }
+        }
       }
     });
+    
     if (!post) {
        throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }

@@ -13,21 +13,15 @@ export class UpdateCommentDto extends PartialType(CreateCommentDto) {
     @IsNotEmpty({ message: 'Content is required', context: { field: 'content' } })
     @IsString({ message: 'Content must be a string', context: { field: 'content' } })
     content?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
 
     constructor(
         postId: string,
         userId: string,
         content?: string,
-        createdAt?: Date,
-        updatedAt?: Date
     ) {
-        super(postId, userId, content, createdAt, updatedAt);
+        super(postId, userId, content);
         this.postId = postId;
         this.userId = userId;
         this.content = content;
-        this.createdAt = createdAt || new Date();
-        this.updatedAt = updatedAt || new Date();
     }
 }

@@ -35,7 +35,13 @@ export class OwnershipGuard implements CanActivate {
 
     console.log({ resourceId, resource, user});
 
-    if (resource[options.ownerField] !== user?.id) {
+    console.log({
+      left: resource,
+      right: user?.id
+    });
+
+    const ownerValue = this.getValueByPath(resource, options.ownerField);
+    if (ownerValue !== user?.id) {
       throw new ForbiddenException('You are not the owner of this resource.');
     }
 
@@ -51,4 +57,9 @@ export class OwnershipGuard implements CanActivate {
           return null;
         }
   }
+
+  getValueByPath(obj: any, path: string): any {
+  return path.split('.').reduce((acc, part) => acc?.[part], obj);
+}
+
 }

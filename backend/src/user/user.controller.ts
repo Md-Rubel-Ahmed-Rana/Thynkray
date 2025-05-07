@@ -22,6 +22,7 @@ import { cookieOptions } from 'src/utility/cookieOptions';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('user')
 export class UserController {
@@ -52,6 +53,7 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
+  @SkipThrottle()
   @UseGuards(AuthGuard)
   @Get('/auth/:email')
   findOneByEmail(@Param('email') email: string) {
