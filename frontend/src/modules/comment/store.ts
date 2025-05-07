@@ -25,6 +25,8 @@ export const defaultCommentState: CommentStore = {
     return [initialCommentValue];
   },
   addComment: async () => {},
+  deleteComment: async () => {},
+  updateComment: async () => {},
 };
 
 export const createCommentStore = (
@@ -46,13 +48,40 @@ export const createCommentStore = (
         throw err;
       }
     },
-    addComment: async (data: NewComment) => {
+    addComment: async (data: NewComment): Promise<any> => {
       set({ isLoading: true });
       try {
         const res = await axios.post(`${baseApi}/comment`, data, {
           withCredentials: true,
         });
         const result: any = await get().getCommentsByPostId(data?.postId);
+        const comments = [...result?.data?.data] as Comment[];
+        set({
+          isLoading: false,
+          response: res?.data,
+          comments,
+        });
+        return res?.data;
+      } catch (err: any) {
+        set({
+          error: err?.message || "Could not add user comment",
+          isLoading: false,
+        });
+      }
+    },
+    deleteComment: async ({
+      postId,
+      commentId,
+    }: {
+      postId: string;
+      commentId: string;
+    }) => {
+      set({ isLoading: true });
+      try {
+        const res = await axios.delete(`${baseApi}/comment/${commentId}`, {
+          withCredentials: true,
+        });
+        const result: any = await get().getCommentsByPostId(postId);
         const comments = [...result?.data?.data] as Comment[];
         return set({
           isLoading: false,
@@ -61,7 +90,40 @@ export const createCommentStore = (
         });
       } catch (err: any) {
         set({
-          error: err?.message || "Could not update user profile image",
+          error: err?.message || "Could not delete comment",
+          isLoading: false,
+        });
+      }
+    },
+    updateComment: async ({
+      postId,
+      commentId,
+      content,
+    }: {
+      postId: string;
+      commentId: string;
+      content: string;
+    }) => {
+      set({ isLoading: true });
+      try {
+        const res = await axios.patch(
+          `${baseApi}/comment/${commentId}`,
+          { content },
+          {
+            withCredentials: true,
+          }
+        );
+        const result: any = await get().getCommentsByPostId(postId);
+        const comments = [...result?.data?.data] as Comment[];
+        set({
+          isLoading: false,
+          response: res?.data,
+          comments,
+        });
+        return res?.data;
+      } catch (err: any) {
+        set({
+          error: err?.message || "Could not delete comment",
           isLoading: false,
         });
       }
