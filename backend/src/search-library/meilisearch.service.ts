@@ -34,7 +34,6 @@ class MeiliSearchService {
       });
     } catch (error) {
       console.error('Error adding documents to MeiliSearch:', error);
-      throw error;
     }
   }
 
@@ -48,7 +47,6 @@ class MeiliSearchService {
       return response;
     } catch (error) {
       console.error('Error searching in MeiliSearch:', error);
-      throw error;
     }
   }
 
@@ -61,7 +59,6 @@ class MeiliSearchService {
       });
     } catch (error) {
       console.error('Error deleting documents from MeiliSearch:', error);
-      throw error;
     }
   }
 }

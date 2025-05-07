@@ -312,27 +312,36 @@ export class PostService {
     }
   }
 
-   async remove(id: string) {
-    const post = await this.prisma.post.delete({
+  async remove(id: string) {
+
+    const post = await this.prisma.post.findUnique({
       where: {
         id
       }
     });
+
     if (!post) {
       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }
 
+    await this.prisma.post.delete({
+      where: {
+        id
+      }
+    });
+    
+
     const postDto = GetPostDto.fromEntity(post);
     // remove from meilisearch
-    await meiliSearchService.deleteBlogFromMeiliSearch(id)
+     meiliSearchService.deleteBlogFromMeiliSearch(id)
     // remove from cache
-    await this.cache.deleteValue(this.cacheKey, postDto)
+     this.cache.deleteValue(this.cacheKey, postDto)
 
     // delete images from drive
     const imagesToDelete = [postDto?.thumbnail, ...postDto.content.map((section) => section.images).flat()]
 
     if(imagesToDelete.length > 0){
-      await this.googleDriveService.deleteMultipleFiles(imagesToDelete)
+       this.googleDriveService.deleteMultipleFiles(imagesToDelete)
     }
 
     return {
