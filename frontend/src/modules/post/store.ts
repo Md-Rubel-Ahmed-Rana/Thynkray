@@ -23,7 +23,7 @@ export const initialPostValue: Post = {
   slug: "",
   tags: [],
   thumbnail: "",
-  comments: [],
+  comments: 0,
   author: userInitialValue,
   content: [],
   createdAt: new Date(),
