@@ -69,7 +69,7 @@ const UserPostCard = ({ post }: Props) => {
           ))}
         </Stack>
 
-        <UserPostsActions />
+        <UserPostsActions post={post} />
       </CardContent>
     </Card>
   );
