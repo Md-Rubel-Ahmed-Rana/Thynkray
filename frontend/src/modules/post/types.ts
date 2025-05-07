@@ -70,6 +70,7 @@ export type PostActions = {
   getPostsBySearched: (searchText: string) => Promise<Post[]>;
   getRelatedPosts: (searchText: string) => Promise<Post[]>;
   getInternationalPosts: () => Promise<InternationalPost[]>;
+  deletePost: (id: string, authorId: string) => Promise<void>;
 };
 
 export type PostStore = PostState & PostActions;
