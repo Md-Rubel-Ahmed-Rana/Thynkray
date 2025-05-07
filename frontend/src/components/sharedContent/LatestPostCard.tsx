@@ -116,7 +116,7 @@ const LatestPostCard = ({ post }: Props) => {
             </Typography>
             |
             <Typography variant="subtitle2" component="p">
-              {post?.comments?.length || 0} comments
+              {post?.comments || 0} comments
             </Typography>
           </Box>
           <Typography

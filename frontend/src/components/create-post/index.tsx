@@ -11,6 +11,7 @@ import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import { useCreatePostMutation } from "@/modules/post/hooks";
 import { generatePostSlug } from "@/utils/generatePostSlug";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const CreatePost = () => {
   const router = useRouter();
@@ -55,6 +56,7 @@ const CreatePost = () => {
     router.push(
       `/dashboard?name=${user?.name}&email=${user?.email}&designation=${user?.designation}`
     );
+    toast.success("Post created successfully!");
   };
 
   return (

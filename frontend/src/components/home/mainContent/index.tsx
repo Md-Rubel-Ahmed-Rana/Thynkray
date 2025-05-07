@@ -45,14 +45,14 @@ const MainContent = () => {
           {firstRowCards.map((card, index: number) => {
             return (
               <Grid key={card?.id} size={{ xs: 12, md: 6 }}>
-                <ContentCard post={card} index={index} />
+                <ContentCard post={card} index={index} key={card?.id} />
               </Grid>
             );
           })}
 
           {/* left card  */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <ContentCard post={leftCard} index={2} />
+          <Grid key={Math.random()} size={{ xs: 12, md: 4 }}>
+            <ContentCard key={leftCard?.id} post={leftCard} index={2} />
           </Grid>
 
           {/* middle two cards  */}
@@ -77,8 +77,8 @@ const MainContent = () => {
           </Grid>
 
           {/* right card  */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <ContentCard post={rightCard} index={2} />
+          <Grid key={rightCard?.id} size={{ xs: 12, md: 4 }}>
+            <ContentCard key={rightCard?.id} post={rightCard} index={2} />
           </Grid>
         </Grid>
       )}
