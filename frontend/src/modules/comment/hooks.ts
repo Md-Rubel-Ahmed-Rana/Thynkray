@@ -29,3 +29,40 @@ export const useAddNewComment = (): {
 
   return { addComment, isLoading, response };
 };
+
+export const useDeleteComment = (): {
+  response: any;
+  isLoading: boolean;
+  deleteComment: ({
+    postId,
+    commentId,
+  }: {
+    postId: string;
+    commentId: string;
+  }) => any;
+} => {
+  const { deleteComment, isLoading, response } = useCommentStore(
+    (state) => state
+  );
+
+  return { deleteComment, isLoading, response };
+};
+export const useUpdateComment = (): {
+  response: any;
+  isLoading: boolean;
+  updateComment: ({
+    postId,
+    commentId,
+    content,
+  }: {
+    postId: string;
+    commentId: string;
+    content: string;
+  }) => any;
+} => {
+  const { updateComment, isLoading, response } = useCommentStore(
+    (state) => state
+  );
+
+  return { updateComment, isLoading, response };
+};

@@ -1,3 +1,4 @@
+import { useDeleteComment } from "@/modules/comment/hooks";
 import { Comment } from "@/modules/comment/types";
 import {
   Button,
@@ -7,6 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { toast } from "react-toastify";
 
 type Props = {
   comment: Comment;
@@ -15,8 +17,24 @@ type Props = {
 };
 
 const CommentDeleteModal = ({ comment, open, setOpen }: Props) => {
-  const handleDelete = () => {
-    setOpen(false);
+  const { deleteComment, response, isLoading } = useDeleteComment();
+  const handleDelete = async () => {
+    await deleteComment({
+      postId: comment?.post?.id as string,
+      commentId: comment?.id,
+    });
+
+    if (response?.statusCode === 200) {
+      toast.success(response?.message || "Comment deleted successfully!");
+    } else {
+      toast.error(
+        response?.error?.message ||
+          response?.data?.error?.message ||
+          response?.message ||
+          "Failed to delete comment"
+      );
+    }
+    handleClose();
   };
 
   const handleClose = () => {
@@ -34,16 +52,17 @@ const CommentDeleteModal = ({ comment, open, setOpen }: Props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button size="small" onClick={handleClose}>
+        <Button disabled={isLoading} size="small" onClick={handleClose}>
           Cancel
         </Button>
         <Button
           size="small"
           onClick={handleDelete}
           color="error"
+          disabled={isLoading}
           variant="contained"
         >
-          Delete
+          {isLoading ? "Deleting..." : "Delete"}
         </Button>
       </DialogActions>
     </Dialog>

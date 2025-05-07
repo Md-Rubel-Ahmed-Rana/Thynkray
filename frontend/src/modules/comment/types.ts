@@ -26,6 +26,22 @@ export type NewComment = {
 };
 
 export type CommentActions = {
+  deleteComment: ({
+    postId,
+    commentId,
+  }: {
+    postId: string;
+    commentId: string;
+  }) => Promise<void>;
+  updateComment: ({
+    postId,
+    commentId,
+    content,
+  }: {
+    postId: string;
+    commentId: string;
+    content: string;
+  }) => Promise<void>;
   getCommentsByPostId: (id: string) => Promise<Comment[]>;
   addComment: (data: NewComment) => Promise<void>;
 };
