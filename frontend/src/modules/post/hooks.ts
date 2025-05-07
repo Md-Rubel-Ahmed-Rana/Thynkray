@@ -176,3 +176,11 @@ export const useGetInternationalPosts = (): {
 
   return { news, error, isLoading };
 };
+export const useDeletePost = (): {
+  isLoading: boolean;
+  deletePost: (id: string, authorId: string) => Promise<void>;
+} => {
+  const { deletePost, isLoading } = usePostStore((state) => state);
+
+  return { deletePost, isLoading };
+};

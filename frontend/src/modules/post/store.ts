@@ -63,10 +63,11 @@ export const defaultPostState: PostStore = {
   getSinglePostById: async () => {
     return initialPostValue;
   },
+  deletePost: async () => {},
 };
 
 export const createPostStore = (initialState: PostStore = defaultPostState) => {
-  return createStore<PostStore>()((set) => ({
+  return createStore<PostStore>()((set, get) => ({
     ...initialState,
     createNewPost: async (values: CreateNewPost) => {
       set({ isLoading: true, error: null });
@@ -97,7 +98,6 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         throw err;
       }
     },
-
     getSinglePostBySlug: async (slug: string) => {
       set({ isLoading: true, error: null });
       try {
@@ -114,7 +114,6 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         throw err;
       }
     },
-
     getSinglePostById: async (id: string) => {
       set({ isLoading: true, error: null });
       try {
@@ -225,6 +224,18 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
       } catch (err) {
         set({ error: "Could not fetch news", isLoading: false });
         throw err;
+      }
+    },
+    deletePost: async (id: string, authorId: string) => {
+      set({ isLoading: true });
+      try {
+        await axios.delete(`${baseApi}/post/${id}`, {
+          withCredentials: true,
+        });
+        await get().getPostsByAuthor(authorId);
+        set({ isLoading: false });
+      } catch {
+        set({ isLoading: false, error: "Failed to delete post" });
       }
     },
   }));

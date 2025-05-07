@@ -1,4 +1,6 @@
+import { useDeletePost } from "@/modules/post/hooks";
 import { Post } from "@/modules/post/types";
+import { useGetLoggedInUser } from "@/modules/user/hooks";
 import {
   Button,
   Dialog,
@@ -16,7 +18,10 @@ type Props = {
 };
 
 const PostDeleteModal = ({ post, open, setOpen }: Props) => {
+  const { user } = useGetLoggedInUser();
+  const { deletePost, isLoading } = useDeletePost();
   const handleDelete = async () => {
+    await deletePost(post?.id, user?.id);
     toast.success("Post deleted successfully!");
     handleClose();
   };
@@ -36,7 +41,7 @@ const PostDeleteModal = ({ post, open, setOpen }: Props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button size="small" onClick={handleClose}>
+        <Button disabled={isLoading} size="small" onClick={handleClose}>
           Cancel
         </Button>
         <Button
@@ -44,8 +49,9 @@ const PostDeleteModal = ({ post, open, setOpen }: Props) => {
           onClick={handleDelete}
           color="error"
           variant="contained"
+          disabled={isLoading}
         >
-          Delete
+          {isLoading ? "Deleting..." : "Delete"}
         </Button>
       </DialogActions>
     </Dialog>
