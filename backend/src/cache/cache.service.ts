@@ -67,11 +67,17 @@ export class RedisCacheService {
     await this.set(key, [value]);  
   }
 }
+
   async deleteValue(key: string, value: any) {
     console.log(`Deleting value from key: ${key} - and id: ${value.id}`);
     const existingValue = await this.get(key);
     if (existingValue) {
       const newValue = existingValue.filter((item: any) => item.id !== value.id);
+      console.log({
+        from: "Delete value from cache",
+        existingValue,
+        newValue
+      });
       await this.set(key, newValue);  
     } else {
       await this.set(key, [value]);
