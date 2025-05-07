@@ -30,19 +30,15 @@ const EditProfileImage = ({ open, setOpen }: Props) => {
   const { user } = useGetLoggedInUser();
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
-  const { updateProfileImage, isLoading, response, error, isError } =
-    useUpdateProfileImage();
+  const { updateProfileImage, isLoading } = useUpdateProfileImage();
 
   const handleUpdateProfileImage = async () => {
     const formData = new FormData();
     formData.append("profile_image", image as File);
     await updateProfileImage({ id: user.id, formData });
 
-    if (isError) {
-      toast.error(error);
-    } else {
-      toast.success(response?.message);
-    }
+    toast.success("Profile picture updated successfully!");
+
     setOpen(false);
     setImage(null);
     setImageUrl("");
