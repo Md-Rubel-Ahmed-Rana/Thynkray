@@ -32,7 +32,10 @@ export class CommentService {
             id: true,
             title: true
           }
-        }
+        },
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
     const commentDtos = GetCommentDto.fromEntities(comments)
@@ -42,7 +45,6 @@ export class CommentService {
       data: commentDtos
     }
   }
-
 
   async findAllByPostId(id: string) {
     const comments = await this.prisma.comment.findMany({
@@ -61,6 +63,9 @@ export class CommentService {
             title: true
           }
         }
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
     const commentDtos = GetCommentDto.fromEntities(comments)
