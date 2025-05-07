@@ -11,27 +11,16 @@ type Props = {
 
 const CommentEditForm = ({ comment, setShouldEdit }: Props) => {
   const [updatedContent, setUpdatedContent] = useState(comment?.content);
-  const { updateComment, isLoading, response } = useUpdateComment();
+  const { updateComment, isLoading } = useUpdateComment();
 
   const handleUpdateComment = async () => {
-    const res = await updateComment({
+    await updateComment({
       postId: comment?.post?.id as string,
       commentId: comment?.id,
       content: updatedContent,
     });
 
-    if (response?.statusCode === 200) {
-      toast.success(response?.message || "Comment deleted successfully!");
-    } else {
-      toast.error(
-        response?.error?.message ||
-          response?.data?.error?.message ||
-          response?.message ||
-          "Failed to delete comment"
-      );
-    }
-
-    console.log({ isLoading, response, res });
+    toast.success("Comment updated successfully!");
 
     setShouldEdit(false);
   };

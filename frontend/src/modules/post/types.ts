@@ -30,7 +30,7 @@ export type Post = {
   description: string;
   author: Partial<User>;
   content: ContentItem[];
-  comments?: [];
+  comments?: number;
   createdAt: Date;
 };
 

@@ -13,12 +13,22 @@ const AuthorPosts = () => {
   const { isLoading, posts } = useGetPostsByAuthor(authorId);
   return (
     <Box>
-      <Box display={"flex"} justifyContent={"space-between"}>
-        <Typography variant="h5" fontWeight={600}>
+      <Box
+        display={"flex"}
+        justifyContent={"space-between"}
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Typography
+          sx={{
+            fontSize: { xs: "18px", md: "24px" },
+          }}
+          variant="h5"
+          fontWeight={600}
+        >
           Articles by {name}
         </Typography>
         <Link href={"/authors"}>
-          <Button type="button" variant="outlined">
+          <Button size="small" type="button" variant="outlined">
             More Authors
           </Button>
         </Link>
@@ -31,7 +41,7 @@ const AuthorPosts = () => {
           {posts.length <= 0 ? (
             <NoDataFound message="No Posts found!">
               <Typography>
-                You have not created any posts yet. Start sharing your
+                <b>{name}</b> has not created any posts yet. Start sharing your
                 knowledge!
               </Typography>
               <Link href={"/write/new"}>

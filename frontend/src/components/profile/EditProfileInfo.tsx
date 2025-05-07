@@ -22,7 +22,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
   const { user } = useGetLoggedInUser();
   const [isChanged, setIsChanged] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<Partial<User>>(user);
-  const { updateUser, isLoading, isError, error, response } = useUpdateUser();
+  const { updateUser, isLoading } = useUpdateUser();
 
   const handleChangeValues = (field: string, value: string) => {
     const newValues = { ...user, [field]: value };
@@ -37,11 +37,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
       bio: updatedUser.bio,
     });
 
-    if (isError) {
-      toast.error(error);
-    } else {
-      toast.success(response?.message);
-    }
+    toast.success("Profile info updated successfully!");
     setOpen(false);
   };
 

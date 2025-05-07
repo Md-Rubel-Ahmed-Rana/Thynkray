@@ -17,23 +17,14 @@ type Props = {
 };
 
 const CommentDeleteModal = ({ comment, open, setOpen }: Props) => {
-  const { deleteComment, response, isLoading } = useDeleteComment();
+  const { deleteComment, isLoading } = useDeleteComment();
   const handleDelete = async () => {
     await deleteComment({
       postId: comment?.post?.id as string,
       commentId: comment?.id,
     });
 
-    if (response?.statusCode === 200) {
-      toast.success(response?.message || "Comment deleted successfully!");
-    } else {
-      toast.error(
-        response?.error?.message ||
-          response?.data?.error?.message ||
-          response?.message ||
-          "Failed to delete comment"
-      );
-    }
+    toast.success("Comment deleted successfully!");
     handleClose();
   };
 
