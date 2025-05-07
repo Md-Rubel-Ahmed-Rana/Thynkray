@@ -11,6 +11,7 @@ export class GetPostDto {
     tags: string[];
     content: PostSection[];
     author: User
+    comments: number
     createdAt: Date;
     updatedAt: Date;
 
@@ -24,6 +25,7 @@ export class GetPostDto {
         tags: string[] = [],
         content: PostSection[] = [],
         author?: User,
+        comments?: number,
         createdAt?: Date,
         updatedAt?: Date
     ) {
@@ -36,6 +38,7 @@ export class GetPostDto {
         this.tags = tags;
         this.content = content;
         this.author = author;
+        this.comments = comments;
         this.createdAt = createdAt || new Date();
         this.updatedAt = updatedAt || new Date();
     }
@@ -51,6 +54,7 @@ export class GetPostDto {
             entity.tags,
             entity.content,
             entity.author,
+            entity?._count?.comments,
             entity.createdAt,
             entity.updatedAt
         );
