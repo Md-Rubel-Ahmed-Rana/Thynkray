@@ -42,6 +42,7 @@ const CommentModal = ({ open, setOpen, postId }: Props) => {
           "Failed to add comment"
       );
     }
+    console.log({ isLoading, response });
     setOpen(false);
   };
 
