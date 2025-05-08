@@ -1,0 +1,128 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Post } from "@/modules/post/types";
+import { Box, Button, TextField, Typography, Stack } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Tags from "../create-post/Tags";
+import Category from "../create-post/Category";
+import ContentSections from "./ContentSections";
+
+type MixedImage = string | File;
+
+export type EditPostFormData = Omit<
+  Post,
+  "slug" | "comments" | "author" | "createdAt"
+> & {
+  thumbnail: MixedImage | null;
+  content: {
+    id: string;
+    title: string;
+    images: MixedImage[];
+    description: string;
+  }[];
+};
+
+type Props = {
+  post: Post;
+};
+
+const EditPostForm = ({ post }: Props) => {
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
+    typeof post.thumbnail === "string" ? post.thumbnail : null
+  );
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<EditPostFormData>({
+    defaultValues: {
+      ...post,
+    },
+  });
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] as File;
+    if (file) {
+      setValue("thumbnail", file as any);
+      setThumbnailPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const onSubmit = (data: EditPostFormData) => {
+    console.log("Updated Post Data:", data);
+    // Your backend logic here
+  };
+
+  return (
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 2 }}>
+      <Typography variant="h5" mb={2}>
+        Edit Post
+      </Typography>
+
+      <TextField
+        label="Title"
+        fullWidth
+        margin="normal"
+        {...register("title", { required: "Title is required" })}
+        error={!!errors.title}
+        helperText={errors.title?.message}
+      />
+
+      <Box mt={2}>
+        <Typography variant="subtitle1">Thumbnail</Typography>
+        {thumbnailPreview && (
+          <Box
+            component="img"
+            src={thumbnailPreview}
+            alt="thumbnail"
+            sx={{ width: 200, mt: 1 }}
+          />
+        )}
+        <Stack direction="row" spacing={2} mt={1}>
+          <Button variant="outlined" component="label">
+            Change Thumbnail
+            <input type="file" hidden onChange={handleThumbnailChange} />
+          </Button>
+        </Stack>
+      </Box>
+
+      <Box mt={2}>
+        <Tags setValue={setValue} errors={errors} watch={watch} />
+      </Box>
+      <Box mt={4}>
+        <Category
+          setValue={setValue}
+          errors={errors}
+          watch={watch}
+          register={register}
+        />
+      </Box>
+
+      <TextField
+        label="Description"
+        fullWidth
+        margin="normal"
+        multiline
+        rows={3}
+        {...register("description")}
+      />
+
+      <ContentSections
+        control={control}
+        register={register}
+        setValue={setValue}
+        watch={watch}
+      />
+
+      <Button variant="contained" type="submit" sx={{ mt: 4 }}>
+        Save Changes
+      </Button>
+    </Box>
+  );
+};
+
+export default EditPostForm;
