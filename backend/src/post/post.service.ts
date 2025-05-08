@@ -261,25 +261,16 @@ export class PostService {
   const newContent = content.filter(section => !section?.id);
 
     // 1️⃣ Upsert the main post (no content yet)
-    const post = await this.prisma.post.upsert({
+    const post = await this.prisma.post.update({
       where: { id },
-      update: {
+      data: {
         title,
         slug,
         tags,
         category,
         thumbnail,
         description,
-      },
-      create: {
-        id,
-        title,
-        slug,
-        tags,
-        category,
-        thumbnail,
-        description,
-      },
+      }
     });
 
     // 2️⃣ Update old content manually
