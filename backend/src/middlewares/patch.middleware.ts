@@ -9,6 +9,11 @@ export class ManipulatePatchMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const files = req.files as Express.Multer.File[];
 
+     console.log({
+      tags: "Before parse",
+      data: req.body.tags
+    });
+
     try {
       if (typeof req.body.tags === 'string') {
         req.body.tags = JSON.parse(req.body.tags);
@@ -16,6 +21,11 @@ export class ManipulatePatchMiddleware implements NestMiddleware {
     } catch {
       req.body.tags = [];
     }
+
+     console.log({
+      tags: "After parse",
+      data: req.body.tags
+    });
 
     let content = [];
     try {
