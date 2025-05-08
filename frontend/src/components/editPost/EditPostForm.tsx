@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Post } from "@/modules/post/types";
+import { Post, UpdatePost } from "@/modules/post/types";
 import { Box, Button, TextField, Typography, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Tags from "../create-post/Tags";
 import Category from "../create-post/Category";
 import ContentSections from "./ContentSections";
+import { generatePostSlug } from "@/utils/generatePostSlug";
 
 type MixedImage = string | File;
 
@@ -52,13 +53,32 @@ const EditPostForm = ({ post }: Props) => {
     }
   };
 
-  const onSubmit = (data: EditPostFormData) => {
-    console.log("Updated Post Data:", data);
-    // Your backend logic here
+  const handleUpdatePost = (data: EditPostFormData) => {
+    const updatedData: UpdatePost = {
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      tags: data.tags,
+      thumbnail: data.thumbnail,
+      authorId: post.author.id as string,
+      slug: "",
+      content: data.content.map((item) => ({
+        title: item.title,
+        images: item.images,
+        description: item.description,
+      })),
+    };
+    updatedData.slug = generatePostSlug(updatedData);
+
+    console.log({ data, updatedData });
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 2 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(handleUpdatePost)}
+      sx={{ p: 2 }}
+    >
       <Typography variant="h5" mb={2}>
         Edit Post
       </Typography>
