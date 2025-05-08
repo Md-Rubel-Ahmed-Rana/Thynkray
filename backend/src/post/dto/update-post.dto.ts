@@ -23,7 +23,6 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
     @IsNotEmpty({message: "At least one tag is required"})
     @IsArray({message: "Tags must be an array" })
     @IsString({each: true, message: "Tags must be an array of strings" })
-    images: string[];
     tags?: string[];
     @IsOptional()
     @IsArray({ message: 'Content must be an array' })
