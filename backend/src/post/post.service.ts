@@ -281,7 +281,13 @@ export class PostService {
                 description: section.description,
               },
             })),
-          create: newContent,
+          create: newContent.map(section => ({
+            title: section.title,
+            images: section.images,
+            description: section.description,
+            post: { connect: { id } },
+          }))
+
         },
       },
       include: {
