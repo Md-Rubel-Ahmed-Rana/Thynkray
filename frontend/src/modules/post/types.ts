@@ -51,6 +51,23 @@ export type CreateSection = {
   description: string;
 };
 
+export type UpdatePost = {
+  title: string;
+  thumbnail: string | File;
+  tags: string[];
+  category: string;
+  slug: string;
+  description: string;
+  authorId: string;
+  content: UpdateSection[];
+};
+
+export type UpdateSection = {
+  title: string;
+  images: (string | File)[];
+  description: string;
+};
+
 export type PostState = {
   isLoading: boolean;
   error: string | null;
