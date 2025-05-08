@@ -256,10 +256,13 @@ export class PostService {
 
   async update(id: string, updatePostDto: UpdatePostDto) {
     const {title, slug, tags, content, category, thumbnail} = updatePostDto;
+
+
+    const oldContent = content.filter(section => section?.id);
+    const newContent = content.filter(section => !section?.id);
+
     const post = await this.prisma.post.update({
-      where: {
-        id
-      },
+      where: { id },
       data: {
         title,
         slug,
@@ -267,23 +270,25 @@ export class PostService {
         category,
         thumbnail,
         content: {
-          update: content.map((section) => ({
-           where: {
-            id: section.id
-           },
-           data: {
-            title: section.title,
-            images: section.images,
-            description: section.description,
-           }
-          })),  
+          update: oldContent
+            .filter(section => section?.id)
+            .map(section => ({
+              where: { id: section.id },
+              data: {
+                title: section.title,
+                images: section.images,
+                description: section.description,
+              },
+            })),
+          create: newContent,
         },
       },
       include: {
         author: true,
-        content: true
+        content: true,
       },
     });
+
 
     if (!post) {
        throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
