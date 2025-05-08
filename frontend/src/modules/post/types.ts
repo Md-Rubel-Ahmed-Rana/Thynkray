@@ -51,6 +51,23 @@ export type CreateSection = {
   description: string;
 };
 
+export type UpdatePost = {
+  title: string;
+  thumbnail: string | File;
+  tags: string[];
+  category: string;
+  slug: string;
+  description: string;
+  authorId: string;
+  content: UpdateSection[];
+};
+
+export type UpdateSection = {
+  title: string;
+  images: (string | File)[];
+  description: string;
+};
+
 export type PostState = {
   isLoading: boolean;
   error: string | null;
@@ -71,6 +88,7 @@ export type PostActions = {
   getRelatedPosts: (searchText: string) => Promise<Post[]>;
   getInternationalPosts: () => Promise<InternationalPost[]>;
   deletePost: (id: string, authorId: string) => Promise<void>;
+  updatePost: (id: string, formData: FormData) => Promise<void>;
 };
 
 export type PostStore = PostState & PostActions;

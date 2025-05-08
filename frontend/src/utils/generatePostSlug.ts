@@ -1,4 +1,4 @@
-import { CreateNewPost } from "@/modules/post/types";
+import { CreateNewPost, UpdatePost } from "@/modules/post/types";
 import { v4 as uuidv4 } from "uuid";
 
 export const generateSlugPart = (text: string) =>
@@ -8,7 +8,9 @@ export const generateSlugPart = (text: string) =>
     .trim()
     .replace(/\s+/g, "-");
 
-export const generatePostSlug = (newPost: CreateNewPost): string => {
+export const generatePostSlug = (
+  newPost: CreateNewPost | UpdatePost
+): string => {
   const postTitleSlug = generateSlugPart(newPost.title);
   const sectionTitlesSlug = newPost.content
     .map((section) => generateSlugPart(section.title))

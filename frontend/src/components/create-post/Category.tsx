@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { categories } from "@/constants/categories";
 import { CreateNewPost } from "@/modules/post/types";
 import { Autocomplete, TextField } from "@mui/material";
@@ -9,10 +10,10 @@ import {
 } from "react-hook-form";
 
 type Props = {
-  register: UseFormRegister<CreateNewPost>;
+  register: UseFormRegister<CreateNewPost | any>;
   errors: FieldErrors<CreateNewPost>;
-  setValue: UseFormSetValue<CreateNewPost>;
-  watch: UseFormWatch<CreateNewPost>;
+  setValue: UseFormSetValue<CreateNewPost | any>;
+  watch: UseFormWatch<CreateNewPost | any>;
 };
 
 const Category = ({ errors, setValue, watch, register }: Props) => {
