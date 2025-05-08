@@ -272,7 +272,7 @@ export class PostService {
             id: section.id
            },
            data: {
-             title: section.title,
+            title: section.title,
             images: section.images,
             description: section.description,
            }
