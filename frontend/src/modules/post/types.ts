@@ -46,6 +46,7 @@ export type CreateNewPost = {
 };
 
 export type CreateSection = {
+  id: string;
   title: string;
   images: File[];
   description: string;
@@ -63,6 +64,7 @@ export type UpdatePost = {
 };
 
 export type UpdateSection = {
+  id: string;
   title: string;
   images: (string | File)[];
   description: string;
