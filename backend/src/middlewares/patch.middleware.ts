@@ -81,6 +81,7 @@ export class ManipulatePatchMiddleware implements NestMiddleware {
       category: req.body.category,
       tags: req.body.tags,
       content: content.map(section => ({
+        id: section.id,
         title: section.title,
         description: section.description,
         images: section.images,
