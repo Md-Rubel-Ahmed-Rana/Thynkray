@@ -184,3 +184,12 @@ export const useDeletePost = (): {
 
   return { deletePost, isLoading };
 };
+
+export const useUpdatePost = (): {
+  isLoading: boolean;
+  updatePost: (id: string, formData: FormData) => Promise<void>;
+} => {
+  const { updatePost, isLoading } = usePostStore((state) => state);
+
+  return { updatePost, isLoading };
+};

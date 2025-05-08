@@ -64,6 +64,7 @@ export const defaultPostState: PostStore = {
     return initialPostValue;
   },
   deletePost: async () => {},
+  updatePost: async () => {},
 };
 
 export const createPostStore = (initialState: PostStore = defaultPostState) => {
@@ -236,6 +237,18 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
         set({ isLoading: false });
       } catch {
         set({ isLoading: false, error: "Failed to delete post" });
+      }
+    },
+    updatePost: async (id: string, formData: FormData) => {
+      set({ isLoading: true, error: null });
+      try {
+        await axios.patch(`${baseApi}/post/${id}`, formData, {
+          withCredentials: true,
+        });
+
+        set({ isLoading: false });
+      } catch {
+        set({ error: "Could not update post", isLoading: false });
       }
     },
   }));

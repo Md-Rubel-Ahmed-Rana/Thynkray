@@ -1,6 +1,6 @@
-import { CreateNewPost } from "@/modules/post/types";
+import { CreateNewPost, UpdatePost } from "@/modules/post/types";
 
-const makePostFormData = (values: CreateNewPost): FormData => {
+const makePostFormData = (values: CreateNewPost | UpdatePost): FormData => {
   const formData = new FormData();
 
   formData.append("title", values.title);

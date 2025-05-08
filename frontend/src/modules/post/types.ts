@@ -88,6 +88,7 @@ export type PostActions = {
   getRelatedPosts: (searchText: string) => Promise<Post[]>;
   getInternationalPosts: () => Promise<InternationalPost[]>;
   deletePost: (id: string, authorId: string) => Promise<void>;
+  updatePost: (id: string, formData: FormData) => Promise<void>;
 };
 
 export type PostStore = PostState & PostActions;
