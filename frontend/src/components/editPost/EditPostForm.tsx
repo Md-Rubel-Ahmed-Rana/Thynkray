@@ -7,6 +7,9 @@ import Tags from "../create-post/Tags";
 import Category from "../create-post/Category";
 import ContentSections from "./ContentSections";
 import { generatePostSlug } from "@/utils/generatePostSlug";
+import { useUpdatePost } from "@/modules/post/hooks";
+import makePostFormData from "@/utils/makePostFormData";
+import { useRouter } from "next/router";
 
 type MixedImage = string | File;
 
@@ -28,6 +31,8 @@ type Props = {
 };
 
 const EditPostForm = ({ post }: Props) => {
+  const router = useRouter();
+  const { updatePost, isLoading } = useUpdatePost();
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
     typeof post.thumbnail === "string" ? post.thumbnail : null
   );
@@ -53,7 +58,7 @@ const EditPostForm = ({ post }: Props) => {
     }
   };
 
-  const handleUpdatePost = (data: EditPostFormData) => {
+  const handleUpdatePost = async (data: EditPostFormData) => {
     const updatedData: UpdatePost = {
       title: data.title,
       description: data.description,
@@ -70,7 +75,11 @@ const EditPostForm = ({ post }: Props) => {
     };
     updatedData.slug = generatePostSlug(updatedData);
 
-    console.log({ data, updatedData });
+    const formData = makePostFormData(updatedData);
+
+    await updatePost(post.id, formData);
+
+    router.back();
   };
 
   return (
@@ -138,8 +147,13 @@ const EditPostForm = ({ post }: Props) => {
         watch={watch}
       />
 
-      <Button variant="contained" type="submit" sx={{ mt: 4 }}>
-        Save Changes
+      <Button
+        disabled={isLoading}
+        variant="contained"
+        type="submit"
+        sx={{ mt: 4 }}
+      >
+        {isLoading ? "Saving..." : "Save Changes"}
       </Button>
     </Box>
   );
