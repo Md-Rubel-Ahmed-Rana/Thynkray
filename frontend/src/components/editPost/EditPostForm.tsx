@@ -19,7 +19,6 @@ export type EditPostFormData = Omit<
 > & {
   thumbnail: MixedImage | null;
   content: {
-    id: string;
     title: string;
     images: MixedImage[];
     description: string;
@@ -68,7 +67,7 @@ const EditPostForm = ({ post }: Props) => {
       authorId: post.author.id as string,
       slug: "",
       content: data.content.map((item) => ({
-        id: item.id,
+        id: item?.id || "",
         title: item.title,
         images: item.images,
         description: item.description,

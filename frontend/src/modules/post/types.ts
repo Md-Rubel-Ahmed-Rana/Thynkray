@@ -64,7 +64,7 @@ export type UpdatePost = {
 };
 
 export type UpdateSection = {
-  id: string;
+  id?: string;
   title: string;
   images: (string | File)[];
   description: string;

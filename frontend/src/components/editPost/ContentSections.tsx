@@ -55,7 +55,10 @@ const ContentSections = ({ register, control, watch, setValue }: Props) => {
       <Typography variant="h6">Content Items</Typography>
 
       {fields.map((field, index) => (
-        <Box key={field.id} sx={{ border: "1px solid #ccc", p: 2, mt: 2 }}>
+        <Box
+          key={field?.id || index}
+          sx={{ border: "1px solid #ccc", p: 2, mt: 2 }}
+        >
           <TextField
             label="Title"
             fullWidth
@@ -141,7 +144,6 @@ const ContentSections = ({ register, control, watch, setValue }: Props) => {
         startIcon={<Add />}
         onClick={() =>
           append({
-            id: crypto.randomUUID(),
             title: "",
             images: [],
             description: "",
