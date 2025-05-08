@@ -13,6 +13,9 @@ const makePostFormData = (values: CreateNewPost | UpdatePost): FormData => {
   values.tags.forEach((tag) => formData.append("tags", tag));
 
   values.content.forEach((section, index) => {
+    if (section?.id) {
+      formData.append(`content[${index}][id]`, section.id);
+    }
     formData.append(`content[${index}][title]`, section.title);
     formData.append(`content[${index}][description]`, section.description);
 

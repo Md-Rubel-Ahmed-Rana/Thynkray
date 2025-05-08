@@ -68,6 +68,7 @@ const EditPostForm = ({ post }: Props) => {
       authorId: post.author.id as string,
       slug: "",
       content: data.content.map((item) => ({
+        id: item.id,
         title: item.title,
         images: item.images,
         description: item.description,
