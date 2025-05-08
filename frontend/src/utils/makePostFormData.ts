@@ -9,8 +9,7 @@ const makePostFormData = (values: CreateNewPost | UpdatePost): FormData => {
   formData.append("category", values.category);
   formData.append("slug", values.slug);
   formData.append("authorId", values.authorId);
-
-  values.tags.forEach((tag) => formData.append("tags", tag));
+  formData.append("tags", JSON.stringify(values.tags));
 
   values.content.forEach((section, index) => {
     if (section?.id) {
