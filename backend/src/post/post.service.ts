@@ -255,73 +255,94 @@ export class PostService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
-    const {title, slug, tags, content, category, thumbnail, description} = updatePostDto;
+  const { title, slug, tags, content, category, thumbnail, description } = updatePostDto;
 
+  const oldContent = content.filter(section => section?.id);
+  const newContent = content.filter(section => !section?.id);
 
-    const oldContent = content.filter(section => section?.id);
-    const newContent = content.filter(section => !section?.id);
+  // 1️⃣ Update the main post (no nested content)
+  const post = await this.prisma.post.update({
+    where: { id },
+    data: {
+      title,
+      slug,
+      tags,
+      category,
+      thumbnail,
+      description,
+    },
+    include: {
+      author: true,
+      content: true,
+    },
+  });
 
-    const post = await this.prisma.post.update({
-      where: { id },
-      data: {
-        title,
-        slug,
-        tags,
-        category,
-        thumbnail,
-        description,
-        content: {
-          update: oldContent
-            .filter(section => section?.id)
-            .map(section => ({
-              where: { id: section.id },
-              data: {
-                title: section.title,
-                images: section.images,
-                description: section.description,
-              },
-            })),
-          create: newContent.map(section => ({
-            title: section.title,
-            images: section.images,
-            description: section.description,
-          }))
+  if (!post) {
+    throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
+  }
 
+  // 2️⃣ Update old content sections manually
+  await Promise.all(
+    oldContent.map(section =>
+      this.prisma.postSection.update({
+        where: { id: section.id },
+        data: {
+          title: section.title,
+          images: section.images,
+          description: section.description,
         },
-      },
-      include: {
-        author: true,
-        content: true,
-      },
+      })
+    )
+  );
+
+  // 3️⃣ Create new content sections and link to post using postId
+  if (newContent.length > 0) {
+    await this.prisma.postSection.createMany({
+      data: newContent.map(section => ({
+        title: section.title,
+        description: section.description,
+        images: section.images,
+        postId: id, // Link to parent post
+      })),
     });
+  }
 
+  // 4️⃣ Refresh post to get latest state
+  const updatedPost = await this.prisma.post.findUnique({
+    where: { id },
+    include: {
+      author: true,
+      content: true,
+    },
+  });
 
-    if (!post) {
-       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
-    }
+  const postDto = GetPostDto.fromEntity(updatedPost);
 
-    const postDto = GetPostDto.fromEntity(post);
+  // 5️⃣ Update Meilisearch
+  await meiliSearchService.addBlogsToMeiliSearch([postDto]);
 
-    // update to meilisearch
-    await meiliSearchService.addBlogsToMeiliSearch([postDto])
-    // update to cache
-    await this.cache.updateValue(this.cacheKey, postDto)
+  // 6️⃣ Update cache
+  await this.cache.updateValue(this.cacheKey, postDto);
 
-    // delete unused images from drive
-    const oldImages = postDto.content.map((section) => section.images).flat()
-    const newImages = content.map((section) => section.images).flat()
+    // 7️⃣ Clean up unused images
+    const oldImages = postDto.content.map((section) => section.images).flat();
+    const newImages = content.map((section) => section.images).flat();
 
-    const imagesToDelete = compareArrayAndReturnUnmatched([...oldImages, postDto?.thumbnail], [...newImages, thumbnail])
+    const imagesToDelete = compareArrayAndReturnUnmatched(
+      [...oldImages, postDto?.thumbnail],
+      [...newImages, thumbnail]
+    );
 
-    if(imagesToDelete.length > 0){
-      await this.googleDriveService.deleteMultipleFiles(imagesToDelete)
+    if (imagesToDelete.length > 0) {
+      await this.googleDriveService.deleteMultipleFiles(imagesToDelete);
     }
 
     return {
       message: 'Post updated successfully!',
       statusCode: 200,
-    }
+    };
   }
+
 
   async remove(id: string) {
 
