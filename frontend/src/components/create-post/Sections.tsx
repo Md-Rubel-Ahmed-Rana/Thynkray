@@ -3,6 +3,7 @@ import { CreateSection } from "@/modules/post/types";
 import SectionForm from "./SectionForm";
 
 const section = {
+  id: "",
   title: "",
   images: [],
   description: "",
