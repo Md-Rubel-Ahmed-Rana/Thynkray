@@ -285,7 +285,6 @@ export class PostService {
             title: section.title,
             images: section.images,
             description: section.description,
-            post: { connect: { id } },
           }))
 
         },
