@@ -260,7 +260,6 @@ export class PostService {
   const oldContent = content.filter(section => section?.id);
   const newContent = content.filter(section => !section?.id);
 
-    // 1️⃣ Upsert the main post (no content yet)
     const post = await this.prisma.post.update({
       where: { id },
       data: {
@@ -273,7 +272,6 @@ export class PostService {
       }
     });
 
-    // 2️⃣ Update old content manually
     await Promise.all(
       oldContent.map(section =>
         this.prisma.postSection.update({
@@ -287,7 +285,6 @@ export class PostService {
       )
     );
 
-    // 3️⃣ Create new content and connect to post
     if (newContent.length > 0) {
       await this.prisma.postSection.createMany({
         data: newContent.map(section => ({
@@ -299,7 +296,6 @@ export class PostService {
       });
     }
 
-    // 4️⃣ Reload post with content and author
     const updatedPost = await this.prisma.post.findUnique({
       where: { id: post.id },
       include: { author: true, content: true },
