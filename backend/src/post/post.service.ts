@@ -255,7 +255,7 @@ export class PostService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
-    const {title, slug, tags, content, category, thumbnail} = updatePostDto;
+    const {title, slug, tags, content, category, thumbnail, description} = updatePostDto;
 
 
     const oldContent = content.filter(section => section?.id);
@@ -269,6 +269,7 @@ export class PostService {
         tags,
         category,
         thumbnail,
+        description,
         content: {
           update: oldContent
             .filter(section => section?.id)

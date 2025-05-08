@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreatePostDto, CreatePostSectionDto } from './create-post.dto';
-import { IsOptional, IsString, IsArray, IsNotEmpty } from 'class-validator';
+import { IsOptional, IsString, IsArray } from 'class-validator';
 
 
 export class UpdatePostDto extends PartialType(CreatePostDto) {
@@ -34,8 +34,9 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
 
 
 class UpdatePostSectionDto extends PartialType(CreatePostSectionDto) {
-    @IsNotEmpty({message: "ID is required"})
-    id: string;
+    @IsOptional()
+    @IsString({ message: 'Section id must be a string' })
+    id?: string;
     @IsOptional()
     @IsString({message: "Post ID must be a string"})
     postId: string;
