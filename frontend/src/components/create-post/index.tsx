@@ -39,11 +39,7 @@ const CreatePost = () => {
 
   const [thumbnailImage, setThumbnailImage] = useState<File | null>(null);
   const [content, setContent] = useState<CreateSection[]>([
-    {
-      title: "",
-      images: [],
-      description: "",
-    },
+    { id: "", title: "", images: [], description: "" },
   ]);
 
   const handleCreatePost = async (data: CreateNewPost) => {
