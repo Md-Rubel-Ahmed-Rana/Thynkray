@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateNewPost } from "@/modules/post/types";
 import { Box, Button, Chip, TextField, Typography } from "@mui/material";
 import { useState } from "react";
@@ -5,8 +6,8 @@ import { FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 type Props = {
   errors: FieldErrors<CreateNewPost>;
-  watch: UseFormWatch<CreateNewPost>;
-  setValue: UseFormSetValue<CreateNewPost>;
+  watch: UseFormWatch<CreateNewPost | any>;
+  setValue: UseFormSetValue<CreateNewPost | any>;
 };
 
 const Tags = ({ errors, watch, setValue }: Props) => {
@@ -24,7 +25,7 @@ const Tags = ({ errors, watch, setValue }: Props) => {
     const currentTags = watch("tags");
     setValue(
       "tags",
-      currentTags.filter((_, i) => i !== index)
+      currentTags.filter((_: any, i: number) => i !== index)
     );
   };
 
@@ -48,7 +49,7 @@ const Tags = ({ errors, watch, setValue }: Props) => {
         </Button>
       </Box>
       <Box mt={1} display="flex" gap={1} flexWrap="wrap">
-        {watch("tags").map((tag, index) => (
+        {watch("tags").map((tag: string, index: number) => (
           <Chip
             key={index}
             label={tag}
