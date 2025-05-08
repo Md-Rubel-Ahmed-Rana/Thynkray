@@ -110,7 +110,6 @@ const ContentSections = ({ register, control, watch, setValue }: Props) => {
               multiple
               onChange={(e) => {
                 const files = e.target.files;
-                console.log(files);
                 if (files) handleImageAdd(index, files);
               }}
             />
@@ -149,6 +148,7 @@ const ContentSections = ({ register, control, watch, setValue }: Props) => {
           })
         }
         sx={{ mt: 2 }}
+        variant="outlined"
       >
         Add Content Item
       </Button>
