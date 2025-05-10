@@ -182,9 +182,12 @@ export const createPostStore = (initialState: PostStore = defaultPostState) => {
     getPostsBySearched: async (searchText: string) => {
       set({ isLoading: true, error: null });
       try {
-        const data = await axios.get(`${baseApi}/post/search?q=${searchText}`, {
-          withCredentials: true,
-        });
+        const data = await axios.get(
+          `${baseApi}/meilisearch/posts/search?q=${searchText}`,
+          {
+            withCredentials: true,
+          }
+        );
 
         const posts = data?.data?.data as Post[];
 
