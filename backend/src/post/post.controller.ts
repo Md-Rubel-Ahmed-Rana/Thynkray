@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } f
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { buildMeiliSearchFilters } from 'src/utility/parseFiltersQuery';
 import { SkipThrottle } from '@nestjs/throttler';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/decorators/ownership.decorators';
@@ -34,13 +33,6 @@ export class PostController {
   @Get("/author/:authorId")
   findAllByAuthorId(@Param("authorId") authorId: string) {
     return this.postService.findAllByAuthorId(authorId);
-  }
-
-  @SkipThrottle()
-  @Get("/search")
-  search(@Query("q") q: string, @Query("filters") filters: string) {
-    const parsedFilters = buildMeiliSearchFilters(filters);
-    return this.postService.search(q, parsedFilters);
   }
 
   @SkipThrottle()
@@ -86,4 +78,5 @@ export class PostController {
   remove(@Param('id') id: string) {
     return this.postService.remove(id);
   }
+ 
 }
