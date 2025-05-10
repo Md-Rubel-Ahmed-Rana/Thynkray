@@ -3,16 +3,21 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { GetPostDto } from './dto/get-post.dto';
-import { meiliSearchService } from 'src/search-library/meilisearch.service';
 import { RedisCacheService } from 'src/cache/cache.service';
 import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class PostService {
   private readonly cacheKey = 'posts';
   
-  constructor(private readonly cache: RedisCacheService,private readonly googleDriveService: GoogleDriveService, private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly cache: RedisCacheService,
+    private readonly googleDriveService: GoogleDriveService, 
+    private readonly prisma: PrismaService,
+    private eventEmitter: EventEmitter2
+  ) {}
 
   async create(createPostDto: CreatePostDto) {
     const {title, slug, tags, content, category, thumbnail, authorId, description} = createPostDto;
@@ -40,13 +45,14 @@ export class PostService {
       include: {
         author: true,
         content: true,
-      }})
+      }
+    })
 
+    
     const postDto = GetPostDto.fromEntity(post);
-    // add to meilisearch
-    await meiliSearchService.addBlogsToMeiliSearch([postDto])
-    // add to cache
-    await this.cache.addNewValue(this.cacheKey, postDto)
+
+    // fire post created event
+    this.eventEmitter.emit('post.created', postDto);
 
     return {
       message: 'Post created successfully!',
@@ -80,8 +86,6 @@ export class PostService {
       await this.cache.set(this.cacheKey, postDtos)
       postsData = postDtos
     }
-
-    await meiliSearchService.addBlogsToMeiliSearch(postsData)
 
     return {
       message,
@@ -173,17 +177,10 @@ export class PostService {
     }
   }
 
-  async search(searchText: string, filters: string[] = []) {
-    const response = await meiliSearchService.search(searchText, filters);
-    return {
-      message: 'Posts retrieved successfully!',
-      data: response.hits,
-       statusCode: 200,
-    }
-  }
-
+ 
  async findOne(id: string) {
-    const postFromCache = await this.cache.getSingleValue(this.cacheKey, id)
+    const posts = await this.cache.get(this.cacheKey) as GetPostDto[]
+    const postFromCache = posts.find((post) => post?.id === id)
 
     if(postFromCache !== null && postFromCache){
       return {
@@ -222,7 +219,8 @@ export class PostService {
   }
 
  async findOneBySlug(slug: string) {
-    const postFromCache = await this.cache.getSinglePostBySlug(this.cacheKey, slug)
+    const posts = await this.cache.get(this.cacheKey) as GetPostDto[]
+    const postFromCache = posts.find((post) => post?.slug === slug)
 
     if(postFromCache !== null && postFromCache){
       return {
@@ -303,9 +301,10 @@ export class PostService {
 
     const postDto = GetPostDto.fromEntity(updatedPost);
 
-    // 5️⃣ Update search and cache
-    await meiliSearchService.addBlogsToMeiliSearch([postDto]);
-    await this.cache.updateValue(this.cacheKey, postDto);
+    // fire post updated event
+    this.eventEmitter.emit('post.updated', postDto);
+
+
 
     // 6️⃣ Delete removed images
     const oldImages = postDto.content.map(s => s.images).flat();
@@ -325,9 +324,7 @@ export class PostService {
     };
   }
 
-
   async remove(id: string) {
-
     const post = await this.prisma.post.findUnique({
       where: {
         id
@@ -346,10 +343,9 @@ export class PostService {
     
 
     const postDto = GetPostDto.fromEntity(post);
-    // remove from meilisearch
-     meiliSearchService.deleteBlogFromMeiliSearch(id)
-    // remove from cache
-     this.cache.deleteValue(this.cacheKey, postDto)
+
+    // fire post deleted event
+    this.eventEmitter.emit('post.deleted', id);
 
     // delete images from drive
     const imagesToDelete = [postDto?.thumbnail, ...postDto.content.map((section) => section.images).flat()]
@@ -364,4 +360,4 @@ export class PostService {
     }
   }
 
-  }
+}
