@@ -6,11 +6,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CommentService {
-  constructor(private readonly prisma: PrismaService) {}
- async  create(createCommentDto: CreateCommentDto) {
+  constructor(
+    private readonly prisma: PrismaService,
+  ) {}
+  async  create(createCommentDto: CreateCommentDto) {
     await this.prisma.comment.create({
       data: createCommentDto
     })
+
     return {
       message: 'Comment created successfully',
       statusCode: 201
@@ -113,8 +116,9 @@ export class CommentService {
       where: {
         id
       },
-      data: {...updateCommentDto}
+      data: {...updateCommentDto},
     })
+
     return {
       message: 'Comment updated successfully',
       statusCode: 200
@@ -122,9 +126,18 @@ export class CommentService {
   }
 
   async remove(id: string) {
+   const comment =  await this.prisma.comment.findUnique({
+      where: { id: id }
+    })
+
+    if(!comment){
+      throw new HttpException("Comment was not found", HttpStatus.NOT_FOUND)
+    }
+
     await this.prisma.comment.delete({
       where: { id: id }
     })
+
     return {
       message: 'Comment deleted successfully',
       statusCode: 200

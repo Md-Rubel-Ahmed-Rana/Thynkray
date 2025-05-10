@@ -1,66 +1,98 @@
 import { MeiliSearchClient } from "src/config/meilisearch";
 import { MeiliSearchDto } from "./meilisearch.dto";
+import { OnEvent } from "@nestjs/event-emitter";
+import { PrismaService } from "src/prisma/prisma.service";
+import { GetPostDto } from "src/post/dto/get-post.dto";
 
 
-class MeiliSearchService {
+export class MeiliSearchService {
   private index: any;
 
-  constructor() {
-    this.index = MeiliSearchClient.index('thynkray-blogs');
+  constructor(private readonly prisma: PrismaService) {
+    this.index = MeiliSearchClient.index('thynkray-blogs')
   }
 
-   async configureIndex(): Promise<void> {
+  async configureIndex(): Promise<{statusCode: number, message: string}> {
     try {
       await this.index.updateSearchableAttributes(["titles" ,"content", "tags", "author", "category", "published"]);
       await this.index.updateFilterableAttributes(["author", "tags", "published", "category"]);
-      console.log("MeiliSearch index configured successfully.");
+      return {
+        statusCode: 201,
+        message: "MeiliSearch index configured successfully.",
+      }
     } catch (error) {
       console.error("Error configuring MeiliSearch index:", error);
       throw error;
     }
   }
 
-  async addBlogsToMeiliSearch(blogs: any[] = []): Promise<void> {
-
+  async addAllPostsOnMeilisearch(): Promise<{statusCode: number, message: string, response: any}> {
     try {
-        const blogDtos = blogs.map((blog) => {
-            return MeiliSearchDto.fromPost(blog);
+        const posts =  await this.prisma.post.findMany({
+           include: {
+            author: true,
+            content: true,
+          }
         })
-        console.log({blogs, blogDtos});
-      const response = await this.index.addDocuments(blogDtos);
-      console.log({
-        message: "Documents added to MeiliSearch",
-        response
-      });
+        const postDtos = GetPostDto.fromEntities(posts)
+        const documents = postDtos.map((post) => MeiliSearchDto.fromPost(post))
+        const response = await this.index.addDocuments(documents);
+        return {
+          statusCode: 200,
+          message: "Documents added to MeiliSearch",
+          response
+        }
     } catch (error) {
       console.error('Error adding documents to MeiliSearch:', error);
     }
   }
 
-  async search(searchText: string, filters: string[] = []): Promise<any> {
+  async search(searchText: string, filters: string[] = []): Promise<{statusCode: number, message: string, data: any}> {
     try {
       const response = await this.index.search(searchText, {
         filter: filters,
         attributesToHighlight: ['title', "titles", "description", 'content'],
         attributesToRetrieve: ['id', "thumbnail", 'title', "slug", 'description', 'tags', 'author', 'category', 'published'],
       });
-      return response;
+      return {
+      message: 'Posts retrieved successfully!',
+      statusCode: 200,
+      data: response?.hits
+    }
     } catch (error) {
       console.error('Error searching in MeiliSearch:', error);
     }
   }
 
-  async deleteBlogFromMeiliSearch(id: string): Promise<void> {
-    try {
-      const response = await this.index.deleteDocuments([id]);
+
+  @OnEvent('post.created')
+  async postCreatedEvent(newPost: GetPostDto){
+    const response = await this.index.addDocuments([newPost]);
       console.log({
-        message: "Documents deleted from MeiliSearch",
+        message: "New post added to MeiliSearch",
+        data: newPost,
         response
       });
-    } catch (error) {
-      console.error('Error deleting documents from MeiliSearch:', error);
-    }
+  }
+
+  @OnEvent('post.updated')
+  async postUpdatedEvent(updatedPost: GetPostDto){
+     const response = await this.index.updateDocuments([updatedPost]);
+      console.log({
+        message: "Post updated to MeiliSearch",
+        data: updatedPost,
+        response
+      });
+  }
+
+  @OnEvent('post.deleted')
+  async postDeletedEvent(id: string){
+    const response = this.index.deleteDocument(id)
+      console.log({
+        message: "Post deleted from MeiliSearch",
+        data: {id},
+        response
+      });
   }
 }
 
-export const meiliSearchService = new MeiliSearchService();

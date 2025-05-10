@@ -16,9 +16,18 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { GlobalNewsModule } from './global-news/global-news.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { MeilisearchModule } from './search-library/meilisearch.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }), UserModule, PostModule, CommentModule, CacheModule, FileUploaderModule, PrismaModule, 
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }), 
+    UserModule, 
+    PostModule, 
+    CommentModule, 
+    CacheModule, 
+    FileUploaderModule, 
+    PrismaModule, 
     ThrottlerModule.forRoot({
       throttlers: [
           {
@@ -37,12 +46,25 @@ import { GlobalNewsModule } from './global-news/global-news.module';
             limit: 100
           }
       ],
-    }), AuthModule, GlobalNewsModule],
+    }), 
+    AuthModule, 
+    GlobalNewsModule,
+    MeilisearchModule,
+    EventEmitterModule.forRoot(),
+
+  ],
   controllers: [AppController],
-  providers: [AppService, RedisConfigService, RedisCacheService, CacheModule, GoogleDriveService, PrismaService, {
+  providers: [
+    AppService, 
+    RedisConfigService, 
+    RedisCacheService, 
+    CacheModule, 
+    GoogleDriveService, 
+    PrismaService, {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
-    }],
+    }
+  ],
   exports: [RedisConfigService, RedisCacheService, GoogleDriveService],
 })
 
