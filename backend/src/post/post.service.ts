@@ -311,12 +311,20 @@ export class PostService {
     const post = await this.prisma.post.findUnique({
       where: {
         id
+      },
+      include: {
+        author: true,
+        content: true,
       }
     });
 
     if (!post) {
       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }
+
+    const postDto = GetPostDto.fromEntity(post);
+
+    this.eventEmitter.emit('post.delete.images', postDto);
 
     await this.prisma.post.delete({
       where: {
