@@ -71,7 +71,6 @@ export class MeiliSearchService {
 
   async getAllPosts(): Promise<{statusCode: number, message: string ,data: GetPostDto[]}>{
     const posts = await this.index.getDocuments({ limit: 10000 })
-    console.log({posts: posts?.results });
     return {
       statusCode: 200,
       message: "All the posts retrieved from meilisearch",
