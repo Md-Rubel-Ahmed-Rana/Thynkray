@@ -102,7 +102,7 @@ export class PostService {
       if(posts?.length > 0){
         return {
           message: 'Posts retrieved from cache!',
-          data: posts
+          data: sortByCreatedAtDesc(posts)
         }
       }
     }
@@ -126,9 +126,9 @@ export class PostService {
     })
     const postDtos = GetPostDto.fromEntities(posts)
     return {
+      statusCode: 200,
       message: "Posts retrieved successfully",
       data: postDtos,
-       statusCode: 200,
     }
   }
 
@@ -138,7 +138,7 @@ export class PostService {
         author: true,
         content: true
        },
-        take: limit,
+      take: limit,
       orderBy: {
         createdAt: 'desc',
       },
