@@ -7,6 +7,7 @@ import { RedisCacheService } from 'src/cache/cache.service';
 import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { sortByCreatedAtDesc } from 'src/utility/sortByCreatedAt';
 
 @Injectable()
 export class PostService {
@@ -65,7 +66,7 @@ export class PostService {
     let message = 'Posts retrieved successfully!'
     const postsFromCache = await this.cache.get(this.cacheKey)
     if(postsFromCache !== null && postsFromCache){
-      postsData = postsFromCache
+      postsData = sortByCreatedAtDesc(postsFromCache)  
       message = 'Posts retrieved from cache!'
     }else{
       const posts = await this.prisma.post.findMany({
@@ -83,7 +84,6 @@ export class PostService {
           }
         });
       const postDtos = GetPostDto.fromEntities(posts)
-      await this.cache.set(this.cacheKey, postDtos)
       postsData = postDtos
     }
 

@@ -2,13 +2,17 @@ import { Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
 import { GetPostDto } from "src/post/dto/get-post.dto";
 import { RedisConfigService } from "src/config/redis";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class RedisCacheService {
   private client: RedisConfigService;
   private readonly cacheTTL = 60 * 60 * 24 * 30;
   private readonly cacheKey = {posts: "posts"};
-  constructor(client: RedisConfigService) {
+  constructor(
+    client: RedisConfigService,
+    private readonly prisma: PrismaService
+  ) {
     this.client = client;
   }
 
@@ -26,6 +30,37 @@ export class RedisCacheService {
     return null;
   }
 
+  async deleteAllPosts(){
+    const result = await this.client.getClient().del(this.cacheKey.posts)
+    return {
+      statusCode: 200,
+      message: "All the posts deleted from cache",
+      data: result
+    }
+  }
+
+  async setAllPosts(){
+    const posts =  await this.prisma.post.findMany({
+      include: {
+       author: true,
+       content: true,
+       _count: {
+         select: {
+           comments: true
+         }
+        }
+     }
+   })
+   const postDtos = GetPostDto.fromEntities(posts)
+   const result = await this.client.getClient().set(this.cacheKey.posts, JSON.stringify(postDtos))
+   return {
+    statusCode: 200,
+    message: "All the posts added to cache",
+    data: result
+  }
+
+  }
+
   @OnEvent('post.created')
   async postCreatedEvent(post: GetPostDto){
     console.log({
@@ -36,7 +71,7 @@ export class RedisCacheService {
     const cacheKey = this.cacheKey.posts
     const posts = await this.get(cacheKey)
     if(posts){
-      await this.set(cacheKey, [...posts, post])
+      await this.set(cacheKey, [post,...posts])
     }else{
       await this.set(cacheKey, [post])
     }
