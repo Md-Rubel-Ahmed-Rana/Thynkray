@@ -1,10 +1,8 @@
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
-
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { GetPostDto } from 'src/post/dto/get-post.dto';
 import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
  
@@ -15,7 +13,6 @@ export class GoogleDriveService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly prisma: PrismaService
   ) {
     const rawCredentials = this.configService.get<string>(
       'GOOGLE_DRIVE_CREDENTIALS'
@@ -161,26 +158,16 @@ export class GoogleDriveService {
     }
   }
 
-  @OnEvent('post.deleted')
-  async deleteAllImagesFromPost(id: string){
-    const post = await this.prisma.post.findUnique({
-      where: {id}
-    })
-    if(!post){
-      console.log(`The post was not found to delete images. id:${post?.id}`);
-      return;
-    }
-
-    const postDto = GetPostDto.fromEntity(post);
-
+  @OnEvent('post.delete.images')
+  async deleteAllImagesFromPost(post: GetPostDto){
     console.log({
       from: "Google Drive Service",
       message: `Delete all the images from the post:${post?.title}`,
-      data:  postDto
+      data:  post
     });
 
     // delete images from drive
-    const imagesToDelete = [postDto?.thumbnail, ...postDto?.content?.map((section) => section.images).flat()]
+    const imagesToDelete = [post?.thumbnail, ...post?.content?.map((section) => section.images).flat()]
 
     if(imagesToDelete.length > 0){
       console.log(`${imagesToDelete?.length} images found to delete for post:${post?.title}`);
