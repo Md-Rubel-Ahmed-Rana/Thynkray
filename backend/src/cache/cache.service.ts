@@ -11,7 +11,7 @@ export class RedisCacheService {
   private readonly cacheKey = {posts: "posts"};
   constructor(
     client: RedisConfigService,
-    private readonly prisma: PrismaService
+    private readonly prisma: PrismaService,
   ) {
     this.client = client;
   }

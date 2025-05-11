@@ -4,15 +4,11 @@ import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
 
 @Injectable()
 export class ManipulatePostMiddleware implements NestMiddleware {
-  constructor(private readonly googleDriveService: GoogleDriveService) {}
+  constructor(
+    private readonly googleDriveService: GoogleDriveService
+  ) {}
   async use(req: Request, res: Response, next: NextFunction) {
     const files = req.files as Express.Multer.File[];
-
-    console.log({
-      tags: "Before parse",
-      data: req.body.tags
-    });
-    
     try {
       if (typeof req.body.tags === 'string') {
         req.body.tags = JSON.parse(req.body.tags);
@@ -20,12 +16,6 @@ export class ManipulatePostMiddleware implements NestMiddleware {
     } catch {
       req.body.tags = [];
     }
-
-     console.log({
-      tags: "After parse",
-      data: req.body.tags
-    });
-
 
     let content = [];
     try {

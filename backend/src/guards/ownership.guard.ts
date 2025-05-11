@@ -5,11 +5,16 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
+import { PinoLogger } from 'src/common/logger/pino-logger.service';
 import { OWNERSHIP_META, OwnershipOptions } from 'src/decorators/ownership.decorators';
 
 @Injectable()
 export class OwnershipGuard implements CanActivate {
-  constructor(private reflector: Reflector, private moduleRef: ModuleRef) {}
+  constructor(
+    private readonly reflector: Reflector, 
+    private readonly moduleRef: ModuleRef,
+    private readonly logger: PinoLogger
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const options = this.reflector.get<OwnershipOptions>(
@@ -30,18 +35,13 @@ export class OwnershipGuard implements CanActivate {
     const resource = resourceResponse?.data
 
     if (!resource) {
+      this.logger.error(`Resource was not found by ${resourceId}`)
       throw new ForbiddenException('Resource not found.');
     }
 
-    console.log({ resourceId, resource, user});
-
-    console.log({
-      left: resource,
-      right: user?.id
-    });
-
     const ownerValue = this.getValueByPath(resource, options.ownerField);
     if (ownerValue !== user?.id) {
+      this.logger.warn(`${user?.name} is not the owner of ${ownerValue}`)
       throw new ForbiddenException('You are not the owner of this resource.');
     }
 
@@ -49,17 +49,17 @@ export class OwnershipGuard implements CanActivate {
   }
   
   async getServiceByName(serviceName: string): Promise<any> {
-        try {
-          const service = this.moduleRef.get(serviceName, { strict: false });
-          return service;
-        } catch (error) {
-          console.error(`Service with name "${serviceName}" not found.`, error);
-          return null;
-        }
+      try {
+        const service = this.moduleRef.get(serviceName, { strict: false });
+        return service;
+      } catch (error: any) {
+        this.logger.error(`Service with name "${serviceName}" not found. Error: ${error?.message}`);
+        return null;
+      }
   }
 
   getValueByPath(obj: any, path: string): any {
-  return path.split('.').reduce((acc, part) => acc?.[part], obj);
-}
+    return path.split('.').reduce((acc, part) => acc?.[part], obj);
+  }
 
 }

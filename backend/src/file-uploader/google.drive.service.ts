@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { GetPostDto } from 'src/post/dto/get-post.dto';
 import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
+import { PinoLogger } from 'src/common/logger/pino-logger.service';
  
 @Injectable()
 export class GoogleDriveService {
@@ -13,6 +14,7 @@ export class GoogleDriveService {
 
   constructor(
     private readonly configService: ConfigService,
+    private readonly logger: PinoLogger,
   ) {
     const rawCredentials = this.configService.get<string>(
       'GOOGLE_DRIVE_CREDENTIALS'
@@ -61,8 +63,9 @@ export class GoogleDriveService {
 
       // Return public viewable link
       return `https://drive.google.com/thumbnail?id=${fileId}`;
-    } catch (error) {
-      console.error('Google Drive upload error:', error);
+    } catch (error: any) {
+      this.logger.error(`Google Drive upload error. Error: ${error.message}`);
+      return
     } finally {
       fs.unlink(file.path, () => {});
     }
@@ -75,8 +78,9 @@ export class GoogleDriveService {
     try {
         const fileUrl = await this.uploadSingleFile(file);
         uploadResults.push(fileUrl);
-      } catch (error) {
-        console.error(`Failed to upload file ${file.originalname}:`, error);
+      } catch (error: any) {
+        this.logger.error(`Failed to upload file ${file.originalname}. Error: ${error?.message}`);
+        return
       }
     }
 
@@ -91,7 +95,7 @@ export class GoogleDriveService {
     const fileId =  this.extractFileIdFromLink(link)
 
     if(!fileId) {
-      console.log('Invalid file link provided', link);
+      this.logger.log(`Invalid file link provided. Link: ${link}`);
       return
     }
 
@@ -99,8 +103,9 @@ export class GoogleDriveService {
       await this.drive.files.delete({
         fileId
       });
-    } catch (error) {
-      console.error('Google Drive delete error:', error);
+    } catch (error: any) {
+      this.logger.error(`Google Drive delete error. Error: ${error?.message}`);
+      return
     }
   }
 
@@ -108,8 +113,9 @@ export class GoogleDriveService {
     for (const link of links) {
       try {
         await this.deleteFile(link);
-      } catch (error) {
-        console.error(`Failed to delete file with link ${link}:`, error);
+      } catch (error: any) {
+        this.logger.error(`Failed to delete file with link ${link}. Error: ${error?.message}`);
+        return
       }
     }
   }
@@ -124,8 +130,8 @@ export class GoogleDriveService {
     if (match && match[1]) return match[1];
 
       return null;
-    } catch (error) {
-      console.error('Invalid URL:', error);
+    } catch (error: any) {
+      this.logger.error(`Invalid URL. Error: ${error?.message}`);
       return null;
     }
   }
@@ -171,7 +177,7 @@ export class GoogleDriveService {
       console.log(`${imagesToDelete?.length} images found to delete for post:${post?.title}`);
        this.deleteMultipleFiles(imagesToDelete)
     }else{
-      console.log(`No images found to delete for post:${post?.title}`);
+      this.logger.log(`No images found to delete for post:${post?.title}`);
     }
   }
 

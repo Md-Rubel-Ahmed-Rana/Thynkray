@@ -1,10 +1,17 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { PinoLogger } from 'src/common/logger/pino-logger.service';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
+  constructor(
+    private readonly logger: PinoLogger
+  ){
+    super();
+  }
   async onModuleInit() {
+    this.logger.log("Database connecting...")
     await this.$connect();
-    console.log("Database connected successfully!");
+    this.logger.log("Database connected successfully!")
   }
 }
