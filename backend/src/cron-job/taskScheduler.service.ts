@@ -49,6 +49,18 @@ export class TasksService {
     console.log('Cron job ran to check consistency');
   }
 
+  // refresh full posts data on cache and meilisearch at every 1 hour
+  @Cron('0 0 * * * *') 
+  async refreshHotPostsInCacheAndSearch() {
+    console.log({
+      from: "Cron job service",
+      message: "Refreshing full posts data on cache and meilisearch"
+    });
+    await this.cacheService.setAllPosts();
+    await this.meilisearchService.deleteFullDocuments()
+    await this.meilisearchService.addAllPostsOnMeilisearch()
+  }
+
   private async ensureConsistency(
     dbPosts: any[],
     cachePosts: any[],
