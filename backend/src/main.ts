@@ -15,10 +15,14 @@ import * as crypto from 'crypto';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // set crypto as global
-  // @ts-ignore
-  global.crypto = crypto;
   const configService = app.get(ConfigService)
+  // set crypto as global
+  const environment = configService.get("ENV") 
+  if(environment !== "development"){
+    // @ts-ignore
+    global.crypto = crypto;
+  }
+  
   
   const port = configService.get("PORT") && Number(configService.get("PORT"))
   

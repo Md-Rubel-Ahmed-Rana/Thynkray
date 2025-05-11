@@ -48,7 +48,7 @@ export class MeiliSearchService {
           response
         }
     } catch (error) {
-      console.error('Error adding documents to MeiliSearch:', error);
+      console.error('Error adding full documents to MeiliSearch:', error);
     }
   }
 
