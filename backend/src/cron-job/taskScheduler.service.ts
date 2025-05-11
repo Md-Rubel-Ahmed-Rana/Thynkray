@@ -36,6 +36,7 @@ export class TasksService {
     console.log({
       from :"Cron job service",
       message: "Data retrieved from 3 resources",
+      actionFiredAt: new Date().toLocaleString(),
       data: {
         db: {total: postsFromDb?.length, ids: postsFromDb.map((post) => post?.id)},
         cache: {total: postsFromCache?.length, ids: postsFromCache.map((post) => post?.id)},
@@ -62,15 +63,15 @@ export class TasksService {
 
     // Check for inconsistencies in cache and MeiliSearch
     for (const [id, dbPost] of dbMap.entries()) {
-      const cached = cacheMap.get(id);
-      const search = searchMap.get(id);
 
-      if (JSON.stringify(dbPost) !== JSON.stringify(cached)) {
+      if (!cacheMap.has(id)) {
         inconsistentCachePosts.push(dbPost);
+        console.debug(`Post ${id} missing in Redis cache`);
       }
-
-      if (JSON.stringify(dbPost) !== JSON.stringify(search)) {
+    
+      if (!searchMap.has(id)) {
         inconsistentSearchPosts.push(dbPost);
+        console.debug(`Post ${id} missing in Meilisearch`);
       }
     }
 
