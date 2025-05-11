@@ -32,6 +32,11 @@ export class MeiliSearchService {
            include: {
             author: true,
             content: true,
+            _count: {
+              select: {
+                comments: true
+              }
+             }
           }
         })
         const postDtos = GetPostDto.fromEntities(posts)
@@ -61,6 +66,34 @@ export class MeiliSearchService {
     }
     } catch (error) {
       console.error('Error searching in MeiliSearch:', error);
+    }
+  }
+
+  async getAllPosts(): Promise<{statusCode: number, message: string ,data: GetPostDto[]}>{
+    const posts = await this.index.getDocuments({ limit: 10000 })
+    return {
+      statusCode: 200,
+      message: "All the posts retrieved from meilisearch",
+      data: posts?.results
+    }
+  }
+
+  async updatePosts(posts: any[]) {
+    const postDtos = GetPostDto.fromEntities(posts)
+    const documents = postDtos.map((post) => MeiliSearchDto.fromPost(post))
+    return this.index.addDocuments(documents);
+  }
+  
+  async deletePosts(ids: string[]) {
+    return this.index.deleteDocuments(ids);
+  }
+
+  async deleteFullDocuments(){
+    const response = await this.index.deleteAllDocuments()
+    return {
+      statusCode: 200,
+      message: "All the documents deleted from meilisearch",
+      data: response
     }
   }
 
