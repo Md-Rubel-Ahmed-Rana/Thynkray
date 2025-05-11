@@ -14,11 +14,13 @@ import { PinoLogger } from './common/logger/pino-logger.service';
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new PinoLogger
+  });
 
   const logger = app.get(PinoLogger);
 
-  logger.log('Starting app...');
+  logger.log('Thynkray application is starting...');
   
   const configService = app.get(ConfigService)
 

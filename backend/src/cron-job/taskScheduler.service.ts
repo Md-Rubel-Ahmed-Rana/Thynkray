@@ -1,18 +1,19 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { RedisCacheService } from 'src/cache/cache.service';
+import { PinoLogger } from 'src/common/logger/pino-logger.service';
 import { GetPostDto } from 'src/post/dto/get-post.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { MeiliSearchService } from 'src/search-library/meilisearch.service';
 
 @Injectable()
 export class TasksService {
-  private readonly logger = new Logger(TasksService.name);
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly cacheService: RedisCacheService,
     private readonly meilisearchService: MeiliSearchService,
+    private readonly logger: PinoLogger,
   ) {}
 
   // run the cron job at every 5 minutes to keep data consistence
@@ -46,7 +47,7 @@ export class TasksService {
 
     await this.ensureConsistency(postsFromDb, postsFromCache, postsFromMeilisearch);
 
-    console.log('Cron job ran to check consistency');
+    this.logger.log('Cron job ran to check consistency');
   }
 
   // refresh full posts data on cache and meilisearch at every 1 hour
@@ -78,25 +79,25 @@ export class TasksService {
 
       if (!cacheMap.has(id)) {
         inconsistentCachePosts.push(dbPost);
-        console.debug(`Post ${id} missing in Redis cache`);
+        this.logger.debug(`Post ${id} missing in Redis cache`);
       }
     
       if (!searchMap.has(id)) {
         inconsistentSearchPosts.push(dbPost);
-        console.debug(`Post ${id} missing in Meilisearch`);
+        this.logger.debug(`Post ${id} missing in Meilisearch`);
       }
     }
 
     // Fix cache inconsistency
     if (inconsistentCachePosts.length > 0) {
       await this.cacheService.set('posts', dbPosts);
-      console.warn(`Fixed Redis cache inconsistency with ${inconsistentCachePosts.length} posts`);
+      this.logger.warn(`Fixed Redis cache inconsistency with ${inconsistentCachePosts.length} posts`);
     }
 
     // Fix MeiliSearch inconsistency
     if (inconsistentSearchPosts.length > 0) {
       await this.meilisearchService.updatePosts(inconsistentSearchPosts);
-      console.warn(`Fixed MeiliSearch inconsistency with ${inconsistentSearchPosts.length} posts`);
+      this.logger.warn(`Fixed MeiliSearch inconsistency with ${inconsistentSearchPosts.length} posts`);
     }
 
     // remove unused data from cache and meilisearch
@@ -105,13 +106,13 @@ export class TasksService {
 
     if (staleCache.length > 0) {
       await this.cacheService.set('posts', dbPosts);
-      console.warn(`Removed ${staleCache.length} stale cache posts`);
+      this.logger.warn(`Removed ${staleCache.length} stale cache posts`);
     }
 
     if (staleSearch.length > 0) {
       const staleIds = staleSearch.map(p => p.id);
       await this.meilisearchService.deletePosts(staleIds);
-      console.warn(`Removed ${staleSearch.length} stale MeiliSearch posts`);
+      this.logger.warn(`Removed ${staleSearch.length} stale MeiliSearch posts`);
       
     }
   }
