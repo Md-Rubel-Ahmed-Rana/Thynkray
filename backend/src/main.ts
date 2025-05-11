@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -8,12 +9,15 @@ import { ValidationPipe } from '@nestjs/common';
 import { ValidationExceptionFilter } from './common/validation/validation-exception.filter';
 import helmet from 'helmet';
 import  cookieParser from 'cookie-parser';
+import * as crypto from 'crypto';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  
+  // set crypto as global
+  // @ts-ignore
+  global.crypto = crypto;
   const configService = app.get(ConfigService)
   
   const port = configService.get("PORT") && Number(configService.get("PORT"))
