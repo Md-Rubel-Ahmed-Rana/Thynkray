@@ -61,6 +61,8 @@
     "meilisearch": "^0.50.0",
     "multer": "^1.4.5-lts.2",
     "newsapi": "^2.4.1",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
     "prisma": "^6.6.0",
     "redis": "^4.7.0",
     "reflect-metadata": "^0.1.13",

@@ -20,6 +20,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MeilisearchModule } from './search-library/meilisearch.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronJobModule } from './cron-job/taskScheduler.module';
+import { LoggerModule } from './common/logger/logger.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { CronJobModule } from './cron-job/taskScheduler.module';
     GlobalNewsModule,
     MeilisearchModule,
     CronJobModule,
+    LoggerModule,
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot()
 
@@ -67,7 +69,7 @@ import { CronJobModule } from './cron-job/taskScheduler.module';
     PrismaService, {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
-    }
+    },
   ],
   exports: [RedisConfigService, RedisCacheService, GoogleDriveService],
 })
