@@ -18,6 +18,8 @@ import { AuthModule } from './auth/auth.module';
 import { GlobalNewsModule } from './global-news/global-news.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MeilisearchModule } from './search-library/meilisearch.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronJobModule } from './cron-job/taskScheduler.module';
 
 @Module({
   imports: [
@@ -50,7 +52,9 @@ import { MeilisearchModule } from './search-library/meilisearch.module';
     AuthModule, 
     GlobalNewsModule,
     MeilisearchModule,
+    CronJobModule,
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot()
 
   ],
   controllers: [AppController],
