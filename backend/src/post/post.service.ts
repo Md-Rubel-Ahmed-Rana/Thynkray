@@ -1,10 +1,8 @@
-import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { GetPostDto } from './dto/get-post.dto';
 import { RedisCacheService } from 'src/cache/cache.service';
-import compareArrayAndReturnUnmatched from 'src/utility/compareArray';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { sortByCreatedAtDesc } from 'src/utility/sortByCreatedAt';
@@ -15,7 +13,6 @@ export class PostService {
   
   constructor(
     private readonly cache: RedisCacheService,
-    private readonly googleDriveService: GoogleDriveService, 
     private readonly prisma: PrismaService,
     private eventEmitter: EventEmitter2
   ) {}
@@ -302,21 +299,7 @@ export class PostService {
     const postDto = GetPostDto.fromEntity(updatedPost);
 
     // fire post updated event
-    this.eventEmitter.emit('post.updated', postDto);
-
-
-
-    // 6️⃣ Delete removed images
-    const oldImages = postDto.content.map(s => s.images).flat();
-    const newImages = content.map(s => s.images).flat();
-    const imagesToDelete = compareArrayAndReturnUnmatched(
-      [...oldImages, postDto.thumbnail],
-      [...newImages, thumbnail]
-    );
-
-    if (imagesToDelete.length > 0) {
-      await this.googleDriveService.deleteMultipleFiles(imagesToDelete);
-    }
+    this.eventEmitter.emit('post.updated', {...postDto, _old: post });
 
     return {
       message: 'Post updated successfully!',
@@ -340,19 +323,9 @@ export class PostService {
         id
       }
     });
-    
-
-    const postDto = GetPostDto.fromEntity(post);
 
     // fire post deleted event
     this.eventEmitter.emit('post.deleted', id);
-
-    // delete images from drive
-    const imagesToDelete = [postDto?.thumbnail, ...postDto.content.map((section) => section.images).flat()]
-
-    if(imagesToDelete.length > 0){
-       this.googleDriveService.deleteMultipleFiles(imagesToDelete)
-    }
 
     return {
       message: 'Post deleted successfully!',
