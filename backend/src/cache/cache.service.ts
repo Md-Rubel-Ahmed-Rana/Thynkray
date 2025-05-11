@@ -52,6 +52,7 @@ export class RedisCacheService {
      }
    })
    const postDtos = GetPostDto.fromEntities(posts)
+   await this.client.getClient().del(this.cacheKey.posts)
    const result = await this.client.getClient().set(this.cacheKey.posts, JSON.stringify(postDtos))
    return {
     statusCode: 200,
