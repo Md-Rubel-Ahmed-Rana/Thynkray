@@ -47,19 +47,19 @@ export class MeiliSearchDto {
       ?.map((section: any) => section?.description)
       .join(' ') || '';
 
-    const titles = `${post.title} ${sectionTitles}`;
+    const titles = `${post?.title} ${sectionTitles}`;
 
     return new MeiliSearchDto(
-      post.id,
-      post.title,
-      post.thumbnail,
+      post?.id,
+      post?.title,
+      post?.thumbnail || "",
       titles,
-      post.description,
-      post.slug,
+      post?.description || "",
+      post?.slug || "",
       sectionDescriptions,
       post.tags || [],
-      post.author.name,
-      post.category,
+      post?.author?.name || "Unknown",
+      post.category || "",
       new Date(post.createdAt).toISOString()
     );
   }
