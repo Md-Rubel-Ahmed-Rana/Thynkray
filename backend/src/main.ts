@@ -10,12 +10,18 @@ import { ValidationExceptionFilter } from './common/validation/validation-except
 import helmet from 'helmet';
 import  cookieParser from 'cookie-parser';
 import * as crypto from 'crypto';
+import { PinoLogger } from './common/logger/pino-logger.service';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const logger = app.get(PinoLogger);
+
+  logger.log('Starting app...');
+  
   const configService = app.get(ConfigService)
+
   // set crypto as global
   const environment = configService.get("ENV") 
   if(environment !== "development"){
@@ -34,6 +40,7 @@ async function bootstrap() {
   });
   
   //  global middlewares
+  app.useLogger(logger);
   app.useGlobalPipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}));
   app.useGlobalFilters(new ValidationExceptionFilter());
   app.setGlobalPrefix('api/v1');
@@ -47,8 +54,8 @@ async function bootstrap() {
  const redis = app.get(RedisConfigService);
  await redis.connect()
 
-  app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  app.listen(port,async () => {
+    logger.log(`Thynkray app is running at http://localhost:${port}`);
   });
 }
 bootstrap();
