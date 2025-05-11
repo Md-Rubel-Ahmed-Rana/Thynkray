@@ -63,7 +63,6 @@ export class GoogleDriveService {
       return `https://drive.google.com/thumbnail?id=${fileId}`;
     } catch (error) {
       console.error('Google Drive upload error:', error);
-      throw new Error('Failed to upload file to Google Drive');
     } finally {
       fs.unlink(file.path, () => {});
     }
@@ -102,7 +101,6 @@ export class GoogleDriveService {
       });
     } catch (error) {
       console.error('Google Drive delete error:', error);
-      throw new Error('Failed to delete file from Google Drive');
     }
   }
 
