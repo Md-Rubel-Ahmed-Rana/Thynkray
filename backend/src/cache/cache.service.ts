@@ -89,7 +89,7 @@ export class RedisCacheService {
     const posts = await this.get(cacheKey)
     if(posts){
       const updatedPosts = posts.map((c: GetPostDto)=> 
-        c.id === updatedPosts?.id ? updatedPosts : c
+        c.id === updatedPost?.id ? updatedPost : c
       );
       await this.set(cacheKey, updatedPosts);
     }else{
