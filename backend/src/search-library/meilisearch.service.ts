@@ -3,12 +3,16 @@ import { MeiliSearchDto } from "./meilisearch.dto";
 import { OnEvent } from "@nestjs/event-emitter";
 import { PrismaService } from "src/prisma/prisma.service";
 import { GetPostDto } from "src/post/dto/get-post.dto";
+import { PinoLogger } from "src/common/logger/pino-logger.service";
 
 
 export class MeiliSearchService {
   private index: any;
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly logger: PinoLogger,
+  ) {
     this.index = MeiliSearchClient.index('thynkray-blogs')
   }
 
@@ -20,9 +24,8 @@ export class MeiliSearchService {
         statusCode: 201,
         message: "MeiliSearch index configured successfully.",
       }
-    } catch (error) {
-      console.error("Error configuring MeiliSearch index:", error);
-      throw error;
+    } catch (error: any) {
+      this.logger.error(`Error configuring MeiliSearch index. Error:${error?.message}`);
     }
   }
 
@@ -45,7 +48,7 @@ export class MeiliSearchService {
               try {
                 return MeiliSearchDto.fromPost(post);
               } catch (e: any) {
-                console.warn('Skipping post due to error:', e?.message);
+                this.logger.warn(`Skipping post due to error: ${e?.message}`);
                 return null;
               }
             })
@@ -57,8 +60,8 @@ export class MeiliSearchService {
           message: "Documents added to MeiliSearch",
           response
         }
-    } catch (error) {
-      console.error('Error adding full documents to MeiliSearch:', error);
+    } catch (error: any) {
+      this.logger.error(`Error adding full documents to MeiliSearch. Error: ${error?.message}`);
     }
   }
 
@@ -74,8 +77,8 @@ export class MeiliSearchService {
       statusCode: 200,
       data: response?.hits
     }
-    } catch (error) {
-      console.error('Error searching in MeiliSearch:', error);
+    } catch (error: any) {
+      this.logger.error(`Error searching in MeiliSearch. Error: ${error?.message}`);
     }
   }
 
