@@ -40,7 +40,17 @@ export class MeiliSearchService {
           }
         })
         const postDtos = GetPostDto.fromEntities(posts)
-        const documents = postDtos.map((post) => MeiliSearchDto.fromPost(post))
+        const documents = postDtos
+            .map((post) => {
+              try {
+                return MeiliSearchDto.fromPost(post);
+              } catch (e: any) {
+                console.warn('Skipping post due to error:', e?.message);
+                return null;
+              }
+            })
+            .filter(Boolean);
+
         const response = await this.index.addDocuments(documents);
         return {
           statusCode: 200,

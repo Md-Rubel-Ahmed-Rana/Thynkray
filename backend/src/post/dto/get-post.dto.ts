@@ -44,19 +44,20 @@ export class GetPostDto {
     }
 
     static fromEntity(entity: any): GetPostDto {
+
         return new GetPostDto(
-            entity.id,
-            entity.title,
-            entity.slug,
-            entity.description,
-            entity.thumbnail,
-            entity.category,
-            entity.tags,
-            entity.content,
-            entity.author,
-            entity?._count?.comments,
-            entity.createdAt,
-            entity.updatedAt
+            entity?.id,
+            entity?.title,
+            entity?.slug,
+            entity?.description,
+            entity?.thumbnail,
+            entity?.category,
+            entity?.tags,
+            entity?.content,
+            entity?.author,
+            entity?._count?.comments || 0,
+            entity?.createdAt,
+            entity?.updatedAt
         );
     }
 
