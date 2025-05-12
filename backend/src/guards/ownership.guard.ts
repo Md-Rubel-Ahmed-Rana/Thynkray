@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
 import { PinoLogger } from 'src/common/logger/pino-logger.service';
-import { OWNERSHIP_META, OwnershipOptions } from 'src/decorators/ownership.decorators';
+import { OWNERSHIP_META, OwnershipOptions } from 'src/common/decorators/ownership.decorators';
 
 @Injectable()
 export class OwnershipGuard implements CanActivate {

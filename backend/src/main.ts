@@ -11,6 +11,7 @@ import helmet from 'helmet';
 import  cookieParser from 'cookie-parser';
 import * as crypto from 'crypto';
 import { PinoLogger } from './common/logger/pino-logger.service';
+import { PrismaExceptionFilter } from './common/prismaClientException';
 
 
 async function bootstrap() {
@@ -43,7 +44,10 @@ async function bootstrap() {
   
   //  global middlewares
   app.useLogger(logger);
-  app.useGlobalPipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}));
+  app.useGlobalPipes(
+    new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true})
+  );
+  app.useGlobalFilters(new PrismaExceptionFilter(logger));
   app.useGlobalFilters(new ValidationExceptionFilter());
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new ResponseInterceptor());
