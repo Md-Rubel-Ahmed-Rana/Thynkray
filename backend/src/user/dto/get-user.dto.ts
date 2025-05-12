@@ -1,3 +1,65 @@
+import { ApiProperty } from "@nestjs/swagger";
+
+
+class UserDto {
+    @ApiProperty()
+    id: string;
+  
+    @ApiProperty()
+    name: string;
+  
+    @ApiProperty()
+    email: string;
+
+    @ApiProperty()
+    role: string;
+  
+    @ApiProperty()
+    bio: string;
+  
+    @ApiProperty()
+    posts: number;
+  
+    @ApiProperty()
+    designation: string;
+  
+    @ApiProperty()
+    profile_image: string;
+  
+    @ApiProperty()
+    createdAt: Date;
+  
+    @ApiProperty()
+    updatedAt: Date;
+}
+
+export class UsersResponseDto {
+    @ApiProperty({ example: 200 })
+    statusCode: number;
+  
+    @ApiProperty({ example: true })
+    success: boolean;
+  
+    @ApiProperty({ example: 'Users retrieved successfully' })
+    message: string;
+  
+    @ApiProperty({ type: [UserDto] })
+    data: UserDto[];
+}
+
+export class UserResponseDto {
+    @ApiProperty({ example: 200 })
+    statusCode: number;
+  
+    @ApiProperty({ example: true })
+    success: boolean;
+  
+    @ApiProperty({ example: 'User retrieved successfully' })
+    message: string;
+  
+    @ApiProperty({ type: UserDto })
+    data: UserDto
+}
 
 export class GetUserDto {
     id: string;
@@ -34,9 +96,7 @@ export class GetUserDto {
         this.created_at = created_at || new Date();
         this.updated_at = updated_at || new Date();
     }
-
     // ---- GET methods ----
-
     getBasicInfo() {
         return {
             id: this.id,
@@ -48,7 +108,6 @@ export class GetUserDto {
             profile_image: this.profile_image,
         };
     }
-
     getFullInfo() {
         return {
             id: this.id,
@@ -62,7 +121,6 @@ export class GetUserDto {
             updated_at: this.updated_at,
         };
     }
-
     getPublicProfile() {
         return {
             id: this.id,
@@ -83,3 +141,4 @@ export class GetUserDto {
         };
     }
 }
+
