@@ -9,12 +9,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsString({ message: 'Name must be a string', context: { value: 'name' } })
     name?: string;
     
-    @ApiPropertyOptional({ example: 'mdrubelahmedrana521@gmail.com', description: "The email couldn't be changed anymore." })
     @IsOptional()
     @IsEmail({}, { message: 'Email must be a valid email address', context: { value: 'email' } })
     email?: string;
 
-    @ApiPropertyOptional({ example: 'author', description: "The role couldn't be changed anymore. It auto generated." })
     @IsOptional()
     @IsString({ message: 'Role must be a string', context: { value: 'role' } })
     role?: string;
