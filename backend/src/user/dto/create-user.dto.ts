@@ -1,21 +1,33 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsOptional, IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
+    @ApiProperty({ example: 'Md Rubel Ahmed Rana', description: 'The full name of the user' })
     @IsString({ message: 'Name must be a string', context: { field: 'name' } })
     @IsNotEmpty({ message: 'Name is required', context: { field: 'name' } })
     name: string;
+
+    @ApiProperty({ example: 'mdrubelahmedrana521@gmail.com', description: 'The email of the user' })
     @IsEmail({}, { message: 'Email must be a valid email address', context: { field: 'email' } })
     @IsNotEmpty({ message: 'Email is required', context: { field: 'email' } })
     email: string; 
+
+    @ApiPropertyOptional({ example: 'author', description: 'User role' })
     @IsOptional()
     @IsString({ message: 'Role must be a string', context: { field: 'role' } })
     role: string;
+
+    @ApiPropertyOptional({ example: 'Passionate backend dev', description: 'Short biography' })
     @IsOptional()
     @IsString({ message: 'Bio must be a string', context: { field: 'bio' } })
     bio?: string;
+
+    @ApiPropertyOptional({ example: 'https://example.com/profile.jpg', description: 'Profile image URL. Must upload image file' })
     @IsOptional()
     @IsString({ message: 'Profile image must be a string', context: { field: 'profile_image' } })
     profile_image?: string; 
+
+    @ApiPropertyOptional({ example: 'Full Stack Developer', description: 'User designation' })
     @IsOptional()
     @IsString({ message: 'Designation image must be a string', context: { field: 'designation' } })
     designation?: string; 
