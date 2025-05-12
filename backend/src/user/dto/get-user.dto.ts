@@ -1,29 +1,29 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 
-class UserDto {
-    @ApiProperty()
+export class UserDto {
+    @ApiProperty({example: "uuid"})
     id: string;
   
-    @ApiProperty()
+    @ApiProperty({example: "Md Rubel Ahmed Rana"})
     name: string;
   
-    @ApiProperty()
+    @ApiProperty({example: "mdrubelahmedrana521@gmail.com"})
     email: string;
 
-    @ApiProperty()
+    @ApiProperty({example: "author"})
     role: string;
   
-    @ApiProperty()
+    @ApiProperty({example: "A passionate Full Stack Developer"})
     bio: string;
   
-    @ApiProperty()
+    @ApiProperty({example: 10})
     posts: number;
   
-    @ApiProperty()
+    @ApiProperty({example: "Full Stack Developer"})
     designation: string;
   
-    @ApiProperty()
+    @ApiProperty({example: "https://drive.google.com/folder/fsdahfdbdkfjsadkfjk"})
     profile_image: string;
   
     @ApiProperty()

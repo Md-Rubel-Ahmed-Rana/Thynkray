@@ -1,12 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto } from './dto/create-post.dto';
+import { CreatePostDto, PostCreateResponseDto,  } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SkipThrottle } from '@nestjs/throttler';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
-import { ApiBearerAuth, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { PostResponseDto, PostsResponseDto } from './dto/get-post.dto';
 
 @Controller('post')
 export class PostController {
@@ -14,35 +15,59 @@ export class PostController {
 
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiCreatedResponse({
+    description: 'Post created successfully',
+    type: PostCreateResponseDto,
+  })
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
   }
 
+  @ApiOkResponse({
+    description: "Posts retrieved successfully",
+    type: PostsResponseDto
+  })
   @SkipThrottle()
   @Get()
   findAll() {
     return this.postService.findAll()
   }
 
+  @ApiOkResponse({
+    description: "Posts retrieved successfully",
+    type: PostsResponseDto
+  })
   @SkipThrottle()
   @Get("/category/:category")
   getPostsByCategory(@Param("category") category: string) {
     return this.postService.getPostsByCategory(category);
   }
 
+  @ApiOkResponse({
+    description: "Posts retrieved successfully",
+    type: PostsResponseDto
+  })
   @Get("/author/:authorId")
   findAllByAuthorId(@Param("authorId") authorId: string) {
     return this.postService.findAllByAuthorId(authorId);
   }
 
+  @ApiOkResponse({
+    description: "Posts retrieved successfully",
+    type: PostsResponseDto
+  })
   @SkipThrottle()
   @Get('latest')
   getLatestPosts(@Query('limit') limit: number) {
     return this.postService.getLatestPosts(Number(limit || 5));
   }
 
+  @ApiOkResponse({
+    description: "Post retrieved successfully",
+    type: PostResponseDto
+  })
   @SkipThrottle()
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -50,6 +75,10 @@ export class PostController {
   }
 
   
+  @ApiOkResponse({
+    description: "Post retrieved successfully",
+    type: PostResponseDto
+  })
   @SkipThrottle()
   @Get('slug/:slug')
   findOneBySlug(@Param('slug') slug: string) {
@@ -61,6 +90,9 @@ export class PostController {
   @ApiOperation({
     summary: 'Update post info',
     description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
+  @ApiOkResponse({
+    description: "Post updated successfully",
   })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
@@ -80,6 +112,9 @@ export class PostController {
   @ApiOperation({
     summary: 'Delete post',
     description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
+  @ApiOkResponse({
+    description: "Post delete successfully",
   })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
