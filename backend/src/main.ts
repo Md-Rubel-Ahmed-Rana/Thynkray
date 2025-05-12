@@ -75,19 +75,15 @@ async function bootstrap() {
   .addTag('Users', 'Operations related to user accounts')
   .addTag('Articles', 'Create, update, read, and delete blog posts')
   .addTag('Comments', 'User comments on articles')
-  .addTag('Auth', 'Authentication and authorization')
-  .addTag('Admin', 'Administrative endpoints')
-  .addTag('Uploads', 'Media upload endpoints')
-  .addTag('Tags', 'Manage article tags and categories')
   .addTag('Search', 'Full-text and filtered search functionalities')
-
   .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
 
-  app.listen(port,async () => {
-    logger.log(`Thynkray app is running at http://localhost:${port}`);
+  app.listen(port, async () => {
+    logger.log(`Thynkray server is running at http://localhost:${port}`);
   });
 }
 bootstrap();

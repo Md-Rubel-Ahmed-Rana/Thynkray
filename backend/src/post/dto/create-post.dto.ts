@@ -107,3 +107,16 @@ export class CreatePostDto {
 }
 
 
+export class PostCreateResponseDto {
+    @ApiProperty({example: 201})
+    statusCode: number
+    
+    @ApiProperty({example: "Post created successfully"})
+    message: string
+
+    @ApiProperty({example: true})
+    success: boolean
+
+    @ApiProperty({example: null})
+    data: any
+}

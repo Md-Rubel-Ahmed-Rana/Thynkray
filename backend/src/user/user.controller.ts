@@ -23,13 +23,14 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
 import { SkipThrottle } from '@nestjs/throttler';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { UserResponseDto, UsersResponseDto } from './dto/get-user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiResponse({ status: 201, description: 'User registered successfully!' })
+  @ApiResponse({ status: 201, description: 'User registered successfully!'})
   @ApiResponse({ status: 200, description: 'User logged in successfully!' })
   @Post()
   async create(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) res: Response) {
@@ -40,18 +41,35 @@ export class UserController {
     return { message, statusCode };
   }
 
+  @ApiOperation({ 
+    summary: 'Get all users', 
+    description: 'Retrieve a list of all users in the system.' })
+  @ApiOkResponse({
+    description: 'List of users retrieved successfully',
+    type: UsersResponseDto,
+  })
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get all authors', description: 'Retrieve all users with role "author" and total post count' })
+  @ApiOkResponse({
+    description: 'List of authors retrieved successfully',
+    type: UsersResponseDto,
+  })
   @Get("authors")
   findAuthors() {
+    
     return this.userService.findAuthors();
   }
 
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOkResponse({
+    description: 'Find a single user by id',
+    type: UserResponseDto,
+  })
   @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -60,6 +78,10 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOkResponse({
+    description: 'Find a single user by email',
+    type: UserResponseDto,
+  })
   @SkipThrottle()
   @UseGuards(AuthGuard)
   @Get('/auth/:email')
@@ -68,6 +90,9 @@ export class UserController {
   }
 
 
+  @ApiOkResponse({
+    description: "User logged out successfully!"
+  })
   @Delete('/auth/logout')
   logout( @Res({ passthrough: true }) res: Response) {
     res.clearCookie(cookieName, cookieOptions)
@@ -82,8 +107,12 @@ export class UserController {
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Update user info',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Update user profile info by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
+  @ApiResponse({ status: 200, description: 'User info updated successfully!'})
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: UserService,
@@ -96,30 +125,17 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
-  @ApiBearerAuth()
-  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
-  @ApiOperation({
-    summary: 'Delete user',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
-  })
-  @UseGuards(AuthGuard, OwnershipGuard)
-  @CheckOwnership({
-    service: UserService,
-    fetchMethod: "findOne",
-    ownerField: "id",
-    paramFieldName: "id"
-  })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
-  }
 
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Update user profile picture',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Update user profile image by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
+  @ApiResponse({ status: 200, description: 'User profile picture updated successfully!'})
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: UserService,
@@ -134,5 +150,27 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File
   ) {
     return this.userService.updateProfileImage(id, file);
+  }
+
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Delete user',
+    description: `
+    Delete user account by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
+  })
+  @ApiResponse({ status: 200, description: 'User deleted successfully!'})
+  @UseGuards(AuthGuard, OwnershipGuard)
+  @CheckOwnership({
+    service: UserService,
+    fetchMethod: "findOne",
+    ownerField: "id",
+    paramFieldName: "id"
+  })
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.userService.remove(id);
   }
 }
