@@ -3,11 +3,11 @@ import { Prisma } from '@prisma/client';
 import { Response } from 'express';
 import { PinoLogger } from '../logger/pino-logger.service';
   
-@Catch(Prisma.PrismaClientKnownRequestError, Prisma.PrismaClientUnknownRequestError)
+@Catch(Prisma.PrismaClientKnownRequestError, Prisma.PrismaClientUnknownRequestError,  Prisma.PrismaClientInitializationError)
 export class PrismaExceptionFilter implements ExceptionFilter {
 constructor(private readonly logger: PinoLogger) {}
 
-catch(exception: Prisma.PrismaClientKnownRequestError | Prisma.PrismaClientUnknownRequestError, host: ArgumentsHost) {
+catch(exception: Prisma.PrismaClientKnownRequestError | Prisma.PrismaClientUnknownRequestError |  Prisma.PrismaClientInitializationError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
@@ -49,6 +49,11 @@ catch(exception: Prisma.PrismaClientKnownRequestError | Prisma.PrismaClientUnkno
             break;
     }
     }
+
+    if (exception instanceof Prisma.PrismaClientInitializationError) {
+        status = HttpStatus.SERVICE_UNAVAILABLE;
+        message = `Database connection failed: ${exception.message}`;
+      }
 
     this.logger.error(`Prisma error: ${exception.message}`, exception.stack);
 
