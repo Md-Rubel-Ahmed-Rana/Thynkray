@@ -23,13 +23,16 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
 import { SkipThrottle } from '@nestjs/throttler';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiResponse({ status: 201, description: 'User registered successfully!' })
+  @ApiResponse({ status: 200, description: 'User logged in successfully!' })
   @Post()
- async create(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) res: Response) {
+  async create(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) res: Response) {
    const {access_token, message, statusCode} = await this.userService.create(createUserDto);
 
     res.cookie(cookieName, access_token, cookieOptions);
@@ -42,7 +45,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get("authors")
+  @Get("authors") // it means same as user just included comment: 2
   findAuthors() {
     return this.userService.findAuthors();
   }
