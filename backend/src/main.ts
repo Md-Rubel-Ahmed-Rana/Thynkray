@@ -12,6 +12,7 @@ import  cookieParser from 'cookie-parser';
 import * as crypto from 'crypto';
 import { PinoLogger } from './common/logger/pino-logger.service';
 import { PrismaExceptionFilter } from './common/prismaClientException';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 
 async function bootstrap() {
@@ -59,6 +60,17 @@ async function bootstrap() {
   // connect redis cache database
  const redis = app.get(RedisConfigService);
  await redis.connect()
+
+ // generate api documentation
+  const config = new DocumentBuilder()
+  .setTitle('Thynkray')
+  .setDescription('The Thynkray API description')
+  .setVersion('1.0')
+  .addTag('thynkray')
+  .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
+
 
   app.listen(port,async () => {
     logger.log(`Thynkray app is running at http://localhost:${port}`);
