@@ -16,7 +16,7 @@ export class PostController {
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiCreatedResponse({
-    description: 'Post created successfully',
+    description: 'Create new post',
     type: PostCreateResponseDto,
   })
   @UseGuards(AuthGuard)
@@ -26,7 +26,7 @@ export class PostController {
   }
 
   @ApiOkResponse({
-    description: "Posts retrieved successfully",
+    description: "Find all the posts",
     type: PostsResponseDto
   })
   @SkipThrottle()
@@ -36,7 +36,7 @@ export class PostController {
   }
 
   @ApiOkResponse({
-    description: "Posts retrieved successfully",
+    description: "Find all posts of a category",
     type: PostsResponseDto
   })
   @SkipThrottle()
@@ -46,7 +46,7 @@ export class PostController {
   }
 
   @ApiOkResponse({
-    description: "Posts retrieved successfully",
+    description: "Find all the posts of an author",
     type: PostsResponseDto
   })
   @Get("/author/:authorId")
@@ -55,7 +55,7 @@ export class PostController {
   }
 
   @ApiOkResponse({
-    description: "Posts retrieved successfully",
+    description: "Find some latest posts",
     type: PostsResponseDto
   })
   @SkipThrottle()
@@ -65,7 +65,7 @@ export class PostController {
   }
 
   @ApiOkResponse({
-    description: "Post retrieved successfully",
+    description: "Find single post by id",
     type: PostResponseDto
   })
   @SkipThrottle()
@@ -76,7 +76,7 @@ export class PostController {
 
   
   @ApiOkResponse({
-    description: "Post retrieved successfully",
+    description: "Find single post by slug",
     type: PostResponseDto
   })
   @SkipThrottle()
@@ -89,10 +89,13 @@ export class PostController {
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Update post info',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Update a post by id,
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
   @ApiOkResponse({
-    description: "Post updated successfully",
+    description: "Update a single post",
   })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
@@ -111,10 +114,13 @@ export class PostController {
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Delete post',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Delete a post by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
   @ApiOkResponse({
-    description: "Post delete successfully",
+    description: "Delete a post by id",
   })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({

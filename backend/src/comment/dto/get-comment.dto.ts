@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Post, User } from "@prisma/client";
 
 export class GetCommentDto {
@@ -38,4 +39,62 @@ export class GetCommentDto {
     static fromEntities(entities: any[]): GetCommentDto[] {
         return entities.map(entity => GetCommentDto.fromEntity(entity));
     }
+}
+
+
+
+
+class CommentDto {
+    @ApiProperty({example: "1d8f9b1a-0a34-4a17-a1d6-5cfb5e2cb0a7"})
+    id: string
+
+    @ApiProperty({example: "Nice blog"})
+    content: string
+
+    @ApiProperty({example: {id: "1d8f9b1a-0a34-4a17-a1d6-5cfb5e2cb0a7", title: "What is AWS?"}})
+    post: {id: string, title: string}
+
+    @ApiProperty({
+        example: {
+            id: "1d8f9b1a-0a34-4a17-a1d6-5cfb5e2cb0a7", 
+            name: "What is AWS?", 
+            profile_image: "https://user-profile.png"
+        }
+    })
+    user: {id: string, name: string, profile_image: string}
+
+    @ApiProperty()
+    createdAt: Date;
+      
+    @ApiProperty()
+    updatedAt: Date;
+
+}
+
+export class CommentResponseDto {
+    @ApiProperty({example: 200})
+    statusCode: number
+    
+    @ApiProperty({example: "Comment retrieved successfully"})
+    message: string
+
+    @ApiProperty({example: true})
+    success: boolean
+
+    @ApiProperty({type: CommentDto})
+    data: CommentDto
+}
+
+export class CommentsResponseDto {
+    @ApiProperty({example: 200})
+    statusCode: number
+    
+    @ApiProperty({example: "Comments retrieved successfully"})
+    message: string
+
+    @ApiProperty({example: true})
+    success: boolean
+
+    @ApiProperty({type: [CommentDto]})
+    data: [CommentDto]
 }

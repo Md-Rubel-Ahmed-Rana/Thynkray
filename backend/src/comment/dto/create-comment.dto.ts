@@ -25,3 +25,18 @@ export class CreateCommentDto {
         this.content = content;
     }
 }
+
+
+export class CommentCreateResponseDto {
+    @ApiProperty({example: 201})
+    statusCode: number
+    
+    @ApiProperty({example: "Comment created successfully"})
+    message: string
+
+    @ApiProperty({example: true})
+    success: boolean
+
+    @ApiProperty({example: null})
+    data: any
+}
