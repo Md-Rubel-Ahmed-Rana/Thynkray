@@ -6,11 +6,14 @@ import { SkipThrottle } from '@nestjs/throttler';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
+import { ApiBearerAuth, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
@@ -28,8 +31,7 @@ export class PostController {
   getPostsByCategory(@Param("category") category: string) {
     return this.postService.getPostsByCategory(category);
   }
-  
-  @UseGuards(AuthGuard)
+
   @Get("/author/:authorId")
   findAllByAuthorId(@Param("authorId") authorId: string) {
     return this.postService.findAllByAuthorId(authorId);
@@ -48,13 +50,18 @@ export class PostController {
   }
 
   
-  
   @SkipThrottle()
   @Get('slug/:slug')
   findOneBySlug(@Param('slug') slug: string) {
     return this.postService.findOneBySlug(slug);
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Update post info',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: PostService,
@@ -67,6 +74,13 @@ export class PostController {
     return this.postService.update(id, updatePostDto);
   }
 
+
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Delete post',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: PostService,
