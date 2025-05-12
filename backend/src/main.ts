@@ -63,10 +63,24 @@ async function bootstrap() {
 
  // generate api documentation
   const config = new DocumentBuilder()
-  .setTitle('Thynkray')
-  .setDescription('The Thynkray API description')
+  .setTitle('Thynkray API')
+  .setDescription(`
+  Welcome to the Thynkray API — the backend service for Thynkray, a modern platform for publishing, managing, and discovering high-quality articles and blogs. 
+
+  This API provides endpoints for user management, article creation and updates, commenting, content curation, admin tools, and more.
+
+  All responses follow a consistent structure, and most endpoints require authentication via JWT. Please refer to the security section for authorization guidelines.
+  `)
   .setVersion('1.0')
-  .addTag('thynkray')
+  .addTag('Users', 'Operations related to user accounts')
+  .addTag('Articles', 'Create, update, read, and delete blog posts')
+  .addTag('Comments', 'User comments on articles')
+  .addTag('Auth', 'Authentication and authorization')
+  .addTag('Admin', 'Administrative endpoints')
+  .addTag('Uploads', 'Media upload endpoints')
+  .addTag('Tags', 'Manage article tags and categories')
+  .addTag('Search', 'Full-text and filtered search functionalities')
+
   .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
