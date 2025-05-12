@@ -55,7 +55,7 @@ catch(exception: Prisma.PrismaClientKnownRequestError | Prisma.PrismaClientUnkno
         message = `Database connection failed: ${exception.message}`;
       }
 
-    this.logger.error(`Prisma error: ${exception.message}`, exception.stack);
+    this.logger.error(`Prisma error: ${exception.message}`);
 
     response.status(status).json({
     statusCode: status,

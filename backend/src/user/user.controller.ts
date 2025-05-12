@@ -23,7 +23,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
 import { SkipThrottle } from '@nestjs/throttler';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
@@ -45,23 +45,28 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get("authors") // it means same as user just included comment: 2
+  @Get("authors")
   findAuthors() {
     return this.userService.findAuthors();
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @SkipThrottle()
   @UseGuards(AuthGuard)
   @Get('/auth/:email')
   findOneByEmail(@Param('email') email: string) {
     return this.userService.findOneByEmail(email);
   }
+
 
   @Delete('/auth/logout')
   logout( @Res({ passthrough: true }) res: Response) {
@@ -73,6 +78,12 @@ export class UserController {
     }
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Update user info',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: UserService,
@@ -85,6 +96,12 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Delete user',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: UserService,
@@ -97,6 +114,12 @@ export class UserController {
     return this.userService.remove(id);
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Update user profile picture',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: UserService,

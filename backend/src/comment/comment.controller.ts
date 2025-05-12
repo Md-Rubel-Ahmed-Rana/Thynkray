@@ -5,11 +5,14 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
+import { ApiBearerAuth, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createCommentDto: CreateCommentDto) {
@@ -31,6 +34,12 @@ export class CommentController {
     return this.commentService.findAllByPostId(postId);
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Update comment',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
       service: CommentService,
@@ -43,6 +52,12 @@ export class CommentController {
     return this.commentService.update(id, updateCommentDto);
   }
 
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
+  @ApiOperation({
+    summary: 'Update comment',
+    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+  })
   @UseGuards(AuthGuard, OwnershipGuard)
   @CheckOwnership({
     service: CommentService,

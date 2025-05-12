@@ -15,7 +15,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       await this.$connect();
       this.logger.log("Database connected successfully!")
     } catch (error : any) {
-      this.logger.error('Failed to connect to database', error.stack);
+      this.logger.error(`Failed to connect to database. Error: ${error?.message}`);
     }
   }
 }
