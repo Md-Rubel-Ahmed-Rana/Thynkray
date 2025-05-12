@@ -72,7 +72,7 @@ export class GetPostDto {
 
   
 class PostSectionDto {
-    @ApiProperty({ example: "section-1" })
+    @ApiProperty({ example: "1d8f9b1a-0a34-4a17-a1d6-5cfb5e2cb0a7" })
     id: string;
     
     @ApiProperty({ example: "1. Use Meaningful Names" })

@@ -41,7 +41,9 @@ export class UserController {
     return { message, statusCode };
   }
 
-  @ApiOperation({ summary: 'Get all users', description: 'Retrieve a list of all users in the system.' })
+  @ApiOperation({ 
+    summary: 'Get all users', 
+    description: 'Retrieve a list of all users in the system.' })
   @ApiOkResponse({
     description: 'List of users retrieved successfully',
     type: UsersResponseDto,
@@ -65,7 +67,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOkResponse({
-    description: 'User retrieved successfully',
+    description: 'Find a single user by id',
     type: UserResponseDto,
   })
   @UseGuards(AuthGuard)
@@ -77,7 +79,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOkResponse({
-    description: 'User retrieved successfully',
+    description: 'Find a single user by email',
     type: UserResponseDto,
   })
   @SkipThrottle()
@@ -88,7 +90,9 @@ export class UserController {
   }
 
 
-  @ApiResponse({ status: 200, description: 'User logged out successfully!'})
+  @ApiOkResponse({
+    description: "User logged out successfully!"
+  })
   @Delete('/auth/logout')
   logout( @Res({ passthrough: true }) res: Response) {
     res.clearCookie(cookieName, cookieOptions)
@@ -103,7 +107,10 @@ export class UserController {
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Update user info',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Update user profile info by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
   @ApiResponse({ status: 200, description: 'User info updated successfully!'})
   @UseGuards(AuthGuard, OwnershipGuard)
@@ -123,7 +130,10 @@ export class UserController {
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Update user profile picture',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Update user profile image by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
   @ApiResponse({ status: 200, description: 'User profile picture updated successfully!'})
   @UseGuards(AuthGuard, OwnershipGuard)
@@ -146,7 +156,10 @@ export class UserController {
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
   @ApiOperation({
     summary: 'Delete user',
-    description: 'Requires authentication. Only the owner of the data (the user themselves) can perform this operation.'
+    description: `
+    Delete user account by id.
+    Requires authentication. Only the owner of the data (the user themselves) can perform this operation.
+    `
   })
   @ApiResponse({ status: 200, description: 'User deleted successfully!'})
   @UseGuards(AuthGuard, OwnershipGuard)
