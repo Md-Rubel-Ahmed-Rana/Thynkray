@@ -1,6 +1,8 @@
 import { Controller, Get } from "@nestjs/common";
 import { RedisCacheService } from "./cache.service";
+import { ApiExcludeController } from "@nestjs/swagger";
 
+@ApiExcludeController()
 @Controller("cache")
 export class CacheController {
     constructor(private readonly cacheService: RedisCacheService){}
