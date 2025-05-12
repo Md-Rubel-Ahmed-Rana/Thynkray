@@ -12,7 +12,6 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'Email is required', context: { field: 'email' } })
     email: string; 
 
-    @ApiPropertyOptional({ example: 'author', description: 'User role' })
     @IsOptional()
     @IsString({ message: 'Role must be a string', context: { field: 'role' } })
     role: string;
