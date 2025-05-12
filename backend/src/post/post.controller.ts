@@ -4,7 +4,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { SkipThrottle } from '@nestjs/throttler';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { CheckOwnership } from 'src/decorators/ownership.decorators';
+import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
 
 @Controller('post')

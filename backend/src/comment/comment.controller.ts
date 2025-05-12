@@ -3,7 +3,7 @@ import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { CheckOwnership } from 'src/decorators/ownership.decorators';
+import { CheckOwnership } from 'src/common/decorators/ownership.decorators';
 import { OwnershipGuard } from 'src/guards/ownership.guard';
 
 @Controller('comment')
