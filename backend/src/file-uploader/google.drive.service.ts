@@ -90,22 +90,40 @@ export class GoogleDriveService {
   async deleteFile(link: string): Promise<void> {
     console.log({
       from: "Delete file from Google Drive",
-      link
+      link,
     });
-    const fileId =  this.extractFileIdFromLink(link)
-
-    if(!fileId) {
+  
+    const fileId = this.extractFileIdFromLink(link);
+  
+    if (!fileId) {
       this.logger.log(`Invalid file link provided. Link: ${link}`);
-      return
+      return;
     }
-
+  
     try {
-      await this.drive.files.delete({
-        fileId
+      const file = await this.drive.files.get({
+        fileId,
+        supportsAllDrives: true,
+        fields: 'id, name, trashed, owners',
       });
+  
+      if (file.data.trashed) {
+        this.logger.warn(`File is already in trash. FileId: ${fileId}`);
+        return;
+      }
+  
+      await this.drive.files.delete({
+        fileId,
+        supportsAllDrives: true,
+        enforceSingleParent: true,
+      });
+      
     } catch (error: any) {
-      this.logger.error(`Google Drive delete error. Error: ${error?.message}`);
-      return
+      if (error?.message?.includes("File not found")) {
+        this.logger.warn(`File already deleted or not found. FileId: ${fileId}`);
+        return;
+      }
+      this.logger.error(`Google Drive delete error for fileId: ${fileId}. Error: ${error?.message}`);
     }
   }
 
@@ -179,6 +197,17 @@ export class GoogleDriveService {
     }else{
       this.logger.log(`No images found to delete for post:${post?.title}`);
     }
+  }
+
+  @OnEvent('user.profile-image.updated')
+  async userProfileImageUpdated(url: string){
+    console.log({
+      from: "Google Drive Service",
+      message: `Delete user profile old image`,
+      data:  {profile_image: url}
+    });
+    this.deleteFile(url)
+
   }
 
 }

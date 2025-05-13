@@ -1,21 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  UploadedFile,
-  Res,
-  UseGuards
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/config/multer';
 import { Response } from 'express';
 import { cookieName } from 'src/constants/cookie';
 import { cookieOptions } from 'src/utility/cookieOptions';
@@ -143,13 +129,9 @@ export class UserController {
     ownerField: "id",
     paramFieldName: "id"
   })
-  @Post('/update-profile-picture/:id')
-  @UseInterceptors(FileInterceptor('profile_image', multerOptions))
-  updateProfileImage(
-    @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File
-  ) {
-    return this.userService.updateProfileImage(id, file);
+  @Post('update-profile-picture/:id')
+  updateProfileImage(@Param('id') id: string, @Body() body: {profile_image: string}) {
+    return this.userService.updateProfileImage(id, body.profile_image);
   }
 
   @ApiBearerAuth()
