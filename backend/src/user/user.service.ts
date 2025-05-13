@@ -2,17 +2,18 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
-import { GoogleDriveService } from 'src/file-uploader/google.drive.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthService } from 'src/auth/auth.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly googleDriveService: GoogleDriveService, 
     private readonly prisma: PrismaService, 
-    private readonly authService: AuthService) {}
+    private readonly authService: AuthService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
   const { email } = createUserDto;
@@ -178,12 +179,10 @@ export class UserService {
 
   async updateProfileImage(
   id: string,
-  file: any
+  newImageUrl: string
 ) {
   const existingUser = await this.prisma.user.findUnique({ where: { id } });
   const oldImageUrl = existingUser?.profile_image;
-
-  const newImageUrl = await this.googleDriveService.uploadSingleFile(file);
 
   await this.prisma.user.update({
     where: { id },
@@ -191,14 +190,14 @@ export class UserService {
   });
 
   if (oldImageUrl) {
-    await this.googleDriveService.deleteFile(oldImageUrl);
+    this.eventEmitter.emit("user.profile-image.updated", oldImageUrl)
   }
 
   return {
     statusCode: 200,
     message: 'User updated successfully!'
   };
-}
+  }
 
 
   async remove(id: string) {
