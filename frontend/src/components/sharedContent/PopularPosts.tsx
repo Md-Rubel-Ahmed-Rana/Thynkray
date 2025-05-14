@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { cardData } from "@/constants/cardData";
 import { Post } from "@/modules/post/types";
 import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
 import { Box, Typography, Stack } from "@mui/material";
@@ -22,10 +23,10 @@ const PopularContainer = styled("div")(({ theme }: any) => ({
 }));
 
 type Props = {
-  posts: Post[];
+  posts?: Post[];
 };
 
-const PopularPosts = ({ posts }: Props) => {
+const PopularPosts = ({}: Props) => {
   return (
     <PopularContainer>
       <Stack spacing={2}>
@@ -45,7 +46,7 @@ const PopularPosts = ({ posts }: Props) => {
         </Stack>
 
         {/* Posts list */}
-        {posts.map((post, index) => {
+        {cardData.map((post, index) => {
           const day = post.createdAt.getDate().toString().padStart(2, "0");
           const month = post.createdAt.toLocaleString("default", {
             month: "short",
