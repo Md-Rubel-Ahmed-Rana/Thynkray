@@ -1,9 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
 import SearchForm from "../common/SearchForm";
 import Categories from "../common/Categories";
 import CommonPosts from "../sharedContent/CommonPosts";
-import { cardData } from "@/constants/cardData";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import LatestPosts from "../sharedContent/LatestPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
@@ -76,7 +74,7 @@ const Articles = () => {
             <LatestPosts />
           </Box>
           <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
-            <PopularPosts posts={cardData} />
+            <PopularPosts />
           </Box>
         </Box>
       </Box>
