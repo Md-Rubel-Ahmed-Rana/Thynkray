@@ -32,7 +32,8 @@ const DiscussionSection = ({ discuss }: Props) => {
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
-            gap: 4,
+            flexWrap: "wrap",
+            gap: 2,
           }}
         >
           <Typography>
