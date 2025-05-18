@@ -6,7 +6,9 @@ import { Discussion, Discussions, NewDiscussion } from "./types";
 
 export const useGetAllDiscussions = (
   page?: number,
-  limit?: number
+  limit?: number,
+  searchText?: string,
+  sortBy?: "asc" | "desc"
 ): {
   data: Discussions;
   isLoading: boolean;
@@ -16,7 +18,7 @@ export const useGetAllDiscussions = (
   );
 
   useEffect(() => {
-    getAllDiscussion(page, limit);
+    getAllDiscussion(page, limit, searchText, sortBy);
   }, [page, limit]);
 
   return { data, isLoading };
