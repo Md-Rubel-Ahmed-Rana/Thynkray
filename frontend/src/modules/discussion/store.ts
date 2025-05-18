@@ -101,11 +101,10 @@ export const createDiscussionStore = (
         const res = await axios.post(`${baseApi}/discussion`, data, {
           withCredentials: true,
         });
-        set({
+        return set({
           isAdding: false,
           response: res?.data,
         });
-        return res?.data;
       } catch (err: any) {
         set({
           error: err?.message || "Could not add discussion",
