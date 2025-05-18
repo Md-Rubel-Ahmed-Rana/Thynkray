@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { useDiscussionStore } from "./provider";
-import { Discussion, NewDiscussion } from "./types";
+import { Discussion, Discussions, NewDiscussion } from "./types";
 
 export const useGetAllDiscussions = (): {
-  discussions: Discussion[];
+  data: Discussions;
   isLoading: boolean;
 } => {
-  const { discussions, isLoading, getAllDiscussion } = useDiscussionStore(
+  const { data, isLoading, getAllDiscussion } = useDiscussionStore(
     (state) => state
   );
 
@@ -15,7 +15,7 @@ export const useGetAllDiscussions = (): {
     getAllDiscussion();
   }, [getAllDiscussion]);
 
-  return { discussions, isLoading };
+  return { data, isLoading };
 };
 
 export const useGetSingleDiscussion = (

@@ -4,7 +4,7 @@ import Topics from "@/components/topics";
 const TopicsPage = () => {
   return (
     <>
-      <SEOHead title={`Topics}`} />
+      <SEOHead title={`Topics`} />
       <Topics />
     </>
   );
