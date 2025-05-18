@@ -37,7 +37,7 @@ const Discussions = () => {
               ))}
             </Box>
           )}
-          <PaginationTopics limit={limit} page={page} total={1000} />
+          <PaginationTopics limit={limit} page={page} total={totalCount} />
         </Box>
       )}
     </Box>
