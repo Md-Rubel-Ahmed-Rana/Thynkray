@@ -56,7 +56,7 @@ const DiscussCard = ({ discuss }: Props) => {
           <Typography
             color="blue"
             sx={{
-              fontSize: { xs: "16px", md: "24px" },
+              fontSize: { xs: "20px", md: "24px" },
             }}
             className="hover-underline"
           >
