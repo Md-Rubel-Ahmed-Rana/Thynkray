@@ -59,11 +59,16 @@ export const createDiscussionStore = (
 ) => {
   return createStore<DiscussionStore>()((set) => ({
     ...initialState,
-    getAllDiscussion: async (page: number = 1, limit: number = 10) => {
+    getAllDiscussion: async (
+      page: number = 1,
+      limit: number = 10,
+      searchText?: string,
+      sortBy?: "asc" | "desc"
+    ) => {
       set({ isLoading: true, error: null });
       try {
         const res = await axios.get(
-          `${baseApi}/discussion?page=${page}&limit=${limit}`,
+          `${baseApi}/discussion?page=${page}&limit=${limit}&searchText=${searchText}&sortBy=${sortBy}`,
           {
             withCredentials: true,
           }

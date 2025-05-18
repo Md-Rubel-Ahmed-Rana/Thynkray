@@ -10,11 +10,11 @@ const Topics = () => {
   const { discussions, limit, page, totalCount } = data;
   return (
     <Box>
+      <DiscussionHeader total={totalCount} />
       {isLoading ? (
         <h1>Discussions loading...</h1>
       ) : (
         <Box>
-          <DiscussionHeader total={totalCount} />
           {discussions?.length <= 0 ? (
             <NoDataFound message="No topics found">
               <Typography>We have not found any topics yet.</Typography>
