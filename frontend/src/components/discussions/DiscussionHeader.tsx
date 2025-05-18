@@ -3,9 +3,10 @@ import DiscussionSearchFilters from "./DiscussionSearchFilters";
 
 type Props = {
   total: number;
+  limit: number;
 };
 
-const DiscussionHeader = ({ total }: Props) => {
+const DiscussionHeader = ({ total, limit }: Props) => {
   return (
     <Box
       sx={{
@@ -24,9 +25,12 @@ const DiscussionHeader = ({ total }: Props) => {
         sx={{
           fontSize: { xs: "16px", md: "20px" },
           fontWeight: 500,
+          display: "flex",
+          gap: 1,
         }}
       >
-        {total} Discussions
+        <Typography component={"span"}>{limit} of</Typography>
+        <Typography component={"span"}>{total} Discussions</Typography>
       </Typography>
 
       {/* Filters */}
@@ -34,13 +38,7 @@ const DiscussionHeader = ({ total }: Props) => {
 
       {/* Ask Question Button */}
       <Box sx={{ alignSelf: { xs: "stretch", sm: "auto" } }}>
-        <Button
-          variant="contained"
-          fullWidth={true}
-          sx={{
-            mt: { xs: 0, sm: 2 },
-          }}
-        >
+        <Button variant="contained" fullWidth={true}>
           Ask Question
         </Button>
       </Box>
