@@ -5,6 +5,7 @@ import DiscussCard from "./DiscussCard";
 import DiscussionHeader from "./DiscussionHeader";
 import PaginationTopics from "./Pagination";
 import DiscussionsLoadingSkeleton from "@/skeletons/DiscussionsLoadingSkeleton";
+import Link from "next/link";
 
 const Discussions = () => {
   const { data, isLoading } = useGetAllDiscussions();
@@ -22,14 +23,16 @@ const Discussions = () => {
               <Typography>
                 Would you like to create/ask question?. Click below button!
               </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 2,
-                }}
-              >
-                Ask Question
-              </Button>
+              <Link style={{ width: "100%" }} href={"/discussion/create"}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                  }}
+                >
+                  Ask Question
+                </Button>
+              </Link>
             </NoDataFound>
           ) : (
             <Box>
