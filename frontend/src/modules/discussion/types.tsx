@@ -47,6 +47,8 @@ export type DiscussionState = {
 export type NewDiscussion = {
   title: string;
   description: string;
+  slug: string;
+  tags: string[];
   userId: string;
 };
 

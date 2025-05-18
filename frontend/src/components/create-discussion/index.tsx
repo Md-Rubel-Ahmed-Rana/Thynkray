@@ -8,6 +8,7 @@ import { NewDiscussion } from "@/modules/discussion/types";
 import { useAddNewDiscussion } from "@/modules/discussion/hooks";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { generateDiscussionSlug } from "@/utils/generateDiscussionSlug";
 
 const schema = Yup.object().shape({
   title: Yup.string()
@@ -16,6 +17,11 @@ const schema = Yup.object().shape({
   description: Yup.string()
     .required("Content is required")
     .min(20, "Minimum 20 characters"),
+  tags: Yup.string()
+    .required("At least one tag is required")
+    .test("min-tags", "Please provide at least one tag", (value) => {
+      return value?.split(",").filter((tag) => tag.trim() !== "").length > 0;
+    }),
 });
 
 const CreateDiscussion = () => {
@@ -32,18 +38,26 @@ const CreateDiscussion = () => {
     defaultValues: {
       title: "",
       description: "",
+      tags: "",
     },
   });
 
   const handleCreateDiscussion = async (data: {
     title: string;
     description: string;
+    tags: string;
   }) => {
     const payload: NewDiscussion = {
       title: data.title,
       description: data.description,
+      tags: data.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== ""),
       userId: user?.id,
+      slug: generateDiscussionSlug(data.title),
     };
+
     await addDiscussion(payload);
 
     if (response?.statusCode === 201) {
@@ -80,6 +94,15 @@ const CreateDiscussion = () => {
         {...register("title")}
         error={!!errors.title}
         helperText={errors.title?.message}
+        fullWidth
+      />
+
+      <TextField
+        label="Tags (comma separated)"
+        variant="outlined"
+        {...register("tags")}
+        error={!!errors.tags}
+        helperText={errors.tags?.message}
         fullWidth
       />
 
