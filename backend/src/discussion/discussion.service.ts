@@ -16,7 +16,13 @@ export class DiscussionService {
     }
   }
 
-  async findAll() {
+  async findAll(page: number = 1, limit: number  =10) {
+    // I want to get page 2 and limit 10
+    // Explanation
+    // 1. the final result will be like it will skip total 20 data and return 10 data from 21-30
+
+    const skip = (page - 1) * limit;
+    const take = limit;
     const discussions  = await this.prisma.discussion.findMany({
       include: {
         user: true,
@@ -25,18 +31,31 @@ export class DiscussionService {
             answers: true
           }
         }
-      }
+      },
+      orderBy: {
+        createdAt: "desc"
+      },
+      skip,
+      take 
     })
+    const total = await this.prisma.discussion.findMany({})
     return {
       statusCode: 200,
       success: true,
       message: "Discussions retrieved successfully",
-      data: discussions
+      data: {
+        discussions,
+        totalCount: total?.length || 0,
+        limit,
+        page
+      }
     }
   }
 
- async findOne(id: string) {
+ async findOne(id: string, page: number = 1, limit: number  =10) {
   await this.isDiscussionExist(id)
+  const skip = (page - 1) * limit;
+    const take = limit;
    const discussion =   await this.prisma.discussion.findUnique({
       where: {id},
       include: {
@@ -44,13 +63,25 @@ export class DiscussionService {
         answers: {
           include: {
             user: true
-          }
+          },
+          omit: {
+            userId: true,
+            discussionId: true
+          },
+          orderBy: {
+            createdAt: "desc"
+          },
+          skip,
+          take,
         },
         _count: {
           select: {
             answers: true
           }
         }
+      },
+      omit: {
+        userId: true,
       }
     })
     return {
@@ -77,7 +108,13 @@ export class DiscussionService {
 
   async remove(id: string) {
     await this.isDiscussionExist(id)
-    return await this.prisma.discussion.delete({where: {id}})
+    await this.prisma.discussion.delete({where: {id}})
+    return {
+      statusCode: 200,
+      success: true,
+      message: "Discussion deleted successfully",
+      data: null
+    }
   }
 
   async isDiscussionExist(id: string) {
