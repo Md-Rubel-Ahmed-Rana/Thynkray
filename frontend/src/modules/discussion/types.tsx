@@ -57,7 +57,7 @@ export type DiscussionActions = {
     updatedData: Partial<Discussion>
   ) => Promise<void>;
   addDiscussion: (data: NewDiscussion) => Promise<void>;
-  getAllDiscussion: () => Promise<Discussions>;
+  getAllDiscussion: (page?: number, limit?: number) => Promise<Discussions>;
   getSingleDiscussion: (id: string) => Promise<Discussion>;
 };
 
