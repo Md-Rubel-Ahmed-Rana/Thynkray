@@ -34,7 +34,7 @@ export class GetDiscussionDto {
     }
 }
 
-export class DiscussionGetResponseDto {
+export class DiscussionsGetResponseDto {
     @ApiProperty({example: 200})
     statusCode: number
     
@@ -46,4 +46,18 @@ export class DiscussionGetResponseDto {
 
     @ApiProperty({example: [GetDiscussionDto]})
     data: GetDiscussionDto[]
+}
+
+export class DiscussionGetResponseDto {
+    @ApiProperty({example: 200})
+    statusCode: number
+    
+    @ApiProperty({example: "Discussions retrieved successfully"})
+    message: string
+
+    @ApiProperty({example: true})
+    success: boolean
+
+    @ApiProperty({example: GetDiscussionDto})
+    data: GetDiscussionDto
 }
