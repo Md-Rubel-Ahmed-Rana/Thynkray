@@ -1,4 +1,5 @@
 import { CommentStoreProvider } from "@/modules/comment/provider";
+import { DiscussionStoreProvider } from "@/modules/discussion/provider";
 import { PostStoreProvider } from "@/modules/post/provider";
 import { UserStoreProvider } from "@/modules/user/provider";
 import { type ReactNode } from "react";
@@ -11,7 +12,9 @@ const StoreProvider = ({ children }: StoreProviderProps) => {
   return (
     <UserStoreProvider>
       <PostStoreProvider>
-        <CommentStoreProvider>{children}</CommentStoreProvider>
+        <DiscussionStoreProvider>
+          <CommentStoreProvider>{children}</CommentStoreProvider>
+        </DiscussionStoreProvider>
       </PostStoreProvider>
     </UserStoreProvider>
   );
