@@ -5,10 +5,24 @@ export type Discussion = {
   id: string;
   title: string;
   description: string;
+  slug: string;
   user: User;
+  views: number;
   answers: Answer[];
+  _count: {
+    answers: number;
+  };
+  tags: string[];
+  totalAnswer: number;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type Discussions = {
+  discussions: Discussion[];
+  totalCount: number;
+  limit: number;
+  page: number;
 };
 
 export type Answer = {
@@ -26,7 +40,7 @@ export type DiscussionState = {
   isDeleting: boolean;
   error: string | null;
   discussion: Discussion;
-  discussions: Discussion[];
+  data: Discussions;
   response: any;
 };
 
@@ -43,7 +57,7 @@ export type DiscussionActions = {
     updatedData: Partial<Discussion>
   ) => Promise<void>;
   addDiscussion: (data: NewDiscussion) => Promise<void>;
-  getAllDiscussion: () => Promise<Discussion[]>;
+  getAllDiscussion: () => Promise<Discussions>;
   getSingleDiscussion: (id: string) => Promise<Discussion>;
 };
 

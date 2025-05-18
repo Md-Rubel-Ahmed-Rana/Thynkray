@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createStore } from "zustand";
 import { userInitialValue } from "../user/store";
-import { Discussion, DiscussionStore, NewDiscussion } from "./types";
+import {
+  Discussion,
+  Discussions,
+  DiscussionStore,
+  NewDiscussion,
+} from "./types";
 import axios from "axios";
 import { baseApi } from "..";
 
@@ -11,8 +16,22 @@ const initialDiscussionValue: Discussion = {
   title: "",
   description: "",
   answers: [],
+  _count: {
+    answers: 0,
+  },
+  slug: "",
+  tags: [],
+  totalAnswer: 0,
+  views: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
+};
+
+const discussionsInitialValue: Discussions = {
+  discussions: [initialDiscussionValue],
+  limit: 10,
+  page: 1,
+  totalCount: 0,
 };
 
 export const defaultDiscussionState: DiscussionStore = {
@@ -23,12 +42,12 @@ export const defaultDiscussionState: DiscussionStore = {
   error: null,
   response: null,
   discussion: initialDiscussionValue,
-  discussions: [initialDiscussionValue],
+  data: discussionsInitialValue,
   addDiscussion: async () => {},
   deleteDiscussion: async () => {},
   updateDiscussion: async () => {},
   getAllDiscussion: async () => {
-    return [initialDiscussionValue];
+    return discussionsInitialValue;
   },
   getSingleDiscussion: async () => {
     return initialDiscussionValue;
@@ -46,9 +65,9 @@ export const createDiscussionStore = (
         const res = await axios.get(`${baseApi}/discussion`, {
           withCredentials: true,
         });
-        const discussions = [...res?.data?.data?.discussions] as Discussion[];
-        set({ discussions, isLoading: false });
-        return discussions;
+        const result = res?.data?.data as Discussions;
+        set({ data: result, isLoading: false });
+        return result;
       } catch (err) {
         set({ error: "Could not load discussions", isLoading: false });
         throw err;
