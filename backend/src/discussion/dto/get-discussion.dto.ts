@@ -20,7 +20,12 @@ export class GetDiscussionDto {
     @ApiProperty()
     updatedAt: Date
 
-    constructor(title: string, description: string, user: Partial<User>, createdAt: Date, updatedAt:Date){
+    constructor(
+        title: string, 
+        description: string, 
+        user: Partial<User>, 
+        createdAt: Date, 
+        updatedAt:Date){
         this.title = title
         this.description = description
         this.user = user
