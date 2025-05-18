@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { DiscussionService } from './discussion.service';
 import { CreateDiscussionDto, DiscussionCreateResponseDto } from './dto/create-discussion.dto';
 import { DiscussionUpdateResponseDto, UpdateDiscussionDto } from './dto/update-discussion.dto';
@@ -28,8 +28,10 @@ export class DiscussionController {
     type: DiscussionsGetResponseDto,
   })
   @Get()
-  findAll() {
-    return this.discussionService.findAll();
+  findAll(@Query("limit")  limit: number, @Query("page")  page: number) {
+    const pageNumber = page ? Number(page) : 1
+    const limitCount = limit ? Number(limit) : 10
+    return this.discussionService.findAll(pageNumber, limitCount);
   }
 
   @ApiOkResponse({
@@ -37,8 +39,10 @@ export class DiscussionController {
     type: DiscussionGetResponseDto,
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.discussionService.findOne(id);
+  findOne(@Param('id') id: string, @Query("limit")  limit: number, @Query("page")  page: number) {
+    const pageNumber = page ? Number(page) : 1
+    const limitCount = limit ? Number(limit) : 10
+    return this.discussionService.findOne(id, pageNumber, limitCount);
   }
 
   @ApiOkResponse({
