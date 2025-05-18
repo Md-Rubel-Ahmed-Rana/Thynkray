@@ -1,6 +1,7 @@
 import { Discussion } from "@/modules/discussion/types";
 import { Box, Button, Chip, Typography } from "@mui/material";
 import moment from "moment";
+import Link from "next/link";
 
 type Props = {
   discuss: Discussion;
@@ -25,7 +26,9 @@ const DiscussionSection = ({ discuss }: Props) => {
           }}
         >
           <Typography variant="h4">{discuss?.title}</Typography>
-          <Button variant="contained">Ask Question</Button>
+          <Link href={"/discussion/create"}>
+            <Button variant="contained">Ask Question</Button>
+          </Link>
         </Box>
         <Box
           sx={{
