@@ -21,6 +21,7 @@ import { MeilisearchModule } from './search-library/meilisearch.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronJobModule } from './cron-job/taskScheduler.module';
 import { LoggerModule } from './common/logger/logger.module';
+import { DiscussionModule } from './discussion/discussion.module';
 
 @Module({
   imports: [
@@ -56,7 +57,8 @@ import { LoggerModule } from './common/logger/logger.module';
     CronJobModule,
     LoggerModule,
     EventEmitterModule.forRoot(),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    DiscussionModule
 
   ],
   controllers: [AppController],
