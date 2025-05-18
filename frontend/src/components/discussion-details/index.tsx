@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import DiscussionSection from "./Discussion";
 import { useGetSingleDiscussion } from "@/modules/discussion/hooks";
 import Answers from "./Answers";
+import DiscussionDetailsLoadingSkeleton from "@/skeletons/DiscussionDetailsLoadingSkeleton";
 
-const answers: any = [
+const answersData: any = [
   {
     id: "1",
     content: `
@@ -104,12 +105,14 @@ const DiscussionDetails = () => {
   const { query } = useRouter();
   const id = query?.id as string;
   const { discussion, isLoading } = useGetSingleDiscussion(id);
+
+  const answers =
+    discussion?.answers?.length > 0 ? discussion?.answers : answersData;
+
   return (
     <Box>
       {isLoading ? (
-        <Box>
-          <Typography>Discussion loading...</Typography>
-        </Box>
+        <DiscussionDetailsLoadingSkeleton />
       ) : (
         <>
           <DiscussionSection discuss={discussion} />
