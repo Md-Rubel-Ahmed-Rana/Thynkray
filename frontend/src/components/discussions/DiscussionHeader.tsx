@@ -1,6 +1,6 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import DiscussionSearchFilters from "./DiscussionSearchFilters";
-import Link from "next/link";
+import CreateDiscussionButton from "./CreateDiscussionButton";
 
 type Props = {
   total: number;
@@ -39,11 +39,7 @@ const DiscussionHeader = ({ total, limit }: Props) => {
 
       {/* Ask Question Button */}
       <Box sx={{ alignSelf: { xs: "stretch", sm: "auto" } }}>
-        <Link style={{ width: "100%" }} href={"/discussion/create"}>
-          <Button variant="contained" fullWidth={true}>
-            Ask Question
-          </Button>
-        </Link>
+        <CreateDiscussionButton />
       </Box>
     </Box>
   );
