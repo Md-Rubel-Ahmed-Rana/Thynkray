@@ -5,12 +5,12 @@ import DiscussCard from "./DiscussCard";
 import DiscussionHeader from "./DiscussionHeader";
 import PaginationTopics from "./Pagination";
 
-const Topics = () => {
+const Discussions = () => {
   const { data, isLoading } = useGetAllDiscussions();
   const { discussions, limit, page, totalCount } = data;
   return (
     <Box>
-      <DiscussionHeader total={totalCount} />
+      <DiscussionHeader total={totalCount} limit={limit} />
       {isLoading ? (
         <h1>Discussions loading...</h1>
       ) : (
@@ -44,4 +44,4 @@ const Topics = () => {
   );
 };
 
-export default Topics;
+export default Discussions;
