@@ -41,9 +41,7 @@ const DiscussCard = ({ discuss }: Props) => {
         }}
       >
         <Link
-          href={`/discussion/topic/${discuss?.id}/${
-            discuss?.slug || discuss?.title
-          }?title=${discuss?.title}`}
+          href={`/discussion/topic/${discuss?.id}/${discuss?.slug}?title=${discuss?.title}`}
           style={{ textDecoration: "none" }}
         >
           <Typography
