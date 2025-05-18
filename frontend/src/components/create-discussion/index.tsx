@@ -83,7 +83,13 @@ const CreateDiscussion = () => {
         fullWidth
       />
 
-      <Typography>Content</Typography>
+      <Typography
+        sx={{
+          mb: -2,
+        }}
+      >
+        Content:
+      </Typography>
       <Controller
         name="description"
         control={control}
@@ -104,6 +110,7 @@ const CreateDiscussion = () => {
         type="submit"
         variant="contained"
         color="primary"
+        size="large"
       >
         {isAdding ? "Submitting..." : "Submit"}
       </Button>
