@@ -18,7 +18,7 @@ import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import { CircularProgress } from "@mui/material";
 
-const pages = ["Articles", "Topics", "Write", "Authors", "About"];
+const pages = ["Articles", "Discussions", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard"];
 
 const Navbar = () => {

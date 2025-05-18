@@ -1,21 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { useDiscussionStore } from "./provider";
-import { Discussion, NewDiscussion } from "./types";
+import { Discussion, Discussions, NewDiscussion } from "./types";
 
-export const useGetAllDiscussions = (): {
-  discussions: Discussion[];
+export const useGetAllDiscussions = (
+  page?: number,
+  limit?: number,
+  searchText?: string,
+  sortBy?: "asc" | "desc"
+): {
+  data: Discussions;
   isLoading: boolean;
 } => {
-  const { discussions, isLoading, getAllDiscussion } = useDiscussionStore(
+  const { data, isLoading, getAllDiscussion } = useDiscussionStore(
     (state) => state
   );
 
   useEffect(() => {
-    getAllDiscussion();
-  }, [getAllDiscussion]);
+    getAllDiscussion(page, limit, searchText, sortBy);
+  }, [page, limit]);
 
-  return { discussions, isLoading };
+  return { data, isLoading };
 };
 
 export const useGetSingleDiscussion = (
