@@ -1,17 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useDiscussionStore } from "@/modules/discussion/provider";
 import { Box, Pagination } from "@mui/material";
 
 type Props = {
   total: number;
-  page: number;
+  page?: number;
   limit: number;
 };
 
 const PaginationTopics = ({ total, limit, page }: Props) => {
   const pageCount = Math.ceil(total / limit);
 
-  const handleChangePagination = (_: any, value: number) => {
-    console.log(value);
+  const { getAllDiscussion } = useDiscussionStore((state) => state);
+
+  const handleChangePagination = async (_: any, value: number) => {
+    await getAllDiscussion(value);
   };
 
   return (

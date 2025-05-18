@@ -1,9 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { useDiscussionStore } from "./provider";
 import { Discussion, Discussions, NewDiscussion } from "./types";
 
-export const useGetAllDiscussions = (): {
+export const useGetAllDiscussions = (
+  page?: number,
+  limit?: number
+): {
   data: Discussions;
   isLoading: boolean;
 } => {
@@ -12,8 +16,8 @@ export const useGetAllDiscussions = (): {
   );
 
   useEffect(() => {
-    getAllDiscussion();
-  }, [getAllDiscussion]);
+    getAllDiscussion(page, limit);
+  }, [page, limit]);
 
   return { data, isLoading };
 };

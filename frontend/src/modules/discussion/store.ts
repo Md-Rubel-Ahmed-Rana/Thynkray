@@ -59,12 +59,15 @@ export const createDiscussionStore = (
 ) => {
   return createStore<DiscussionStore>()((set) => ({
     ...initialState,
-    getAllDiscussion: async () => {
+    getAllDiscussion: async (page: number = 1, limit: number = 10) => {
       set({ isLoading: true, error: null });
       try {
-        const res = await axios.get(`${baseApi}/discussion`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${baseApi}/discussion?page=${page}&limit=${limit}`,
+          {
+            withCredentials: true,
+          }
+        );
         const result = res?.data?.data as Discussions;
         set({ data: result, isLoading: false });
         return result;
