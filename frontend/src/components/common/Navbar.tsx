@@ -18,7 +18,7 @@ import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import { CircularProgress } from "@mui/material";
 
-const pages = ["Home", "Articles", "Write", "Authors", "About"];
+const pages = ["Articles", "Topics", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard"];
 
 const Navbar = () => {
@@ -108,11 +108,7 @@ const Navbar = () => {
                   <Link
                     style={{ textDecoration: "none" }}
                     href={`${
-                      page === "Home"
-                        ? "/"
-                        : page === "Write"
-                        ? "/write/new"
-                        : `/${page.toLowerCase()}`
+                      page === "Write" ? "/write/new" : `/${page.toLowerCase()}`
                     }`}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -167,11 +163,7 @@ const Navbar = () => {
                 style={{ textDecoration: "none" }}
                 key={page}
                 href={`${
-                  page === "Home"
-                    ? "/"
-                    : page === "Write"
-                    ? "/write/new"
-                    : `/${page.toLowerCase()}`
+                  page === "Write" ? "/write/new" : `/${page.toLowerCase()}`
                 }`}
               >
                 <Button
