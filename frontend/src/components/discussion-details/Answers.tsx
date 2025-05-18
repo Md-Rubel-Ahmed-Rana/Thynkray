@@ -2,12 +2,14 @@ import { Answer } from "@/modules/discussion/types";
 import { Box } from "@mui/material";
 import AnswerHeader from "./AnswerHeader";
 import AnswerCard from "./AnswerCard";
+import { useState } from "react";
 
 type Props = {
   answers: Answer[];
 };
 
 const Answers = ({ answers }: Props) => {
+  const [sortedAnswers, setSortedAnswers] = useState<Answer[]>(answers);
   return (
     <Box
       sx={{
@@ -16,9 +18,9 @@ const Answers = ({ answers }: Props) => {
         pt: 3,
       }}
     >
-      <AnswerHeader answers={answers} />
+      <AnswerHeader answers={answers} setSortedAnswers={setSortedAnswers} />
       <Box>
-        {answers.map((answer) => (
+        {sortedAnswers.map((answer) => (
           <AnswerCard answer={answer} key={answer?.id} />
         ))}
       </Box>
