@@ -4,6 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import DiscussCard from "./DiscussCard";
 import DiscussionHeader from "./DiscussionHeader";
 import PaginationTopics from "./Pagination";
+import DiscussionsLoadingSkeleton from "@/skeletons/DiscussionsLoadingSkeleton";
 
 const Discussions = () => {
   const { data, isLoading } = useGetAllDiscussions();
@@ -12,7 +13,7 @@ const Discussions = () => {
     <Box>
       <DiscussionHeader total={totalCount} limit={limit} />
       {isLoading ? (
-        <h1>Discussions loading...</h1>
+        <DiscussionsLoadingSkeleton />
       ) : (
         <Box>
           {discussions?.length <= 0 ? (

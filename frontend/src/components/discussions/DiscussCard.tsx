@@ -1,6 +1,7 @@
 import { Discussion } from "@/modules/discussion/types";
 import { Avatar, Box, Chip, Typography } from "@mui/material";
 import Link from "next/link";
+import moment from "moment";
 
 type Props = {
   discuss: Discussion;
@@ -11,8 +12,7 @@ const DiscussCard = ({ discuss }: Props) => {
     <Box
       sx={{
         borderBottom: "1px solid gray",
-        pb: 1,
-        pt: 2,
+        py: 2,
         display: "flex",
         gap: 4,
         alignItems: "center",
@@ -23,25 +23,34 @@ const DiscussCard = ({ discuss }: Props) => {
         sx={{
           display: "flex",
           flexDirection: { xs: "row", md: "column" },
-          justifyContent: "flex-end",
+          justifyContent: { xs: "flex-start", md: "flex-end" },
           alignItems: "flex-end",
           gap: { xs: 2, md: 1 },
+          width: { xs: "100%", md: "8%" },
         }}
       >
         <Typography>{discuss?.views || 45} views</Typography>
         <Typography>
           {discuss?._count?.answers || discuss?.totalAnswer || 20} answers
         </Typography>
+        <Typography sx={{ display: { xs: "block", md: "none" } }}>
+          {moment(new Date(discuss.createdAt)).fromNow()}
+        </Typography>
       </Box>
+
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: 2,
+          width: { xs: "100%", md: "90%" },
         }}
       >
+        {/* title  */}
         <Link
-          href={`/discussion/topic/${discuss?.id}/${discuss?.slug}?title=${discuss?.title}`}
+          href={`/discussion/topic/${discuss?.id || "id"}/${
+            discuss?.slug || "slug"
+          }?title=${discuss?.title}`}
           style={{ textDecoration: "none" }}
         >
           <Typography
@@ -54,30 +63,46 @@ const DiscussCard = ({ discuss }: Props) => {
             {discuss?.title}
           </Typography>
         </Link>
+        {/* author info card  */}
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            gap: 2,
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", md: "center" },
+            width: "100%",
+            flexDirection: { xs: "column", md: "row" },
           }}
         >
-          <Avatar
-            src={discuss?.user?.profile_image}
-            alt={discuss?.user?.name}
-          />
-          <Box>
-            <Typography
-              sx={{
-                fontWeight: "bold",
-              }}
-            >
-              {discuss?.user?.name}
-            </Typography>
-            <Typography variant="body2">
-              {discuss?.user?.designation}
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Avatar
+              src={discuss?.user?.profile_image}
+              alt={discuss?.user?.name}
+            />
+            <Box>
+              <Typography
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                {discuss?.user?.name}
+              </Typography>
+              <Typography variant="body2">
+                {discuss?.user?.designation}
+              </Typography>
+            </Box>
           </Box>
+          <Typography sx={{ display: { xs: "none", md: "block" } }}>
+            {moment(new Date(discuss.createdAt)).fromNow()}
+          </Typography>
         </Box>
+
+        {/* tags  */}
         <Box
           sx={{
             display: "flex",
