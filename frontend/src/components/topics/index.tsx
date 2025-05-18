@@ -3,6 +3,7 @@ import NoDataFound from "../common/NoDataFound";
 import { Box, Button, Typography } from "@mui/material";
 import DiscussCard from "./DiscussCard";
 import DiscussionHeader from "./DiscussionHeader";
+import PaginationTopics from "./Pagination";
 
 const Topics = () => {
   const { data, isLoading } = useGetAllDiscussions();
@@ -36,6 +37,7 @@ const Topics = () => {
               ))}
             </Box>
           )}
+          <PaginationTopics limit={limit} page={page} total={1000} />
         </Box>
       )}
     </Box>
