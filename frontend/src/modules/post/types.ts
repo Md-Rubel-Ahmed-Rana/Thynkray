@@ -69,28 +69,3 @@ export type UpdateSection = {
   images: (string | File)[];
   description: string;
 };
-
-export type PostState = {
-  isLoading: boolean;
-  error: string | null;
-  posts: Post[];
-  post: Post;
-  news: InternationalPost[];
-};
-
-export type PostActions = {
-  createNewPost: (values: CreateNewPost) => Promise<void>;
-  getPostsByAuthor: (id: string) => Promise<Post[]>;
-  getSinglePostBySlug: (slug: string) => Promise<Post>;
-  getSinglePostById: (id: string) => Promise<Post>;
-  getAllPosts: () => Promise<Post[]>;
-  getLatestPosts: (limit?: number) => Promise<Post[]>;
-  getPostsByCategory: (category: string) => Promise<Post[]>;
-  getPostsBySearched: (searchText: string) => Promise<Post[]>;
-  getRelatedPosts: (searchText: string) => Promise<Post[]>;
-  getInternationalPosts: () => Promise<InternationalPost[]>;
-  deletePost: (id: string, authorId: string) => Promise<void>;
-  updatePost: (id: string, formData: FormData) => Promise<void>;
-};
-
-export type PostStore = PostState & PostActions;

@@ -5,15 +5,23 @@ import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 import CommonPosts from "@/components/sharedContent/CommonPosts";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
-import { useGetPostsByCategory } from "@/modules/post/hooks";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getPostsByCategory } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const CategorizedPosts = () => {
   const { query } = useRouter();
   const category = query.category as string;
-  const { isLoading, posts } = useGetPostsByCategory(category);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", category],
+    queryFn: getPostsByCategory,
+  });
+
+  const posts = (data || []) as Post[];
 
   return (
     <Box>

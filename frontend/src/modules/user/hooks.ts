@@ -22,30 +22,6 @@ export const useGetSingleUser = (
   return { user, isLoading, error };
 };
 
-export const useGetLoggedInUser = (): {
-  user: User;
-  isLoading: boolean;
-  error: string | null;
-} => {
-  const { getAuthenticatedUser, user, isLoading, error } = useUserStore(
-    (state) => state
-  );
-
-  const { data: session, status } = useSession();
-  const hasFetched = useRef(false);
-
-  useEffect(() => {
-    const email = session?.user?.email;
-
-    if (status === "authenticated" && email && !hasFetched.current) {
-      getAuthenticatedUser(email);
-      hasFetched.current = true;
-    }
-  }, [status, session?.user?.email, getAuthenticatedUser]);
-
-  return { user, isLoading, error };
-};
-
 export const useLoginUser = (): void => {
   const { userLogin, user } = useUserStore((state) => state);
   const { data: session, status } = useSession();

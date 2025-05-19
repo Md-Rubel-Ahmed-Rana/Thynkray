@@ -3,11 +3,11 @@ import { styled } from "@mui/material/styles";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { ImageRounded } from "@mui/icons-material";
-import {
-  useGetLoggedInUser,
-  useUpdateProfileImage,
-} from "@/modules/user/hooks";
+import { useUpdateProfileImage } from "@/modules/user/hooks";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/modules/user/api";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -27,7 +27,11 @@ type Props = {
 };
 
 const EditProfileImage = ({ open, setOpen }: Props) => {
-  const { user } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data: user } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const { updateProfileImage, isLoading } = useUpdateProfileImage();
@@ -35,7 +39,7 @@ const EditProfileImage = ({ open, setOpen }: Props) => {
   const handleUpdateProfileImage = async () => {
     const formData = new FormData();
     formData.append("profile_image", image as File);
-    await updateProfileImage({ id: user.id, formData });
+    await updateProfileImage({ id: user?.id as string, formData });
 
     toast.success("Profile picture updated successfully!");
 

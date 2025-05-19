@@ -2,19 +2,24 @@ import { Box, Typography, Stack, Button } from "@mui/material";
 import { useState } from "react";
 import CommentModal from "../common/CommentModal";
 import LoginModal from "../common/LoginModal";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
 import CommentLoadingSkeleton from "@/skeletons/CommentLoadingSkeleton";
 import CommentCard from "./CommentCard";
 import { getCommentsByPostId } from "@/modules/comment/api";
 import { useQuery } from "@tanstack/react-query";
 import { Comment } from "@/modules/comment/types";
+import { useSession } from "next-auth/react";
+import { getCurrentUser } from "@/modules/user/api";
 
 type Props = {
   postId: string;
 };
 
 const Comments = ({ postId }: Props) => {
-  const { user } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data: user } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
   const [isComment, setIsComment] = useState(false);
   const [shouldLogin, setShouldLogin] = useState(false);
   const { data, isLoading } = useQuery({

@@ -12,17 +12,23 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
 import LoginButton from "./LoginButton";
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import { CircularProgress } from "@mui/material";
+import { getCurrentUser } from "@/modules/user/api";
+import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
 
 const pages = ["Articles", "Discussions", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard"];
 
 const Navbar = () => {
-  const { user, isLoading } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 

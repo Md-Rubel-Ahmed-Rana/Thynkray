@@ -1,6 +1,6 @@
-import { useDeletePost } from "@/modules/post/hooks";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { deletePost } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
 import {
   Button,
   Dialog,
@@ -9,6 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -18,12 +19,24 @@ type Props = {
 };
 
 const PostDeleteModal = ({ post, open, setOpen }: Props) => {
-  const { user } = useGetLoggedInUser();
-  const { deletePost, isLoading } = useDeletePost();
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: () => deletePost(post?.id),
+    onSuccess: () => {
+      toast.success("Post deleted successfully!");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      handleClose();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to delete the post."
+      );
+    },
+  });
+
   const handleDelete = async () => {
-    await deletePost(post?.id, user?.id);
-    toast.success("Post deleted successfully!");
-    handleClose();
+    mutate();
   };
 
   const handleClose = () => {

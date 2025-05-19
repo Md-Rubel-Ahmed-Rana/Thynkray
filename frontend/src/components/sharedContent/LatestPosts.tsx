@@ -1,10 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import LatestPostCard from "./LatestPostCard";
-import { useGetLatestPosts } from "@/modules/post/hooks";
 import LatestPostLoadingSkeleton from "../../skeletons/LatestPostLoadingSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { getLatestPosts } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const LatestPosts = () => {
-  const { isLoading, posts } = useGetLatestPosts();
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", "1000"],
+    queryFn: getLatestPosts,
+  });
+  const posts = data as Post[];
   return (
     <Box>
       <Typography mb={2} variant="h5" component={"h2"}>
