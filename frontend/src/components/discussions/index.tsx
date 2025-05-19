@@ -1,4 +1,3 @@
-import { useGetAllDiscussions } from "@/modules/discussion/hooks";
 import NoDataFound from "../common/NoDataFound";
 import { Box, Typography } from "@mui/material";
 import DiscussCard from "./DiscussCard";
@@ -6,10 +5,20 @@ import DiscussionHeader from "./DiscussionHeader";
 import PaginationTopics from "./Pagination";
 import DiscussionsLoadingSkeleton from "@/skeletons/DiscussionsLoadingSkeleton";
 import CreateDiscussionButton from "./CreateDiscussionButton";
+import { useQuery } from "@tanstack/react-query";
+import { getAllDiscussions } from "@/modules/discussion/api";
+import { Discussions as DiscussionsType } from "@/modules/discussion/types";
 
 const Discussions = () => {
-  const { data, isLoading } = useGetAllDiscussions();
-  const { discussions, limit, page, totalCount } = data;
+  const { data, isLoading } = useQuery({
+    queryKey: [
+      "getAllDiscussions",
+      { page: 1, limit: 10, sortBy: "desc", searchText: "" },
+    ],
+    queryFn: getAllDiscussions,
+  });
+
+  const { discussions, limit, totalCount } = data as DiscussionsType;
   return (
     <Box>
       <DiscussionHeader total={totalCount} limit={limit} />
@@ -32,7 +41,7 @@ const Discussions = () => {
               ))}
             </Box>
           )}
-          <PaginationTopics limit={limit} page={page} total={totalCount} />
+          <PaginationTopics />
         </Box>
       )}
     </Box>

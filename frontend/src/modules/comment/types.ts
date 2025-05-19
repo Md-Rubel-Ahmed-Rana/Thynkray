@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Post } from "../post/types";
 import { User } from "../user/types";
 
@@ -11,39 +10,8 @@ export type Comment = {
   updatedAt: Date;
 };
 
-export type CommentState = {
-  isLoading: boolean;
-  error: string | null;
-  comment: Comment;
-  comments: Comment[];
-  response: any;
-};
-
 export type NewComment = {
   postId: string;
   userId: string;
   content: string;
 };
-
-export type CommentActions = {
-  deleteComment: ({
-    postId,
-    commentId,
-  }: {
-    postId: string;
-    commentId: string;
-  }) => Promise<void>;
-  updateComment: ({
-    postId,
-    commentId,
-    content,
-  }: {
-    postId: string;
-    commentId: string;
-    content: string;
-  }) => Promise<void>;
-  getCommentsByPostId: (id: string) => Promise<Comment[]>;
-  addComment: (data: NewComment) => Promise<void>;
-};
-
-export type CommentStore = CommentState & CommentActions;

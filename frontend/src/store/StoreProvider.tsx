@@ -1,4 +1,3 @@
-import { CommentStoreProvider } from "@/modules/comment/provider";
 import { DiscussionStoreProvider } from "@/modules/discussion/provider";
 import { PostStoreProvider } from "@/modules/post/provider";
 import { UserStoreProvider } from "@/modules/user/provider";
@@ -12,9 +11,7 @@ const StoreProvider = ({ children }: StoreProviderProps) => {
   return (
     <UserStoreProvider>
       <PostStoreProvider>
-        <DiscussionStoreProvider>
-          <CommentStoreProvider>{children}</CommentStoreProvider>
-        </DiscussionStoreProvider>
+        <DiscussionStoreProvider>{children}</DiscussionStoreProvider>
       </PostStoreProvider>
     </UserStoreProvider>
   );
