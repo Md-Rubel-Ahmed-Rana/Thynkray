@@ -3,6 +3,7 @@ import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { UpdateDiscussionDto } from './dto/update-discussion.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetDiscussionDto } from './dto/get-discussion.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DiscussionService {
@@ -17,10 +18,26 @@ export class DiscussionService {
     }
   }
 
-  async findAll(page: number = 1, limit: number  =10) {
+  async findAll(
+    page: number = 1, 
+    limit: number  =10, 
+    sortBy: "asc" | "desc" = "desc", 
+    searchText: string = ""
+  ) {
     const skip = (page - 1) * limit;
     const take = limit;
+
+    const where: Prisma.DiscussionWhereInput = searchText
+    ? {
+        OR: [
+          { title: { contains: searchText, mode: 'insensitive' } },
+          { description: { contains: searchText, mode: 'insensitive' } }
+        ]
+      }
+    : {};
+
     const discussions  = await this.prisma.discussion.findMany({
+      where,
       include: {
         user: true,
         _count: {
@@ -30,7 +47,7 @@ export class DiscussionService {
         }
       },
       orderBy: {
-        createdAt: "desc"
+        createdAt: sortBy
       },
       skip,
       take 
