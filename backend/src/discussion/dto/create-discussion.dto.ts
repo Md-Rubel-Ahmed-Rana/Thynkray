@@ -1,11 +1,22 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateDiscussionDto {
     @ApiProperty({example: "How to integrate AI",description: "Title of discussion"})
     @IsNotEmpty({ message: "Title is required" })
     @IsString({ message: "Title must be a string" })
     title: string;
+
+    @ApiProperty({example: "how-to-integrate-ai",description: "Slug of discussion"})
+    @IsNotEmpty({ message: "Slug is required" })
+    @IsString({ message: "Slug must be a string" })
+    slug: string;
+
+    @ApiProperty({example: ["nestjs", "swagger", "api"],description: "Tags related to the post",type: [String]})
+    @IsNotEmpty({ message: "Tags are required" })
+    @IsArray({ message: "Tags must be an array" })
+    @IsString({ each: true, message: "Tags must be an array of strings" })
+    tags: string[];
 
    @ApiPropertyOptional({
         example: "This description explains how AI is being integrated",

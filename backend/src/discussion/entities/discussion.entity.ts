@@ -3,6 +3,8 @@ import { Answer, User } from "@prisma/client"
 export class Discussion {
     id: string
     title: string
+    slug: string
+    tags: string[]
     description: string
     userId: string
     user: User
@@ -13,6 +15,8 @@ export class Discussion {
     constructor(
         id: string,
         title: string,
+        slug: string,
+        tags: string[],
         description: string,
         userId: string,
         user: User,
@@ -21,6 +25,8 @@ export class Discussion {
         updatedAt: Date){
             this.id = id
             this.title = title
+            this.slug = slug
+            this.tags = tags
             this.description = description
             this.userId = userId
             this.user = user
