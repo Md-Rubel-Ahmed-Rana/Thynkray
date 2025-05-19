@@ -22,6 +22,7 @@ const Home = () => {
           justifyContent: "space-between",
           gap: "20px",
           flexDirection: { xs: "column", md: "row" },
+          width: "100%",
         }}
         my={4}
       >

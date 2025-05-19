@@ -20,7 +20,7 @@ const DiscussionSearchFilters = () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       queryClient.invalidateQueries({
-        queryKey: ["getAllDiscussions"],
+        queryKey: ["discussions"],
         exact: false,
       });
     }, 500);
@@ -29,14 +29,14 @@ const DiscussionSearchFilters = () => {
   const handleFilterDiscussions = (value: "desc" | "asc") => {
     setSort(value);
     queryClient.invalidateQueries({
-      queryKey: ["getAllDiscussions"],
+      queryKey: ["discussions"],
       exact: false,
     });
   };
 
   useEffect(() => {
     queryClient.invalidateQueries({
-      queryKey: ["getAllDiscussions"],
+      queryKey: ["discussions"],
       exact: false,
     });
   }, [queryClient, searchText, sort]);

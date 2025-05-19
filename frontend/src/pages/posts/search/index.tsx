@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 
 const PostsSearchPage = () => {
   const { query } = useRouter();
-  const searchText = query.q as string;
+  const searchText = query?.q as string;
   return (
     <>
-      <SEOHead title={`Posts of - ${searchText || "unknown"}`} />
+      <SEOHead title={`${searchText || "unknown"}`} />
       <PostsSearch />
     </>
   );
