@@ -58,7 +58,7 @@ const Profile = () => {
             sx={{ fontSize: { xs: "18px", md: "24px" } }}
             variant="h4"
           >
-            {user.name}
+            {user?.name}
           </Typography>
           <IconButton
             size="small"
@@ -89,11 +89,11 @@ const Profile = () => {
         </Typography>
         <Typography variant="body1">
           <strong>Account created at:</strong>{" "}
-          {new Date(user.created_at).toLocaleString()}
+          {new Date(user?.created_at).toLocaleString()}
         </Typography>
         <Typography variant="body1">
           <strong>last updated at:</strong>{" "}
-          {new Date(user.updated_at).toLocaleString()}
+          {new Date(user?.updated_at).toLocaleString()}
         </Typography>
       </Stack>
 

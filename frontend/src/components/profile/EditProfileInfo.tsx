@@ -1,5 +1,5 @@
-import { getCurrentUser } from "@/modules/user/api";
-import { useUpdateUser } from "@/modules/user/hooks";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getCurrentUser, updateUser } from "@/modules/user/api";
 import { User } from "@/modules/user/types";
 import compareFieldsChanges from "@/utils/compareFieldsChanges";
 import {
@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -22,6 +22,7 @@ type Props = {
 };
 
 const EditProfileInfo = ({ open, setOpen }: Props) => {
+  const queryClient = useQueryClient();
   const { data: session } = useSession();
   const { data: userData } = useQuery({
     queryKey: ["user", session?.user?.email as string],
@@ -32,7 +33,21 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
 
   const [isChanged, setIsChanged] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<Partial<User>>(user);
-  const { updateUser, isLoading } = useUpdateUser();
+
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: (updatedData: Partial<User>) =>
+      updateUser(user?.id as string, updatedData),
+    onSuccess: () => {
+      toast.success("Profile info updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["user", "users"] });
+      setOpen(false);
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to update user profile image."
+      );
+    },
+  });
 
   const handleChangeValues = (field: string, value: string) => {
     const newValues = { ...user, [field]: value };
@@ -41,14 +56,11 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
   };
 
   const handleUpdateUserInfo = async () => {
-    await updateUser(user?.id, {
-      name: updatedUser.name,
-      designation: updatedUser.designation,
-      bio: updatedUser.bio,
+    mutate({
+      name: updatedUser?.name,
+      designation: updatedUser?.designation,
+      bio: updatedUser?.bio,
     });
-
-    toast.success("Profile info updated successfully!");
-    setOpen(false);
   };
 
   return (
@@ -90,7 +102,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
         >
           <TextField
             id="name"
-            defaultValue={user.name}
+            defaultValue={user?.name}
             label="Name"
             name="name"
             onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
@@ -101,7 +113,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
             id="designation"
             name="designation"
             onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
-            defaultValue={user.designation}
+            defaultValue={user?.designation}
             label="Designation"
             variant="outlined"
             size="small"
@@ -110,7 +122,7 @@ const EditProfileInfo = ({ open, setOpen }: Props) => {
             onChange={(e) => handleChangeValues(e.target.name, e.target.value)}
             id="bio"
             name="bio"
-            defaultValue={user.bio}
+            defaultValue={user?.bio}
             label="Bio"
             variant="outlined"
             size="small"

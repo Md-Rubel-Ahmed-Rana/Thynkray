@@ -7,18 +7,18 @@ import DiscussionsLoadingSkeleton from "@/skeletons/DiscussionsLoadingSkeleton";
 import CreateDiscussionButton from "./CreateDiscussionButton";
 import { useQuery } from "@tanstack/react-query";
 import { getAllDiscussions } from "@/modules/discussion/api";
-import { Discussions as DiscussionsType } from "@/modules/discussion/types";
 
 const Discussions = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: [
-      "getAllDiscussions",
-      { page: 1, limit: 10, sortBy: "desc", searchText: "" },
-    ],
-    queryFn: getAllDiscussions,
-  });
+  const { data = { discussions: [], limit: 10, totalCount: 0 }, isLoading } =
+    useQuery({
+      queryKey: [
+        "getAllDiscussions",
+        { page: 1, limit: 10, sortBy: "desc", searchText: "" },
+      ],
+      queryFn: getAllDiscussions,
+    });
 
-  const { discussions, limit, totalCount } = data as DiscussionsType;
+  const { discussions, limit, totalCount } = data;
   return (
     <Box>
       <DiscussionHeader total={totalCount} limit={limit} />

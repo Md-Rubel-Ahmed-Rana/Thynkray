@@ -61,7 +61,7 @@ const CreateDiscussion = () => {
     },
     onError: (error: any) => {
       toast.error(
-        error?.response?.data?.message || "Failed to delete the comment."
+        error?.response?.data?.message || "Failed to create discussion."
       );
     },
   });

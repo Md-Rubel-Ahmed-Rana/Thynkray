@@ -25,6 +25,14 @@ export const getAllDiscussions = async ({
   return result?.data?.data as Discussions;
 };
 
+export const getSingleDiscussion = async (id: string): Promise<Discussion> => {
+  const result = await axios.get(`${baseApi}/discussion/${id}`, {
+    withCredentials: true,
+  });
+
+  return result?.data?.data as Discussion;
+};
+
 export const createDiscussion = async (
   data: NewDiscussion
 ): Promise<Discussion> => {
