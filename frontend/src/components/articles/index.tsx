@@ -5,13 +5,21 @@ import CommonPosts from "../sharedContent/CommonPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import LatestPosts from "../sharedContent/LatestPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
-import { useAllGetPosts } from "@/modules/post/hooks";
 import CommonPostLoadingSkeleton from "../../skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getAllPosts } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const Articles = () => {
-  const { posts, isLoading } = useAllGetPosts();
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", ""],
+    queryFn: getAllPosts,
+  });
+
+  const posts = (data || []) as Post[];
+
   return (
     <Box>
       <SearchForm />

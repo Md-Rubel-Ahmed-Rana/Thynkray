@@ -5,15 +5,24 @@ import ShowSearchResult from "./ShowSearchResult";
 import LatestPosts from "@/components/sharedContent/LatestPosts";
 import Categories from "@/components/common/Categories";
 import InternationalPosts from "@/components/sharedContent/InternationalPosts";
-import { useGetPostsBySearched } from "@/modules/post/hooks";
 import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "@/components/common/NoDataFound";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getPostsBySearched } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const PostsSearch = () => {
   const { query } = useRouter();
   const searchText = query?.q as string;
-  const { isLoading, posts } = useGetPostsBySearched(searchText);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", searchText],
+    queryFn: getPostsBySearched,
+  });
+
+  const posts = (data || []) as Post[];
+
   return (
     <Box component={"section"}>
       <SearchForm />

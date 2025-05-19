@@ -4,13 +4,14 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import RichTextEditor from "../common/RichTextEditor";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
 import { NewDiscussion } from "@/modules/discussion/types";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { generateDiscussionSlug } from "@/utils/generateDiscussionSlug";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createDiscussion } from "@/modules/discussion/api";
+import { getCurrentUser } from "@/modules/user/api";
+import { useSession } from "next-auth/react";
 
 const schema = Yup.object().shape({
   title: Yup.string()
@@ -28,7 +29,13 @@ const schema = Yup.object().shape({
 
 const CreateDiscussion = () => {
   const queryClient = useQueryClient();
-  const { user } = useGetLoggedInUser();
+
+  const { data: session } = useSession();
+  const { data: user } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
+
   const router = useRouter();
 
   const {
@@ -71,7 +78,7 @@ const CreateDiscussion = () => {
         .split(",")
         .map((tag) => tag.trim())
         .filter((tag) => tag !== ""),
-      userId: user?.id,
+      userId: user?.id as string,
       slug: generateDiscussionSlug(data.title),
     };
     mutate(payload);

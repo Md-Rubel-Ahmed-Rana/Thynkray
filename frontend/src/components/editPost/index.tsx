@@ -1,15 +1,22 @@
-import { useGetPostById } from "@/modules/post/hooks";
 import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import EditPostForm from "./EditPostForm";
 import NoDataFound from "../common/NoDataFound";
 import EditPostLoadingSkeleton from "@/skeletons/EditPostLoadingSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { handleFetchPostId } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const EditPost = () => {
   const { query, back } = useRouter();
   const id = query?.id as string;
   const title = query?.title as string;
-  const { post, isLoading } = useGetPostById(id);
+  const { data, isLoading } = useQuery({
+    queryKey: ["getAllDiscussions", id],
+    queryFn: handleFetchPostId,
+  });
+
+  const post = data as Post;
 
   return (
     <Box>

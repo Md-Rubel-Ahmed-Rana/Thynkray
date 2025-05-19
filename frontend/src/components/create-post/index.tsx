@@ -4,20 +4,26 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import UploadThumbnail from "./UploadThumbnail";
 import Sections from "./Sections";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
 import Category from "./Category";
 import Tags from "./Tags";
 import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import { generatePostSlug } from "@/utils/generatePostSlug";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/modules/post/api";
+import { getCurrentUser } from "@/modules/user/api";
+import { useSession } from "next-auth/react";
 
 const CreatePost = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { user } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data: user } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
+
   const {
     register,
     handleSubmit,
@@ -59,7 +65,7 @@ const CreatePost = () => {
   const handleCreatePost = async (data: CreateNewPost) => {
     data.content = content;
     data.thumbnail = thumbnailImage as File;
-    data.authorId = user?.id;
+    data.authorId = user?.id as string;
     data.slug = generatePostSlug(data);
     mutate(data);
   };

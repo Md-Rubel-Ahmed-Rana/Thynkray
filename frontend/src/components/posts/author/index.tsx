@@ -1,16 +1,23 @@
 import NoDataFound from "@/components/common/NoDataFound";
 import CommonPosts from "@/components/sharedContent/CommonPosts";
 import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
-import { useGetPostsByAuthor } from "@/modules/post/hooks";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getPostsByAuthor } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const AuthorPosts = () => {
   const { query } = useRouter();
   const name = query.name as string;
   const authorId = query.authorId as string;
-  const { isLoading, posts } = useGetPostsByAuthor(authorId);
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", authorId],
+    queryFn: getPostsByAuthor,
+  });
+  const posts = data as Post[];
+
   return (
     <Box>
       <Box

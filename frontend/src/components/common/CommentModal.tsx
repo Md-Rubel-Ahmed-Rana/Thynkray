@@ -1,5 +1,7 @@
-import { useAddNewComment } from "@/modules/comment/hooks";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { addComment } from "@/modules/comment/api";
+import { NewComment } from "@/modules/comment/types";
+import { getCurrentUser } from "@/modules/user/api";
 import {
   Backdrop,
   Box,
@@ -8,6 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -20,30 +24,34 @@ type Props = {
 const MAX_CHAR = 200;
 
 const CommentModal = ({ open, setOpen, postId }: Props) => {
-  const { user } = useGetLoggedInUser();
+  const queryClient = useQueryClient();
+  const { data: session } = useSession();
+  const { data: user } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
   const [content, setContent] = useState("");
-  const { addComment, isLoading, response } = useAddNewComment();
+
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: (data: NewComment) => addComment(data),
+    onSuccess: () => {
+      toast.success("Comment added successfully");
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      setOpen(false);
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to add the comment."
+      );
+    },
+  });
 
   const handleUpdateUserInfo = async () => {
-    const data = {
+    mutate({
       postId,
-      userId: user?.id,
+      userId: user?.id as string,
       content,
-    };
-    await addComment(data);
-
-    if (response?.statusCode === 201) {
-      toast.success(response?.message || "Comment added successfully");
-    } else {
-      toast.error(
-        response?.message ||
-          response?.error?.message ||
-          response?.data?.error?.message ||
-          "Failed to add comment"
-      );
-    }
-    console.log({ isLoading, response });
-    setOpen(false);
+    });
   };
 
   return (

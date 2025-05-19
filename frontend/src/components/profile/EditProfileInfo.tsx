@@ -1,4 +1,5 @@
-import { useGetLoggedInUser, useUpdateUser } from "@/modules/user/hooks";
+import { getCurrentUser } from "@/modules/user/api";
+import { useUpdateUser } from "@/modules/user/hooks";
 import { User } from "@/modules/user/types";
 import compareFieldsChanges from "@/utils/compareFieldsChanges";
 import {
@@ -10,6 +11,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,7 +22,14 @@ type Props = {
 };
 
 const EditProfileInfo = ({ open, setOpen }: Props) => {
-  const { user } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data: userData } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
+
+  const user = userData as User;
+
   const [isChanged, setIsChanged] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<Partial<User>>(user);
   const { updateUser, isLoading } = useUpdateUser();
