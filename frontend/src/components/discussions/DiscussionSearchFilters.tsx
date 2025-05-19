@@ -1,29 +1,39 @@
 import { Box, InputBase, Select, MenuItem, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import { useDiscussionStore } from "@/modules/discussion/provider";
 
 let debounceTimer: NodeJS.Timeout;
 
-const DiscussionSearchFilters = () => {
-  const { getAllDiscussion } = useDiscussionStore((state) => state);
-  const [sort, setSort] = useState("newest");
+type Props = {
+  setSearchText: (searchText: string) => void;
+  sort: "desc" | "asc";
+  setSort: (sort: "desc" | "asc") => void;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
+};
 
+const DiscussionSearchFilters = ({
+  sort,
+  setSort,
+  setSearchText,
+  setLimit,
+  setPage,
+}: Props) => {
   const handleSearchDiscussions = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const searchText = event.target.value;
-
+    const value = event.target.value;
     clearTimeout(debounceTimer);
-
     debounceTimer = setTimeout(() => {
-      getAllDiscussion(1, 10, searchText, "desc");
+      setSearchText(value);
+      setLimit(10);
+      setPage(1);
     }, 500);
   };
 
-  const handleFilterDiscussions = (value: "newest" | "oldest") => {
+  const handleFilterDiscussions = (value: "desc" | "asc") => {
     setSort(value);
-    getAllDiscussion(1, 10, "", value === "newest" ? "desc" : "asc");
+    setLimit(10);
+    setPage(1);
   };
 
   return (
@@ -52,14 +62,14 @@ const DiscussionSearchFilters = () => {
       <Select
         value={sort}
         onChange={(e) =>
-          handleFilterDiscussions(e.target.value as "newest" | "oldest")
+          handleFilterDiscussions(e.target.value as "desc" | "asc")
         }
         displayEmpty
         size="small"
         sx={{ minWidth: { xs: "100%", md: 140 } }}
       >
-        <MenuItem value="newest">Newest</MenuItem>
-        <MenuItem value="oldest">Oldest</MenuItem>
+        <MenuItem value="desc">Newest</MenuItem>
+        <MenuItem value="asc">Oldest</MenuItem>
       </Select>
     </Box>
   );

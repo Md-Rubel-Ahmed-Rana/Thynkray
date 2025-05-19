@@ -13,12 +13,12 @@ import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { useEffect } from "react";
 import "../styles/globals.css";
-import StoreProvider from "@/store/StoreProvider";
 import ScrollToTopButton from "@/components/common/BottomToTopScrollButton";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-  // if user session available, try to login
-
   useEffect(() => {
     const lenis = new Lenis({
       autoRaf: true,
@@ -38,7 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <StoreProvider>
+    <QueryClientProvider client={queryClient}>
       <SessionProvider session={pageProps.session}>
         <ContextAPI>
           <CssBaseline />
@@ -62,6 +62,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </RootLayout>
         </ContextAPI>
       </SessionProvider>
-    </StoreProvider>
+    </QueryClientProvider>
   );
 }

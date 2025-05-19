@@ -12,17 +12,23 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
 import LoginButton from "./LoginButton";
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import { CircularProgress } from "@mui/material";
+import { getCurrentUser } from "@/modules/user/api";
+import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
 
 const pages = ["Articles", "Discussions", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard"];
 
 const Navbar = () => {
-  const { user, isLoading } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -103,6 +109,19 @@ const Navbar = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
+              <Link
+                style={{ textDecoration: "none", width: "100%" }}
+                href={"/chat-ai"}
+              >
+                <Button
+                  onClick={handleCloseNavMenu}
+                  size="small"
+                  variant="contained"
+                  sx={{ my: 2, display: "block", width: "90%", mx: "auto" }}
+                >
+                  Chat AI
+                </Button>
+              </Link>
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
@@ -156,8 +175,18 @@ const Navbar = () => {
               flexGrow: 1,
               display: { xs: "none", md: "flex" },
               justifyContent: "center",
+              gap: 2,
             }}
           >
+            <Link style={{ textDecoration: "none" }} href={"/chat-ai"}>
+              <Button
+                onClick={handleCloseNavMenu}
+                variant="contained"
+                sx={{ my: 2, display: "block" }}
+              >
+                Chat AI
+              </Button>
+            </Link>
             {pages.map((page) => (
               <Link
                 style={{ textDecoration: "none" }}
@@ -168,7 +197,7 @@ const Navbar = () => {
               >
                 <Button
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "text.primary", display: "block" }}
+                  sx={{ my: 2, display: "block" }}
                 >
                   {page}
                 </Button>

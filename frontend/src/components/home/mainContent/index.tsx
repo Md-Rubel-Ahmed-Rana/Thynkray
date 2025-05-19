@@ -2,11 +2,18 @@ import { Box, Grid } from "@mui/material";
 import ContentCard from "./ContentCard";
 import Categories from "../../common/Categories";
 import SearchForm from "@/components/common/SearchForm";
-import { useGetLatestPosts } from "@/modules/post/hooks";
 import CommonPostLoadingSkeleton from "@/skeletons/CommonPostLoadingSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { getLatestPosts } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const MainContent = () => {
-  const { isLoading, posts } = useGetLatestPosts(6);
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["posts", "6"],
+    queryFn: getLatestPosts,
+  });
+  const posts = data as Post[];
+
   const firstRowCards = posts.slice(0, 2);
   const leftCard = posts[2];
   const middleCards = [posts[3], posts[4]];

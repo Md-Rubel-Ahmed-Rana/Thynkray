@@ -9,14 +9,21 @@ import RelatedPosts from "../sharedContent/RelatedPosts";
 import PopularPosts from "../sharedContent/PopularPosts";
 import InternationalPosts from "../sharedContent/InternationalPosts";
 import NoDataFound from "../common/NoDataFound";
-import { useGetPostBySlug } from "@/modules/post/hooks";
 import PostDetailsLoadingSkeleton from "@/skeletons/PostDetailsLoadingSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { handleFetchPostBySlug } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
 
 const PostDetails = () => {
   const { query, back } = useRouter();
   const slug = query?.slug as string;
   const title = query?.title as string;
-  const { post, isLoading } = useGetPostBySlug(slug);
+  const { data, isLoading } = useQuery({
+    queryKey: ["post", slug],
+    queryFn: handleFetchPostBySlug,
+  });
+
+  const post = data as Post;
 
   return (
     <>

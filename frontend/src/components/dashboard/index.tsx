@@ -2,19 +2,33 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import UserInfo from "./UserInfo";
 import UserPosts from "./UserPosts";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
-import { useGetPostsByAuthor } from "@/modules/post/hooks";
 import CommonPostLoadingSkeleton from "../../skeletons/CommonPostLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getPostsByAuthor } from "@/modules/post/api";
+import { Post } from "@/modules/post/types";
+import { getCurrentUser } from "@/modules/user/api";
+import { useSession } from "next-auth/react";
+import { User } from "@/modules/user/types";
 
 const Dashboard = () => {
-  const { user } = useGetLoggedInUser();
-  const { isLoading, posts } = useGetPostsByAuthor(user?.id);
+  const { data: session } = useSession();
+  const { data: user } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", user?.id as string],
+    queryFn: getPostsByAuthor,
+  });
+  const posts = data as Post[];
+
   return (
     <Box component={"section"}>
       <UserInfo
-        user={user}
+        user={user as User}
         totalPosts={posts?.length || 0}
         isLoading={isLoading}
       />

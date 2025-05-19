@@ -1,4 +1,3 @@
-import { useGetAllDiscussions } from "@/modules/discussion/hooks";
 import NoDataFound from "../common/NoDataFound";
 import { Box, Typography } from "@mui/material";
 import DiscussCard from "./DiscussCard";
@@ -6,13 +5,35 @@ import DiscussionHeader from "./DiscussionHeader";
 import PaginationTopics from "./Pagination";
 import DiscussionsLoadingSkeleton from "@/skeletons/DiscussionsLoadingSkeleton";
 import CreateDiscussionButton from "./CreateDiscussionButton";
+import { useQuery } from "@tanstack/react-query";
+import { getAllDiscussions } from "@/modules/discussion/api";
+import { useState } from "react";
 
 const Discussions = () => {
-  const { data, isLoading } = useGetAllDiscussions();
-  const { discussions, limit, page, totalCount } = data;
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [searchText, setSearchText] = useState("");
+  const [sort, setSort] = useState<"desc" | "asc">("desc");
+
+  const { data = { discussions: [], limit: 10, totalCount: 0 }, isLoading } =
+    useQuery({
+      queryKey: ["discussions", { page, limit, sortBy: sort, searchText }],
+      queryFn: getAllDiscussions,
+      enabled: true,
+    });
+
+  const { discussions, totalCount } = data;
   return (
     <Box>
-      <DiscussionHeader total={totalCount} limit={limit} />
+      <DiscussionHeader
+        total={totalCount}
+        limit={data?.limit || 10}
+        setSearchText={setSearchText}
+        setSort={setSort}
+        sort={sort}
+        setLimit={setLimit}
+        setPage={setPage}
+      />
       {isLoading ? (
         <DiscussionsLoadingSkeleton />
       ) : (
@@ -32,7 +53,13 @@ const Discussions = () => {
               ))}
             </Box>
           )}
-          <PaginationTopics limit={limit} page={page} total={totalCount} />
+          <PaginationTopics
+            limit={limit}
+            page={page}
+            setLimit={setLimit}
+            setPage={setPage}
+            totalCount={totalCount}
+          />
         </Box>
       )}
     </Box>

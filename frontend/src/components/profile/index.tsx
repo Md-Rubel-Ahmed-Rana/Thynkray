@@ -10,10 +10,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditProfileInfo from "./EditProfileInfo";
 import { useState } from "react";
 import EditProfileImage from "./EditProfileImage";
-import { useGetLoggedInUser } from "@/modules/user/hooks";
+import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/modules/user/api";
+import { User } from "@/modules/user/types";
 
 const Profile = () => {
-  const { user } = useGetLoggedInUser();
+  const { data: session } = useSession();
+  const { data } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+  });
+  const user = data as User;
+
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditProfileImage, setIsEditProfileImage] = useState(false);
   return (
@@ -49,7 +58,7 @@ const Profile = () => {
             sx={{ fontSize: { xs: "18px", md: "24px" } }}
             variant="h4"
           >
-            {user.name}
+            {user?.name}
           </Typography>
           <IconButton
             size="small"
@@ -80,11 +89,11 @@ const Profile = () => {
         </Typography>
         <Typography variant="body1">
           <strong>Account created at:</strong>{" "}
-          {new Date(user.created_at).toLocaleString()}
+          {new Date(user?.created_at).toLocaleString()}
         </Typography>
         <Typography variant="body1">
           <strong>last updated at:</strong>{" "}
-          {new Date(user.updated_at).toLocaleString()}
+          {new Date(user?.updated_at).toLocaleString()}
         </Typography>
       </Stack>
 

@@ -1,5 +1,5 @@
-import { useDeleteComment } from "@/modules/comment/hooks";
-import { Comment } from "@/modules/comment/types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Dialog,
@@ -9,6 +9,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { Comment } from "@/modules/comment/types";
+import { deleteComment } from "@/modules/comment/api";
 
 type Props = {
   comment: Comment;
@@ -17,15 +19,24 @@ type Props = {
 };
 
 const CommentDeleteModal = ({ comment, open, setOpen }: Props) => {
-  const { deleteComment, isLoading } = useDeleteComment();
-  const handleDelete = async () => {
-    await deleteComment({
-      postId: comment?.post?.id as string,
-      commentId: comment?.id,
-    });
+  const queryClient = useQueryClient();
 
-    toast.success("Comment deleted successfully!");
-    handleClose();
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: () => deleteComment(comment.id),
+    onSuccess: () => {
+      toast.success("Comment deleted successfully!");
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      handleClose();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to delete the comment."
+      );
+    },
+  });
+
+  const handleDelete = () => {
+    mutate();
   };
 
   const handleClose = () => {
