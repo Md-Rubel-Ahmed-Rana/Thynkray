@@ -7,12 +7,12 @@ import { Post } from "@/modules/post/types";
 
 const LatestPosts = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ["posts", "1000"],
+    queryKey: ["posts", "6"],
     queryFn: getLatestPosts,
   });
   const posts = data as Post[];
   return (
-    <Box>
+    <Box width={"100%"}>
       <Typography mb={2} variant="h5" component={"h2"}>
         Latest Posts
       </Typography>
@@ -24,6 +24,7 @@ const LatestPosts = () => {
             display: "flex",
             gap: "20px",
             flexDirection: { xs: "column", md: "row" },
+            width: "100%",
           }}
         >
           <Box
@@ -31,6 +32,7 @@ const LatestPosts = () => {
               display: "flex",
               flexDirection: "column",
               gap: "10px",
+              width: "100%",
             }}
           >
             <Box

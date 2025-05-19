@@ -1,31 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, MenuItem, Pagination, Select } from "@mui/material";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getAllDiscussions } from "@/modules/discussion/api";
 
-const PaginationTopics = () => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+type Props = {
+  page: number;
+  setPage: (page: number) => void;
+  limit: number;
+  setLimit: (page: number) => void;
+  totalCount: number;
+};
 
-  const { data } = useQuery({
-    queryKey: [
-      "getAllDiscussions",
-      { page, limit, sortBy: "desc", searchText: "" },
-    ],
-    queryFn: ({ queryKey }) => {
-      const [, params] = queryKey as [string, any];
-      return getAllDiscussions(params);
-    },
-  });
+const PaginationTopics = ({
+  limit,
+  page,
+  setLimit,
+  setPage,
+  totalCount,
+}: Props) => {
+  const pageCount = Math.ceil((totalCount ?? 0) / limit);
 
-  const pageCount = Math.ceil((data?.totalCount || 0) / limit);
-
-  const handleChangePagination = (_: any, value: number) => {
+  const handleChangePagination = (_: unknown, value: number) => {
     setPage(value);
   };
 
-  const handleChangeLimit = (value: any) => {
+  const handleChangeLimit = (value: unknown) => {
     setLimit(Number(value));
     setPage(1);
   };
@@ -38,20 +34,24 @@ const PaginationTopics = () => {
         flexDirection: { xs: "column", md: "row" },
         alignItems: "center",
         mt: 4,
+        gap: 2,
       }}
     >
       <Box display="flex" justifyContent="center">
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={handleChangePagination}
-          color="primary"
-          shape="rounded"
-          siblingCount={1}
-          boundaryCount={1}
-          size="medium"
-        />
+        {pageCount > 0 && (
+          <Pagination
+            count={pageCount}
+            page={page}
+            onChange={handleChangePagination}
+            color="primary"
+            shape="rounded"
+            siblingCount={1}
+            boundaryCount={1}
+            size="medium"
+          />
+        )}
       </Box>
+
       <Select
         onChange={(e) => handleChangeLimit(e.target.value)}
         value={limit}
