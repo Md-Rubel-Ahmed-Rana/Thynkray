@@ -8,7 +8,7 @@ import { getLatestPosts } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
 
 const MainContent = () => {
-  const { data, isLoading } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["posts", "6"],
     queryFn: getLatestPosts,
   });

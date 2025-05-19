@@ -1,12 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import Authors from "../sharedContent/Authors";
-import { useGetAuthors } from "@/modules/user/hooks";
 import NoDataFound from "../common/NoDataFound";
 import LoginButton from "../common/LoginButton";
 import AuthorLoadingSkeleton from "@/skeletons/AuthorLoadingSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { getAuthors } from "@/modules/user/api";
 
 const AllAuthors = () => {
-  const { isLoading, users } = useGetAuthors();
+  const { data: users = [], isLoading } = useQuery({
+    queryKey: ["users", "authors"],
+    queryFn: getAuthors,
+  });
 
   return (
     <Box>

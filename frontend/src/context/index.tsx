@@ -1,6 +1,8 @@
-import { useLoginUser } from "@/modules/user/hooks";
+import { getCurrentUser, userLogin } from "@/modules/user/api";
 import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
-import React, { createContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 
 export type IContext = {
   handleChangeThemeMode: () => void;
@@ -15,13 +17,37 @@ const context: IContext = {
 export const ContextProvider = createContext<IContext>(context);
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const themeName = "thynkray-theme";
 
 const ContextAPI = ({ children }: Props) => {
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
+  const { data: session, status } = useSession();
+  const hasLoggedIn = useRef(false);
+
+  const { data: user, isLoading: isUserLoading } = useQuery({
+    queryKey: ["user", session?.user?.email as string],
+    queryFn: getCurrentUser,
+    enabled: !!session?.user?.email,
+  });
+
+  useEffect(() => {
+    if (
+      status === "authenticated" &&
+      session?.user &&
+      !hasLoggedIn.current &&
+      !isUserLoading &&
+      !user?.id
+    ) {
+      const email = session.user.email as string;
+      const name = session.user.name as string;
+      const profile_image = session.user.image as string;
+      userLogin({ name, email, profile_image });
+      hasLoggedIn.current = true;
+    }
+  }, [session?.user, status, user?.id, isUserLoading]);
 
   const theme = createTheme({
     palette: {
@@ -46,8 +72,6 @@ const ContextAPI = ({ children }: Props) => {
     handleChangeThemeMode,
     themeMode,
   };
-
-  useLoginUser();
 
   return (
     <ContextProvider.Provider value={values}>
