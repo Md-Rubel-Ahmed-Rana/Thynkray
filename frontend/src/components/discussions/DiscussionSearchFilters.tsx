@@ -1,30 +1,45 @@
 import { Box, InputBase, Select, MenuItem, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import { useDiscussionStore } from "@/modules/discussion/provider";
+import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 let debounceTimer: NodeJS.Timeout;
 
 const DiscussionSearchFilters = () => {
-  const { getAllDiscussion } = useDiscussionStore((state) => state);
-  const [sort, setSort] = useState("newest");
+  const queryClient = useQueryClient();
+
+  const [searchText, setSearchText] = useState("");
+  const [sort, setSort] = useState<"desc" | "asc">("desc");
 
   const handleSearchDiscussions = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const searchText = event.target.value;
+    const value = event.target.value;
+    setSearchText(value);
 
     clearTimeout(debounceTimer);
-
     debounceTimer = setTimeout(() => {
-      getAllDiscussion(1, 10, searchText, "desc");
+      queryClient.invalidateQueries({
+        queryKey: ["getAllDiscussions"],
+        exact: false,
+      });
     }, 500);
   };
 
-  const handleFilterDiscussions = (value: "newest" | "oldest") => {
+  const handleFilterDiscussions = (value: "desc" | "asc") => {
     setSort(value);
-    getAllDiscussion(1, 10, "", value === "newest" ? "desc" : "asc");
+    queryClient.invalidateQueries({
+      queryKey: ["getAllDiscussions"],
+      exact: false,
+    });
   };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ["getAllDiscussions"],
+      exact: false,
+    });
+  }, [queryClient, searchText, sort]);
 
   return (
     <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
@@ -52,14 +67,14 @@ const DiscussionSearchFilters = () => {
       <Select
         value={sort}
         onChange={(e) =>
-          handleFilterDiscussions(e.target.value as "newest" | "oldest")
+          handleFilterDiscussions(e.target.value as "desc" | "asc")
         }
         displayEmpty
         size="small"
         sx={{ minWidth: { xs: "100%", md: 140 } }}
       >
-        <MenuItem value="newest">Newest</MenuItem>
-        <MenuItem value="oldest">Oldest</MenuItem>
+        <MenuItem value="desc">Newest</MenuItem>
+        <MenuItem value="asc">Oldest</MenuItem>
       </Select>
     </Box>
   );
