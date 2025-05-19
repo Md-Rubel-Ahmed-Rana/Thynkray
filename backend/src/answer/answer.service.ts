@@ -20,7 +20,9 @@ export class AnswerService {
   async findAll() {
     const answers = await this.prisma.answer.findMany({
       include: {
-        discussion: true,
+        discussion: {
+          select: {id: true,title: true, views: true, slug: true, tags: true}
+        },
         user: true
       }
     })
@@ -37,7 +39,9 @@ export class AnswerService {
     const answers = await this.prisma.answer.findMany({
       where: {discussionId},
       include: {
-        discussion: true,
+        discussion: {
+          select: {id: true,title: true, views: true, slug: true, tags: true}
+        },
         user: true
       }
     })
@@ -54,7 +58,9 @@ export class AnswerService {
     const answers = await this.prisma.answer.findMany({
       where: {userId},
       include: {
-        discussion: true,
+        discussion: {
+          select: {id: true,title: true, views: true, slug: true, tags: true}
+        },
         user: true
       }
     })
@@ -72,7 +78,9 @@ export class AnswerService {
     const answer = await this.prisma.answer.findUnique({
       where: {id},
       include: {
-        discussion: true,
+        discussion: {
+          select: {id: true,title: true, views: true, slug: true, tags: true}
+        },
         user: true
       }
     })
