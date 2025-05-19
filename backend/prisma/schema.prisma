@@ -18,13 +18,11 @@ model User {
   profile_image String?  @db.Text
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  
   comments Comment[]
-
   posts Post[]
-
-  Discussion Discussion[]
-
-  Answer Answer[]
+  discussions Discussion[]
+  answers Answer[]
 }
 
 
@@ -34,6 +32,7 @@ model Post {
   slug String @unique @db.Text
   thumbnail String? @db.Text
   category String? @db.Text
+  views       Int     @default(0)
   description String? @db.Text
   tags String[] @db.Text @default([])
   authorId String @db.Uuid
@@ -70,7 +69,10 @@ model Comment {
 model Discussion {
   id String @id @default(uuid()) @db.Uuid
   title String @db.Text
+  slug String @unique @db.Text
   description String? @db.Text
+  tags String[] @db.Text @default([])
+  views       Int     @default(0)
   answers Answer[]
   userId String @db.Uuid
   user User? @relation(fields: [userId], references: [id])

@@ -28,10 +28,24 @@ export class DiscussionController {
     type: DiscussionsGetResponseDto,
   })
   @Get()
-  findAll(@Query("limit")  limit: number, @Query("page")  page: number) {
+  findAll(
+    @Query("limit")  limit: number, 
+    @Query("page")  page: number, 
+    @Query("sortBy") sortBy: "asc" | "desc", 
+    @Query("searchText")  searchText: string
+  ) {
     const pageNumber = page ? Number(page) : 1
     const limitCount = limit ? Number(limit) : 10
-    return this.discussionService.findAll(pageNumber, limitCount);
+    return this.discussionService.findAll(pageNumber, limitCount, sortBy, searchText);
+  }
+
+  @ApiOkResponse({
+    description: 'Find all discussions by user',
+    type: DiscussionsGetResponseDto,
+  })
+  @Get("/me/:id")
+  findAllByUser(@Param('id') id: string) {
+    return this.discussionService.findAllByUser(id);
   }
 
   @ApiOkResponse({
@@ -52,6 +66,15 @@ export class DiscussionController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDiscussionDto: UpdateDiscussionDto) {
     return this.discussionService.update(id, updateDiscussionDto);
+  }
+
+  @ApiOkResponse({
+    description: 'Increment views of a single discussion by id',
+    type: DiscussionUpdateResponseDto,
+  })
+  @Patch(':id/views')
+  incrementViews(@Param('id') id: string) {
+    return this.discussionService.incrementViews(id);
   }
 
   @ApiOkResponse({

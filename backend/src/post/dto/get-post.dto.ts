@@ -14,6 +14,7 @@ export class GetPostDto {
     content: PostSection[];
     author: User
     comments: number
+    views: number
     createdAt: Date;
     updatedAt: Date;
 
@@ -28,6 +29,7 @@ export class GetPostDto {
         content: PostSection[] = [],
         author?: User,
         comments?: number,
+        views?: number,
         createdAt?: Date,
         updatedAt?: Date
     ) {
@@ -41,6 +43,7 @@ export class GetPostDto {
         this.content = content;
         this.author = author;
         this.comments = comments;
+        this.views = views || 0;
         this.createdAt = createdAt || new Date();
         this.updatedAt = updatedAt || new Date();
     }
@@ -58,6 +61,7 @@ export class GetPostDto {
             entity?.content,
             entity?.author,
             entity?._count?.comments || 0,
+            entity?.views || 0,
             entity?.createdAt,
             entity?.updatedAt
         );

@@ -122,7 +122,8 @@ export class MeiliSearchService {
   }
 
   @OnEvent('post.updated')
-  async postUpdatedEvent(updatedPost: GetPostDto){
+  async postUpdatedEvent(updatedPost: any){
+    delete updatedPost?._old
      const response = await this.index.updateDocuments([updatedPost]);
       console.log({
         message: "Post updated to MeiliSearch",

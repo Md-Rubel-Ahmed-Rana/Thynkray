@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { UpdateDiscussionDto } from './dto/update-discussion.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { GetDiscussionDto } from './dto/get-discussion.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DiscussionService {
@@ -16,14 +18,58 @@ export class DiscussionService {
     }
   }
 
-  async findAll(page: number = 1, limit: number  =10) {
-    // I want to get page 2 and limit 10
-    // Explanation
-    // 1. the final result will be like it will skip total 20 data and return 10 data from 21-30
-
+  async findAll(
+    page: number = 1, 
+    limit: number  =10, 
+    sortBy: "asc" | "desc" = "desc", 
+    searchText: string = ""
+  ) {
     const skip = (page - 1) * limit;
     const take = limit;
+
+    const where: Prisma.DiscussionWhereInput = searchText
+    ? {
+        OR: [
+          { title: { contains: searchText, mode: 'insensitive' } },
+          { description: { contains: searchText, mode: 'insensitive' } }
+        ]
+      }
+    : {};
+
     const discussions  = await this.prisma.discussion.findMany({
+      where,
+      include: {
+        user: true,
+        _count: {
+          select: {
+            answers: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: sortBy
+      },
+      skip,
+      take 
+    })
+    const total = await this.prisma.discussion.findMany({})
+    const dtosData = discussions.map((discuss) => GetDiscussionDto.sanitize(discuss))
+    return {
+      statusCode: 200,
+      success: true,
+      message: "Discussions retrieved successfully",
+      data: {
+        discussions: dtosData,
+        totalCount: total?.length || 0,
+        limit,
+        page
+      }
+    }
+  }
+
+  async findAllByUser(userId: string) {
+    const discussions  = await this.prisma.discussion.findMany({
+      where: {userId},
       include: {
         user: true,
         _count: {
@@ -35,20 +81,16 @@ export class DiscussionService {
       orderBy: {
         createdAt: "desc"
       },
-      skip,
-      take 
+      omit: {
+        userId: true
+      }
     })
-    const total = await this.prisma.discussion.findMany({})
+    const dtosData = discussions.map((discuss) => GetDiscussionDto.sanitize(discuss))
     return {
       statusCode: 200,
       success: true,
       message: "Discussions retrieved successfully",
-      data: {
-        discussions,
-        totalCount: total?.length || 0,
-        limit,
-        page
-      }
+      data: dtosData
     }
   }
 
@@ -89,6 +131,24 @@ export class DiscussionService {
       success: true,
       message: "Discussion retrieved successfully",
       data: discussion
+    }
+  }
+
+  async incrementViews(id: string){
+    await this.isDiscussionExist(id)
+
+    await this.prisma.discussion.update({
+      where: {id},
+      data: {
+        views: {increment: 1}
+      }
+    })
+
+    return {
+      statusCode: 200,
+      success: true,
+      message: "Discussion views incremented successfully",
+      data: null
     }
   }
 
