@@ -21,7 +21,7 @@ import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
 const pages = ["Articles", "Discussions", "Write", "Authors", "About"];
-const settings = ["Profile", "Dashboard"];
+const settings = ["Profile", "Dashboard", "My Discussions"];
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -239,7 +239,7 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {settings.map((setting: string) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Link
                     style={{
@@ -247,7 +247,10 @@ const Navbar = () => {
                       width: "100%",
                     }}
                     key={setting}
-                    href={`/${setting.toLowerCase()}?name=${user?.name}&email=${
+                    href={`/${setting
+                      .split(" ")
+                      .join("-")
+                      .toLowerCase()}?name=${user?.name}&email=${
                       user?.email
                     }&designation=${user?.designation || "unknown"}`}
                   >
