@@ -1,6 +1,6 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { baseApi } from "..";
-import { Discussions } from "./types";
+import { Discussion, Discussions, NewDiscussion } from "./types";
 import axios from "axios";
 
 interface QueryParams {
@@ -23,4 +23,13 @@ export const getAllDiscussions = async ({
   );
 
   return result?.data?.data as Discussions;
+};
+
+export const createDiscussion = async (
+  data: NewDiscussion
+): Promise<Discussion> => {
+  const res = await axios.post(`${baseApi}/discussion`, data, {
+    withCredentials: true,
+  });
+  return res.data;
 };
