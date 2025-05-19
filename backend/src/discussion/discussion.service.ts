@@ -134,6 +134,24 @@ export class DiscussionService {
     }
   }
 
+  async incrementViews(id: string){
+    await this.isDiscussionExist(id)
+
+    await this.prisma.discussion.update({
+      where: {id},
+      data: {
+        views: {increment: 1}
+      }
+    })
+
+    return {
+      statusCode: 200,
+      success: true,
+      message: "Discussion views incremented successfully",
+      data: null
+    }
+  }
+
   async update(id: string, updateDiscussionDto: UpdateDiscussionDto) {
     await this.isDiscussionExist(id)
     await this.prisma.discussion.update({

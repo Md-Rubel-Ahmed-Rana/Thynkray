@@ -79,7 +79,7 @@ export class RedisCacheService {
   }
 
   @OnEvent('post.updated')
-  async postUpdatedEvent(updatedPost: GetPostDto){
+  async postUpdatedEvent(updatedPost: any){
     console.log({
       from: "Cache service",
       message: "Post updated event fired",
@@ -88,6 +88,8 @@ export class RedisCacheService {
     const cacheKey = this.cacheKey.posts
     const posts = await this.get(cacheKey)
     if(posts){
+       delete updatedPost?._old
+       console.log("After deleted", updatedPost);
       const updatedPosts = posts.map((c: GetPostDto)=> 
         c.id === updatedPost?.id ? updatedPost : c
       );
