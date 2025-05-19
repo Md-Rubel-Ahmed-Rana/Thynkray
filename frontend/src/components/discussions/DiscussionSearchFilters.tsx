@@ -1,45 +1,40 @@
 import { Box, InputBase, Select, MenuItem, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState, useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 
 let debounceTimer: NodeJS.Timeout;
 
-const DiscussionSearchFilters = () => {
-  const queryClient = useQueryClient();
+type Props = {
+  setSearchText: (searchText: string) => void;
+  sort: "desc" | "asc";
+  setSort: (sort: "desc" | "asc") => void;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
+};
 
-  const [searchText, setSearchText] = useState("");
-  const [sort, setSort] = useState<"desc" | "asc">("desc");
-
+const DiscussionSearchFilters = ({
+  sort,
+  setSort,
+  setSearchText,
+  setLimit,
+  setPage,
+}: Props) => {
   const handleSearchDiscussions = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = event.target.value;
-    setSearchText(value);
-
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-      queryClient.invalidateQueries({
-        queryKey: ["discussions"],
-        exact: false,
-      });
+      setSearchText(value);
+      setLimit(10);
+      setPage(1);
     }, 500);
   };
 
   const handleFilterDiscussions = (value: "desc" | "asc") => {
     setSort(value);
-    queryClient.invalidateQueries({
-      queryKey: ["discussions"],
-      exact: false,
-    });
+    setLimit(10);
+    setPage(1);
   };
-
-  useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: ["discussions"],
-      exact: false,
-    });
-  }, [queryClient, searchText, sort]);
 
   return (
     <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">

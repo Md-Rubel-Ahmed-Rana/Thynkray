@@ -5,9 +5,22 @@ import CreateDiscussionButton from "./CreateDiscussionButton";
 type Props = {
   total: number;
   limit: number;
+  setSearchText: (searchText: string) => void;
+  sort: "desc" | "asc";
+  setSort: (sort: "desc" | "asc") => void;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
 };
 
-const DiscussionHeader = ({ total, limit }: Props) => {
+const DiscussionHeader = ({
+  total,
+  limit,
+  setSearchText,
+  setSort,
+  sort,
+  setLimit,
+  setPage,
+}: Props) => {
   return (
     <Box
       sx={{
@@ -35,7 +48,13 @@ const DiscussionHeader = ({ total, limit }: Props) => {
       </Typography>
 
       {/* Filters */}
-      <DiscussionSearchFilters />
+      <DiscussionSearchFilters
+        setSearchText={setSearchText}
+        setSort={setSort}
+        sort={sort}
+        setLimit={setLimit}
+        setPage={setPage}
+      />
 
       {/* Ask Question Button */}
       <Box sx={{ alignSelf: { xs: "stretch", sm: "auto" } }}>
