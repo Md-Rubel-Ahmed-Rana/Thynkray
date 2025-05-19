@@ -22,6 +22,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CronJobModule } from './cron-job/taskScheduler.module';
 import { LoggerModule } from './common/logger/logger.module';
 import { DiscussionModule } from './discussion/discussion.module';
+import { AnswerModule } from './answer/answer.module';
 
 @Module({
   imports: [
@@ -58,7 +59,8 @@ import { DiscussionModule } from './discussion/discussion.module';
     LoggerModule,
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
-    DiscussionModule
+    DiscussionModule,
+    AnswerModule
 
   ],
   controllers: [AppController],
