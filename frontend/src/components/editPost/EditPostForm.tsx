@@ -7,9 +7,11 @@ import Tags from "../create-post/Tags";
 import Category from "../create-post/Category";
 import ContentSections from "./ContentSections";
 import { generatePostSlug } from "@/utils/generatePostSlug";
-import { useUpdatePost } from "@/modules/post/hooks";
 import makePostFormData from "@/utils/makePostFormData";
 import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { updatePost } from "@/modules/post/api";
 
 type MixedImage = string | File;
 
@@ -30,8 +32,8 @@ type Props = {
 };
 
 const EditPostForm = ({ post }: Props) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const { updatePost, isLoading } = useUpdatePost();
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
     typeof post.thumbnail === "string" ? post.thumbnail : null
   );
@@ -57,6 +59,21 @@ const EditPostForm = ({ post }: Props) => {
     }
   };
 
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationKey: ["update-post", post.id],
+    mutationFn: (data: FormData) => updatePost(post.id, data),
+    onSuccess: () => {
+      toast.success("Post updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      router.back();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to update the post."
+      );
+    },
+  });
+
   const handleUpdatePost = async (data: EditPostFormData) => {
     const updatedData: UpdatePost = {
       title: data.title,
@@ -74,12 +91,8 @@ const EditPostForm = ({ post }: Props) => {
       })),
     };
     updatedData.slug = generatePostSlug(updatedData);
-
     const formData = makePostFormData(updatedData);
-
-    await updatePost(post.id, formData);
-
-    router.back();
+    mutate(formData);
   };
 
   return (
