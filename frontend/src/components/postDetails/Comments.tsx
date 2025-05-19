@@ -3,9 +3,11 @@ import { useState } from "react";
 import CommentModal from "../common/CommentModal";
 import LoginModal from "../common/LoginModal";
 import { useGetLoggedInUser } from "@/modules/user/hooks";
-import { useGetCommentsByPostId } from "@/modules/comment/hooks";
 import CommentLoadingSkeleton from "@/skeletons/CommentLoadingSkeleton";
 import CommentCard from "./CommentCard";
+import { getCommentsByPostId } from "@/modules/comment/api";
+import { useQuery } from "@tanstack/react-query";
+import { Comment } from "@/modules/comment/types";
 
 type Props = {
   postId: string;
@@ -15,8 +17,11 @@ const Comments = ({ postId }: Props) => {
   const { user } = useGetLoggedInUser();
   const [isComment, setIsComment] = useState(false);
   const [shouldLogin, setShouldLogin] = useState(false);
-
-  const { comments, isLoading } = useGetCommentsByPostId(postId);
+  const { data, isLoading } = useQuery({
+    queryKey: ["comments", postId],
+    queryFn: getCommentsByPostId,
+  });
+  const comments = (data || []) as Comment[];
 
   const handleOpenCommentModal = () => {
     if (user?.id) {
