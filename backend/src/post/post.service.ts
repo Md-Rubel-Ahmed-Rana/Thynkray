@@ -249,7 +249,12 @@ export class PostService {
     };
   }
 
+  
+
   async update(id: string, updatePostDto: UpdatePostDto) {
+
+  await this.isPostExist(id)
+
   const { title, slug, tags, content, category, thumbnail, description } = updatePostDto;
 
   const oldContent = content.filter(section => section?.id);
@@ -308,6 +313,8 @@ export class PostService {
   }
 
   async remove(id: string) {
+    await this.isPostExist(id)
+
     const post = await this.prisma.post.findUnique({
       where: {
         id
@@ -317,10 +324,6 @@ export class PostService {
         content: true,
       }
     });
-
-    if (!post) {
-      throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
-    }
 
     const postDto = GetPostDto.fromEntity(post);
 
@@ -338,6 +341,48 @@ export class PostService {
     return {
       message: 'Post deleted successfully!',
       statusCode: 200,
+    }
+  }
+
+  async incrementViews(id: string){
+    await this.isPostExist(id)
+
+    const post  = await this.prisma.post.update({
+      where: {id},
+      data: {
+        views: {increment: 1}
+      }
+    })
+
+    const updatedPost = await this.prisma.post.findUnique({
+      where: { id },
+      include: { author: true, content: true },
+    });
+
+    const postDto = GetPostDto.fromEntity(updatedPost);
+
+    // fire post updated event
+    this.eventEmitter.emit('post.updated', {...postDto, _old: post });
+
+    return {
+      statusCode: 200,
+      success: true,
+      message: "Post views incremented successfully",
+      data: null
+    }
+  }
+
+  async isPostExist(id: string){
+    const post = await this.prisma.post.findUnique({
+      where: {
+        id
+      },
+    });
+
+    if (!post) {
+      throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
+    }else{
+      return
     }
   }
 

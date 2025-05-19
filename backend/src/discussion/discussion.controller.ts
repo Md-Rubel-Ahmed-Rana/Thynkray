@@ -69,6 +69,15 @@ export class DiscussionController {
   }
 
   @ApiOkResponse({
+    description: 'Increment views of a single discussion by id',
+    type: DiscussionUpdateResponseDto,
+  })
+  @Patch(':id/views')
+  incrementViews(@Param('id') id: string) {
+    return this.discussionService.incrementViews(id);
+  }
+
+  @ApiOkResponse({
     description: 'Delete a single discussion by id',
     type: DiscussionDeleteResponseDto,
   })

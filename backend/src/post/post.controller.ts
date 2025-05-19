@@ -109,6 +109,14 @@ export class PostController {
     return this.postService.update(id, updatePostDto);
   }
 
+  @ApiOkResponse({
+    description: "Increment views of a post by id",
+  })
+  @Patch(':id/views')
+  incrementViews(@Param('id') id: string) {
+    return this.postService.incrementViews(id);
+  }
+
 
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({description: 'Unauthorized – login required.' })
