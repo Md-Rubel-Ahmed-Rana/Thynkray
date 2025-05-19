@@ -109,6 +109,19 @@ const Navbar = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
+              <Link
+                style={{ textDecoration: "none", width: "100%" }}
+                href={"/chat-ai"}
+              >
+                <Button
+                  onClick={handleCloseNavMenu}
+                  size="small"
+                  variant="contained"
+                  sx={{ my: 2, display: "block", width: "90%", mx: "auto" }}
+                >
+                  Chat AI
+                </Button>
+              </Link>
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
@@ -162,8 +175,18 @@ const Navbar = () => {
               flexGrow: 1,
               display: { xs: "none", md: "flex" },
               justifyContent: "center",
+              gap: 2,
             }}
           >
+            <Link style={{ textDecoration: "none" }} href={"/chat-ai"}>
+              <Button
+                onClick={handleCloseNavMenu}
+                variant="contained"
+                sx={{ my: 2, display: "block" }}
+              >
+                Chat AI
+              </Button>
+            </Link>
             {pages.map((page) => (
               <Link
                 style={{ textDecoration: "none" }}
@@ -174,7 +197,7 @@ const Navbar = () => {
               >
                 <Button
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "text.primary", display: "block" }}
+                  sx={{ my: 2, display: "block" }}
                 >
                   {page}
                 </Button>
