@@ -28,10 +28,15 @@ export class DiscussionController {
     type: DiscussionsGetResponseDto,
   })
   @Get()
-  findAll(@Query("limit")  limit: number, @Query("page")  page: number) {
+  findAll(
+    @Query("limit")  limit: number, 
+    @Query("page")  page: number, 
+    @Query("sortBy") sortBy: "asc" | "desc", 
+    @Query("searchText")  searchText: string
+  ) {
     const pageNumber = page ? Number(page) : 1
     const limitCount = limit ? Number(limit) : 10
-    return this.discussionService.findAll(pageNumber, limitCount);
+    return this.discussionService.findAll(pageNumber, limitCount, sortBy, searchText);
   }
 
   @ApiOkResponse({
