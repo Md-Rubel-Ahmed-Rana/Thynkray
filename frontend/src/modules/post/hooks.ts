@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePostStore } from "./provider";
 import { CreateNewPost, InternationalPost, Post } from "./types";
 
@@ -26,7 +26,7 @@ export const useGetPostsByAuthor = (
 
   useEffect(() => {
     getPostsByAuthor(id);
-  }, [getPostsByAuthor, id]);
+  }, [id]);
 
   return { posts, error, isLoading };
 };
@@ -43,8 +43,10 @@ export const useGetPostById = (
   );
 
   useEffect(() => {
-    getSinglePostById(id);
-  }, [getSinglePostById, id]);
+    if (!post?.id) {
+      getSinglePostById(id);
+    }
+  }, [id]);
 
   return { post, error, isLoading };
 };
@@ -61,8 +63,10 @@ export const useGetPostBySlug = (
   );
 
   useEffect(() => {
-    getSinglePostBySlug(slug);
-  }, [getSinglePostBySlug, slug]);
+    if (!post?.id) {
+      getSinglePostBySlug(slug);
+    }
+  }, [slug]);
 
   return { post, error, isLoading };
 };
@@ -78,7 +82,7 @@ export const useAllGetPosts = (): {
 
   useEffect(() => {
     getAllPosts();
-  }, [getAllPosts]);
+  }, []);
 
   return { posts, error, isLoading };
 };
@@ -96,7 +100,7 @@ export const useGetLatestPosts = (
 
   useEffect(() => {
     getLatestPosts(limit);
-  }, [getLatestPosts]);
+  }, []);
 
   return { posts, error, isLoading };
 };
@@ -114,7 +118,7 @@ export const useGetPostsByCategory = (
 
   useEffect(() => {
     getPostsByCategory(category);
-  }, [category, getPostsByCategory]);
+  }, [category]);
 
   return { posts, error, isLoading };
 };
@@ -132,7 +136,7 @@ export const useGetPostsBySearched = (
 
   useEffect(() => {
     getPostsBySearched(searchText);
-  }, [searchText, getPostsBySearched]);
+  }, [searchText]);
 
   return { posts, error, isLoading };
 };
@@ -152,7 +156,7 @@ export const useGetRelatedPosts = (
     if (posts?.length === 0) {
       getRelatedPosts(searchText);
     }
-  }, [searchText, getRelatedPosts, posts?.length]);
+  }, [searchText]);
 
   return { posts, error, isLoading };
 };
@@ -168,14 +172,18 @@ export const useGetInternationalPosts = (): {
 
   const { error, isLoading, news } = usePostStore((state) => state);
 
+  const hasFetchedRef = useRef(false);
+
   useEffect(() => {
-    if (news?.length === 0) {
+    if (!hasFetchedRef.current) {
       getInternationalPosts();
+      hasFetchedRef.current = true;
     }
-  }, [getInternationalPosts, news?.length]);
+  }, []);
 
   return { news, error, isLoading };
 };
+
 export const useDeletePost = (): {
   isLoading: boolean;
   deletePost: (id: string, authorId: string) => Promise<void>;

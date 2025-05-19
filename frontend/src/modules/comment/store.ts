@@ -34,16 +34,17 @@ export const createCommentStore = (
 ) => {
   return createStore<CommentStore>()((set, get) => ({
     ...initialState,
-    getCommentsByPostId: async (postId: string) => {
+    getCommentsByPostId: async (postId) => {
       set({ isLoading: true, error: null });
       try {
         const res = await axios.get(`${baseApi}/comment/post/${postId}`, {
           withCredentials: true,
         });
-        const comments = [...res?.data?.data] as Comment[];
+        const comments = res.data.data as Comment[];
         set({ comments, isLoading: false });
         return comments;
       } catch (err) {
+        console.error(err);
         set({ error: "Could not load comments", isLoading: false });
         throw err;
       }

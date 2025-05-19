@@ -9,6 +9,10 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+../backend/src/backups
+./backend/src/backups
+/backend/src/backups
+
 
 # testing
 /coverage

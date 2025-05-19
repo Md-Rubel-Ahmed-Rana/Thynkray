@@ -1,6 +1,8 @@
-import { useUpdateComment } from "@/modules/comment/hooks";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { updateComment } from "@/modules/comment/api";
 import { Comment } from "@/modules/comment/types";
 import { Box, Button, TextField } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -11,18 +13,26 @@ type Props = {
 
 const CommentEditForm = ({ comment, setShouldEdit }: Props) => {
   const [updatedContent, setUpdatedContent] = useState(comment?.content);
-  const { updateComment, isLoading } = useUpdateComment();
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationKey: ["update-comment", comment.id],
+    mutationFn: () =>
+      updateComment({ commentId: comment.id, content: updatedContent }),
+    onSuccess: () => {
+      toast.success("Comment updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      setShouldEdit(false);
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || "Failed to update the comment."
+      );
+    },
+  });
 
   const handleUpdateComment = async () => {
-    await updateComment({
-      postId: comment?.post?.id as string,
-      commentId: comment?.id,
-      content: updatedContent,
-    });
-
-    toast.success("Comment updated successfully!");
-
-    setShouldEdit(false);
+    mutate();
   };
 
   return (

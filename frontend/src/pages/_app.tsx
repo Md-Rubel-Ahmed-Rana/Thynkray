@@ -13,8 +13,11 @@ import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { useEffect } from "react";
 import "../styles/globals.css";
-import StoreProvider from "@/store/StoreProvider";
 import ScrollToTopButton from "@/components/common/BottomToTopScrollButton";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import StoreProvider from "@/store/StoreProvider";
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   // if user session available, try to login
@@ -38,30 +41,32 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <StoreProvider>
-      <SessionProvider session={pageProps.session}>
-        <ContextAPI>
-          <CssBaseline />
-          <CustomCursor />
-          <RootLayout>
-            <Component {...pageProps} />
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick={false}
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-              transition={Bounce}
-            />
-            <ScrollToTopButton />
-          </RootLayout>
-        </ContextAPI>
-      </SessionProvider>
-    </StoreProvider>
+    <QueryClientProvider client={queryClient}>
+      <StoreProvider>
+        <SessionProvider session={pageProps.session}>
+          <ContextAPI>
+            <CssBaseline />
+            <CustomCursor />
+            <RootLayout>
+              <Component {...pageProps} />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+              />
+              <ScrollToTopButton />
+            </RootLayout>
+          </ContextAPI>
+        </SessionProvider>
+      </StoreProvider>
+    </QueryClientProvider>
   );
 }
