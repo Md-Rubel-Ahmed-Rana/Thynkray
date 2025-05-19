@@ -12,23 +12,28 @@ import { useState } from "react";
 const Discussions = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [searchText, setSearchText] = useState("");
+  const [sort, setSort] = useState<"desc" | "asc">("desc");
 
   const { data = { discussions: [], limit: 10, totalCount: 0 }, isLoading } =
     useQuery({
-      queryKey: [
-        "discussions",
-        { page, limit, sortBy: "desc", searchText: "" },
-      ],
+      queryKey: ["discussions", { page, limit, sortBy: sort, searchText }],
       queryFn: getAllDiscussions,
       enabled: true,
     });
 
-  console.log({ from: "Discussions", isLoading, data });
-
   const { discussions, totalCount } = data;
   return (
     <Box>
-      <DiscussionHeader total={totalCount} limit={data?.limit || 10} />
+      <DiscussionHeader
+        total={totalCount}
+        limit={data?.limit || 10}
+        setSearchText={setSearchText}
+        setSort={setSort}
+        sort={sort}
+        setLimit={setLimit}
+        setPage={setPage}
+      />
       {isLoading ? (
         <DiscussionsLoadingSkeleton />
       ) : (
