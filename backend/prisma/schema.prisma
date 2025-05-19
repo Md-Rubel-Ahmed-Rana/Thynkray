@@ -19,12 +19,9 @@ model User {
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
   comments Comment[]
-
   posts Post[]
-
-  Discussion Discussion[]
-
-  Answer Answer[]
+  discussions Discussion[]
+  answers Answer[]
 }
 
 
@@ -70,7 +67,9 @@ model Comment {
 model Discussion {
   id String @id @default(uuid()) @db.Uuid
   title String @db.Text
+  slug String @unique @db.Text
   description String? @db.Text
+  tags String[] @db.Text @default([])
   answers Answer[]
   userId String @db.Uuid
   user User? @relation(fields: [userId], references: [id])
