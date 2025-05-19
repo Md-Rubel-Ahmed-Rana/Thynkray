@@ -35,6 +35,15 @@ export class DiscussionController {
   }
 
   @ApiOkResponse({
+    description: 'Find all discussions by user',
+    type: DiscussionsGetResponseDto,
+  })
+  @Get("/me/:id")
+  findAllByUser(@Param('id') id: string) {
+    return this.discussionService.findAllByUser(id);
+  }
+
+  @ApiOkResponse({
     description: 'Find a single discussion by id',
     type: DiscussionGetResponseDto,
   })

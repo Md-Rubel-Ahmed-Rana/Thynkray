@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { UpdateDiscussionDto } from './dto/update-discussion.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { GetDiscussionDto } from './dto/get-discussion.dto';
 
 @Injectable()
 export class DiscussionService {
@@ -17,10 +18,6 @@ export class DiscussionService {
   }
 
   async findAll(page: number = 1, limit: number  =10) {
-    // I want to get page 2 and limit 10
-    // Explanation
-    // 1. the final result will be like it will skip total 20 data and return 10 data from 21-30
-
     const skip = (page - 1) * limit;
     const take = limit;
     const discussions  = await this.prisma.discussion.findMany({
@@ -39,16 +36,44 @@ export class DiscussionService {
       take 
     })
     const total = await this.prisma.discussion.findMany({})
+    const dtosData = discussions.map((discuss) => GetDiscussionDto.sanitize(discuss))
     return {
       statusCode: 200,
       success: true,
       message: "Discussions retrieved successfully",
       data: {
-        discussions,
+        discussions: dtosData,
         totalCount: total?.length || 0,
         limit,
         page
       }
+    }
+  }
+
+  async findAllByUser(userId: string) {
+    const discussions  = await this.prisma.discussion.findMany({
+      where: {userId},
+      include: {
+        user: true,
+        _count: {
+          select: {
+            answers: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: "desc"
+      },
+      omit: {
+        userId: true
+      }
+    })
+    const dtosData = discussions.map((discuss) => GetDiscussionDto.sanitize(discuss))
+    return {
+      statusCode: 200,
+      success: true,
+      message: "Discussions retrieved successfully",
+      data: dtosData
     }
   }
 
