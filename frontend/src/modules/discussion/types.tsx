@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { User } from "../user/types";
 
 export type Discussion = {
@@ -33,17 +32,6 @@ export type Answer = {
   updatedAt: Date;
 };
 
-export type DiscussionState = {
-  isAdding: boolean;
-  isLoading: boolean;
-  isUpdating: boolean;
-  isDeleting: boolean;
-  error: string | null;
-  discussion: Discussion;
-  data: Discussions;
-  response: any;
-};
-
 export type NewDiscussion = {
   title: string;
   description: string;
@@ -51,21 +39,3 @@ export type NewDiscussion = {
   tags: string[];
   userId: string;
 };
-
-export type DiscussionActions = {
-  deleteDiscussion: (id: string) => Promise<void>;
-  updateDiscussion: (
-    id: string,
-    updatedData: Partial<Discussion>
-  ) => Promise<void>;
-  addDiscussion: (data: NewDiscussion) => Promise<void>;
-  getAllDiscussion: (
-    page?: number,
-    limit?: number,
-    searchText?: string,
-    sortBy?: "asc" | "desc"
-  ) => Promise<Discussions>;
-  getSingleDiscussion: (id: string) => Promise<Discussion>;
-};
-
-export type DiscussionStore = DiscussionState & DiscussionActions;

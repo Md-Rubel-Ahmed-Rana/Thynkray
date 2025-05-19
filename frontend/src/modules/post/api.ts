@@ -1,8 +1,9 @@
 import axios from "axios";
 import { baseApi } from "..";
-import { InternationalPost, Post } from "./types";
+import { CreateNewPost, InternationalPost, Post } from "./types";
 
 import { QueryFunctionContext } from "@tanstack/react-query";
+import makePostFormData from "@/utils/makePostFormData";
 
 export const handleFetchPostBySlug = async ({
   queryKey,
@@ -33,4 +34,18 @@ export const handleFetchInternationalNews = async ({}: QueryFunctionContext<
   });
 
   return result?.data?.data as InternationalPost[];
+};
+
+export const createPost = async (values: CreateNewPost) => {
+  const formData = makePostFormData(values);
+  const result = await axios.post(`${baseApi}/post`, formData, {
+    withCredentials: true,
+  });
+  return result.data;
+};
+
+export const updatePost = async (id: string, formData: FormData) => {
+  await axios.patch(`${baseApi}/post/${id}`, formData, {
+    withCredentials: true,
+  });
 };

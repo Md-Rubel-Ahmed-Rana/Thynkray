@@ -8,16 +8,16 @@ import { useGetLoggedInUser } from "@/modules/user/hooks";
 import Category from "./Category";
 import Tags from "./Tags";
 import { CreateNewPost, CreateSection } from "@/modules/post/types";
-import { useCreatePostMutation } from "@/modules/post/hooks";
 import { generatePostSlug } from "@/utils/generatePostSlug";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createPost } from "@/modules/post/api";
 
 const CreatePost = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { user } = useGetLoggedInUser();
-  const { createPost, isLoading } = useCreatePostMutation();
-
   const {
     register,
     handleSubmit,
@@ -42,17 +42,26 @@ const CreatePost = () => {
     { id: "", title: "", images: [], description: "" },
   ]);
 
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: (data: CreateNewPost) => createPost(data),
+    onSuccess: () => {
+      toast.success("Post created successfully!");
+      queryClient.invalidateQueries({ queryKey: ["discussions"] });
+      router.push(
+        `/dashboard?name=${user?.name}&email=${user?.email}&designation=${user?.designation}`
+      );
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Failed to create post.");
+    },
+  });
+
   const handleCreatePost = async (data: CreateNewPost) => {
     data.content = content;
     data.thumbnail = thumbnailImage as File;
     data.authorId = user?.id;
     data.slug = generatePostSlug(data);
-
-    await createPost(data);
-    router.push(
-      `/dashboard?name=${user?.name}&email=${user?.email}&designation=${user?.designation}`
-    );
-    toast.success("Post created successfully!");
+    mutate(data);
   };
 
   return (
