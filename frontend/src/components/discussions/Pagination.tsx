@@ -1,27 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useDiscussionStore } from "@/modules/discussion/provider";
 import { Box, MenuItem, Pagination, Select } from "@mui/material";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllDiscussions } from "@/modules/discussion/api";
 
-type Props = {
-  total: number;
-  page?: number;
-  limit: number;
-};
+const PaginationTopics = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
-const PaginationTopics = ({ total, limit, page }: Props) => {
-  const pageCount = Math.ceil(total / limit);
-  const [limitCount, setLimitCount] = useState(limit || 10);
+  const { data } = useQuery({
+    queryKey: [
+      "getAllDiscussions",
+      { page, limit, sortBy: "desc", searchText: "" },
+    ],
+    queryFn: ({ queryKey }) => {
+      const [, params] = queryKey as [string, any];
+      return getAllDiscussions(params);
+    },
+  });
 
-  const { getAllDiscussion } = useDiscussionStore((state) => state);
+  const pageCount = Math.ceil((data?.totalCount || 0) / limit);
 
-  const handleChangePagination = async (_: any, value: number) => {
-    await getAllDiscussion(value);
+  const handleChangePagination = (_: any, value: number) => {
+    setPage(value);
   };
 
-  const handleChangeLimit = async (value: any) => {
-    setLimitCount(Number(value));
-    await getAllDiscussion(page, Number(value));
+  const handleChangeLimit = (value: any) => {
+    setLimit(Number(value));
+    setPage(1);
   };
 
   return (
@@ -48,17 +54,16 @@ const PaginationTopics = ({ total, limit, page }: Props) => {
       </Box>
       <Select
         onChange={(e) => handleChangeLimit(e.target.value)}
-        value={limitCount}
+        value={limit}
         displayEmpty
         size="small"
         sx={{ minWidth: { xs: "100%", md: 140 } }}
       >
-        <MenuItem value={10}>10</MenuItem>
-        <MenuItem value={15}>15</MenuItem>
-        <MenuItem value={20}>20</MenuItem>
-        <MenuItem value={30}>30</MenuItem>
-        <MenuItem value={40}>40</MenuItem>
-        <MenuItem value={50}>50</MenuItem>
+        {[10, 15, 20, 30, 40, 50].map((val) => (
+          <MenuItem key={val} value={val}>
+            {val}
+          </MenuItem>
+        ))}
       </Select>
     </Box>
   );
