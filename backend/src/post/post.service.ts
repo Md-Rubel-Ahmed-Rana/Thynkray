@@ -92,6 +92,34 @@ export class PostService {
     }
   }
 
+
+  async findPopularPosts() {
+    const posts = await this.prisma.post.findMany({
+      include: {
+        author: true,
+        content: true,
+          _count: {
+          select: {
+            comments: true
+          }
+          }
+      },
+      orderBy: {
+        views: "desc",
+      },
+      take: 10
+    });
+
+    const postDtos = GetPostDto.fromEntities(posts)
+
+    return {
+      message: "Posts retrieved successfully!",
+      data: postDtos,
+      success: true,
+      statusCode: 200,
+    }
+  }
+
   async findAllByAuthorId(authorId: string) {
 
     const postsFromCache = await this.cache.get(this.cacheKey)
