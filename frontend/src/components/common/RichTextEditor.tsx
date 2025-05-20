@@ -23,15 +23,17 @@ const toolbarOptions = [
 type Props = {
   value: string;
   setValue: (value: string) => void;
+  isDisabled?: boolean;
 };
 
-const RichTextEditor = ({ value, setValue }: Props) => {
+const RichTextEditor = ({ value, setValue, isDisabled = false }: Props) => {
   return (
     <ReactQuill
       theme="snow"
       value={value}
       onChange={setValue}
       modules={{ toolbar: toolbarOptions }}
+      readOnly={isDisabled}
     />
   );
 };
