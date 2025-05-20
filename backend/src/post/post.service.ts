@@ -6,6 +6,7 @@ import { RedisCacheService } from 'src/cache/cache.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { sortByCreatedAtDesc } from 'src/utility/sortByCreatedAt';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostService {
@@ -345,13 +346,16 @@ export class PostService {
   }
 
   async incrementViews(id: string){
-    await this.isPostExist(id)
+    const isExist = await this.isPostExist(id)
 
     const post  = await this.prisma.post.update({
       where: {id},
       data: {
-        views: {increment: 1}
-      }
+        views: {increment: 1},
+        updatedAt: isExist.updatedAt
+      },
+      include: { author: true, content: true }
+      
     })
 
     const updatedPost = await this.prisma.post.findUnique({
@@ -372,7 +376,7 @@ export class PostService {
     }
   }
 
-  async isPostExist(id: string){
+  async isPostExist(id: string): Promise<Post>{
     const post = await this.prisma.post.findUnique({
       where: {
         id
@@ -382,7 +386,7 @@ export class PostService {
     if (!post) {
       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }else{
-      return
+      return post
     }
   }
 
