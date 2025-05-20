@@ -3,7 +3,7 @@ import { CreateDiscussionDto } from './dto/create-discussion.dto';
 import { UpdateDiscussionDto } from './dto/update-discussion.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetDiscussionDto } from './dto/get-discussion.dto';
-import { Prisma } from '@prisma/client';
+import { Discussion, Prisma } from '@prisma/client';
 
 @Injectable()
 export class DiscussionService {
@@ -135,12 +135,13 @@ export class DiscussionService {
   }
 
   async incrementViews(id: string){
-    await this.isDiscussionExist(id)
+     const discussion =  await this.isDiscussionExist(id)
 
     await this.prisma.discussion.update({
       where: {id},
       data: {
-        views: {increment: 1}
+        views: {increment: 1},
+        updatedAt: discussion.updatedAt
       }
     })
 
@@ -177,12 +178,12 @@ export class DiscussionService {
     }
   }
 
-  async isDiscussionExist(id: string) {
+  async isDiscussionExist(id: string): Promise<Discussion> {
     const discussion =  await this.prisma.discussion.findUnique({where: {id}})
     if(!discussion){
       throw new HttpException("Discussion was not found", HttpStatus.NOT_FOUND)
     }else{
-      return
+      return discussion
     }
   }
 }
