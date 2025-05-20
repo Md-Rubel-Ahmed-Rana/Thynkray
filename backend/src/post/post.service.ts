@@ -120,6 +120,77 @@ export class PostService {
     }
   }
 
+  async findRelatedPosts(currentPostId: string) {
+    const currentPost = await this.prisma.post.findUnique({
+      where: { id: currentPostId },
+    });
+  
+    if (!currentPost) {
+      throw new Error("Post not found");
+    }
+  
+    const relatedPosts = await this.prisma.post.findMany({
+      where: {
+        id: { not: currentPostId },
+        OR: [
+          { category: currentPost.category },
+          { tags: { hasSome: currentPost.tags } },
+        ],
+      },
+      orderBy: {
+        views: "desc",
+      },
+      take: 10,
+    });
+  
+    const relatedPostIds = relatedPosts.map(post => post.id);
+  
+    let remainingPosts: typeof relatedPosts = [];
+  
+    if (relatedPosts.length < 10) {
+      const needed = 10 - relatedPosts.length;
+  
+      remainingPosts = await this.prisma.post.findMany({
+        where: {
+          id: {
+            notIn: [currentPostId, ...relatedPostIds],
+          },
+        },
+        orderBy: {
+          views: "desc",
+        },
+        take: needed,
+      });
+    }
+  
+    const finalPostIds = [...relatedPostIds, ...remainingPosts.map(p => p.id)];
+  
+    const enrichedPosts = await this.prisma.post.findMany({
+      where: {
+        id: { in: finalPostIds },
+      },
+      include: {
+        author: true,
+        content: true,
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+      },
+    });
+  
+    const postDtos = GetPostDto.fromEntities(enrichedPosts);
+  
+    return {
+      message: "Posts retrieved successfully!",
+      data: postDtos,
+      success: true,
+      statusCode: 200,
+    };
+  }
+  
+
   async findAllByAuthorId(authorId: string) {
 
     const postsFromCache = await this.cache.get(this.cacheKey)
@@ -158,7 +229,7 @@ export class PostService {
     }
   }
 
-  async getLatestPosts(limit = 5) {
+  async getLatestPosts(limit = 10) {
     const latestPosts = await this.prisma.post.findMany({
        include: {
         author: true,
@@ -202,7 +273,6 @@ export class PostService {
       data: postDtos
     }
   }
-
  
  async findOne(id: string) {
     const posts = await this.cache.get(this.cacheKey) as GetPostDto[]
