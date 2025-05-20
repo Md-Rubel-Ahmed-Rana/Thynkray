@@ -39,3 +39,10 @@ export type NewDiscussion = {
   tags: string[];
   userId: string;
 };
+
+export type UpdateDiscussion = {
+  title: string;
+  description: string;
+  slug: string;
+  tags: string[];
+};

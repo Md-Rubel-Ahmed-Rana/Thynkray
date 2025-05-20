@@ -11,7 +11,7 @@ type Props = {
 };
 
 const DiscussCard = ({ discuss }: Props) => {
-  const { id, title, views, tags, totalAnswer } = discuss;
+  const { id, title, views, tags, totalAnswer, slug } = discuss;
   const [open, setOpen] = useState(false);
 
   return (
@@ -50,7 +50,12 @@ const DiscussCard = ({ discuss }: Props) => {
         width={{ xs: "100%", md: "auto" }}
         mt={2}
       >
-        <Link href={`/discussion/edit/${id}`} passHref>
+        <Link
+          href={`/discussion/edit/${id}/${slug}?title=${title}tags=${tags.join(
+            ","
+          )}`}
+          passHref
+        >
           <IconButton component="a" color="primary">
             <EditIcon />
           </IconButton>
