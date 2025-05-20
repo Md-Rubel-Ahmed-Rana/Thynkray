@@ -41,7 +41,7 @@ const AnswerCard = ({ answer }: Props) => {
         <Typography color="textDisabled">
           answered {moment(answer.createdAt).format("MMM D, YYYY [at] H:mm")}
         </Typography>
-        <AnswerActions />
+        <AnswerActions answer={answer} />
       </Box>
     </Box>
   );
