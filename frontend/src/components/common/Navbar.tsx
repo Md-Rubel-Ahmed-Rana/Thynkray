@@ -42,7 +42,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" color="default" elevation={0}>
+    <AppBar position="sticky" color="default" elevation={0}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Logo for desktop */}
