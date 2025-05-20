@@ -65,6 +65,16 @@ export class PostController {
   }
 
   @ApiOkResponse({
+    description: "Find popular posts by most views",
+    type: PostsResponseDto
+  })
+  @SkipThrottle()
+  @Get('popular')
+  findPopularPosts() {
+    return this.postService.findPopularPosts();
+  }
+
+  @ApiOkResponse({
     description: "Find single post by id",
     type: PostResponseDto
   })
