@@ -7,19 +7,14 @@ import CommentCard from "./CommentCard";
 import { getCommentsByPostId } from "@/modules/comment/api";
 import { useQuery } from "@tanstack/react-query";
 import { Comment } from "@/modules/comment/types";
-import { useSession } from "next-auth/react";
-import { getCurrentUser } from "@/modules/user/api";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 type Props = {
   postId: string;
 };
 
 const Comments = ({ postId }: Props) => {
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
   const [isComment, setIsComment] = useState(false);
   const [shouldLogin, setShouldLogin] = useState(false);
   const { data, isLoading } = useQuery({

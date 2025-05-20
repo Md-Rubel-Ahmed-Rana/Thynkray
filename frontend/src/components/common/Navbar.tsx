@@ -16,19 +16,13 @@ import LoginButton from "./LoginButton";
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import { CircularProgress } from "@mui/material";
-import { getCurrentUser } from "@/modules/user/api";
-import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const pages = ["Articles", "Discussions", "Write", "Authors", "About"];
 const settings = ["Profile", "Dashboard", "My Discussions"];
 
 const Navbar = () => {
-  const { data: session } = useSession();
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user, isLoading } = useGetCurrentUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 

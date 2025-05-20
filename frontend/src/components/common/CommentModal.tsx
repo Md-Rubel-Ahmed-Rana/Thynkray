@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { addComment } from "@/modules/comment/api";
 import { NewComment } from "@/modules/comment/types";
-import { getCurrentUser } from "@/modules/user/api";
 import {
   Backdrop,
   Box,
@@ -10,8 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -25,11 +24,7 @@ const MAX_CHAR = 200;
 
 const CommentModal = ({ open, setOpen, postId }: Props) => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
   const [content, setContent] = useState("");
 
   const { mutate, isPending: isLoading } = useMutation({

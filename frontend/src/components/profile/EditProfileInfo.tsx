@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getCurrentUser, updateUser } from "@/modules/user/api";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
+import { updateUser } from "@/modules/user/api";
 import { User } from "@/modules/user/types";
 import compareFieldsChanges from "@/utils/compareFieldsChanges";
 import {
@@ -11,8 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -23,13 +23,7 @@ type Props = {
 
 const EditProfileInfo = ({ open, setOpen }: Props) => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
-  const { data: userData } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
-
-  const user = userData as User;
+  const { user } = useGetCurrentUser();
 
   const [isChanged, setIsChanged] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<Partial<User>>(user);
