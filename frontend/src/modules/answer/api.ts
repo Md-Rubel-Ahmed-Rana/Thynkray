@@ -13,3 +13,16 @@ export const deleteAnswer = async (id: string): Promise<void> => {
     withCredentials: true,
   });
 };
+
+export const updateAnswer = async (
+  id: string,
+  content: string
+): Promise<void> => {
+  return await axios.patch(
+    `${baseApi}/answer/${id}`,
+    { content },
+    {
+      withCredentials: true,
+    }
+  );
+};
