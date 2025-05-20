@@ -28,9 +28,19 @@ const DiscussCard = ({ discuss }: Props) => {
       flexDirection={{ xs: "column", md: "row" }}
     >
       <Box flex="1">
-        <Typography variant="h6" gutterBottom>
-          {title}
-        </Typography>
+        <Link
+          style={{ textDecoration: "none" }}
+          href={`/discussion/topic/${id}/${slug}`}
+        >
+          <Typography
+            className="hover-underline"
+            marginBottom={3}
+            variant="h6"
+            gutterBottom
+          >
+            {title}
+          </Typography>
+        </Link>
 
         <Stack direction="row" spacing={1} mb={1} flexWrap="wrap">
           {tags.map((tag) => (
