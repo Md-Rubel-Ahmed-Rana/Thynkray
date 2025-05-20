@@ -105,6 +105,13 @@ export const getPostsByCategory = async ({
   return result?.data?.data as Post[];
 };
 
+export const getPopularPosts = async (): Promise<Post[]> => {
+  const result = await axios.get(`${baseApi}/post/popular`, {
+    withCredentials: true,
+  });
+  return result?.data?.data as Post[];
+};
+
 export const getPostsBySearched = async ({
   queryKey,
 }: QueryFunctionContext<[string, string]>): Promise<Post[]> => {
