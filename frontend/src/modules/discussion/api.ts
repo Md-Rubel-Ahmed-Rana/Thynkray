@@ -67,6 +67,15 @@ export const updateDiscussion = async (
   return res.data;
 };
 
+export const incrementDiscussionViews = async (
+  id: string
+): Promise<Discussion> => {
+  const res = await axios.patch(`${baseApi}/discussion/${id}/views`, {
+    withCredentials: true,
+  });
+  return res.data;
+};
+
 export const deleteDiscussion = async (
   id: string
 ): Promise<{ message: string }> => {
