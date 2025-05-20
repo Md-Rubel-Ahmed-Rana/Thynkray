@@ -1,8 +1,7 @@
-import { handleFetchRelatedPosts } from "@/modules/post/api";
+import { getRelatedPosts } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
 import RelatedPostLoadingSkeleton from "@/skeletons/RelatedPostLoadingSkeleton";
 import makePostDetailsUrl from "@/utils/makePostDetailsUrl";
-import makeSearchTextFromPostForRelatedPosts from "@/utils/makeSearchTextFromPostForRelatedPosts";
 import { Box, Typography, Stack, Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -14,10 +13,9 @@ type Props = {
 };
 
 const RelatedPosts = ({ post }: Props) => {
-  const searchText = makeSearchTextFromPostForRelatedPosts(post);
   const { data, isLoading } = useQuery({
-    queryKey: ["posts", searchText],
-    queryFn: handleFetchRelatedPosts,
+    queryKey: ["posts", post?.id],
+    queryFn: getRelatedPosts,
   });
 
   const posts = (data || []) as Post[];
