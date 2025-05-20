@@ -51,3 +51,12 @@ export const createDiscussion = async (
   });
   return res.data;
 };
+
+export const deleteDiscussion = async (
+  id: string
+): Promise<{ message: string }> => {
+  const res = await axios.delete(`${baseApi}/discussion/${id}`, {
+    withCredentials: true,
+  });
+  return res.data;
+};

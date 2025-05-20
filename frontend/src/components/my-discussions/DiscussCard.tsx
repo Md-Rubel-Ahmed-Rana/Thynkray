@@ -3,6 +3,8 @@ import { Box, Typography, Chip, Stack, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "next/link";
+import DiscussionDeleteModal from "./DiscussionDeleteModal";
+import { useState } from "react";
 
 type Props = {
   discuss: Discussion;
@@ -10,6 +12,7 @@ type Props = {
 
 const DiscussCard = ({ discuss }: Props) => {
   const { id, title, views, tags, totalAnswer } = discuss;
+  const [open, setOpen] = useState(false);
 
   return (
     <Box
@@ -52,10 +55,13 @@ const DiscussCard = ({ discuss }: Props) => {
             <EditIcon />
           </IconButton>
         </Link>
-        <IconButton color="error">
+        <IconButton onClick={() => setOpen(true)} color="error">
           <DeleteIcon />
         </IconButton>
       </Box>
+
+      {/* discussion delete modal  */}
+      <DiscussionDeleteModal discuss={discuss} open={open} setOpen={setOpen} />
     </Box>
   );
 };
