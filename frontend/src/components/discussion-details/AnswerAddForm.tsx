@@ -23,6 +23,7 @@ const AnswerAddForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["answers", "answers", "discussions", "discussion"],
       });
+      setAnswer("");
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Failed to post answer.");
