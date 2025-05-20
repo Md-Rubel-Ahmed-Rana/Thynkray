@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { deleteAnswer } from "@/modules/answer/api";
+import { useRouter } from "next/router";
 
 type Props = {
   id: string;
@@ -19,13 +20,15 @@ type Props = {
 
 const AnswerDeleteModal = ({ id, open, setOpen }: Props) => {
   const queryClient = useQueryClient();
+  const { query } = useRouter();
+  const discussionId = query?.id as string;
 
   const { mutate, isPending: isLoading } = useMutation({
     mutationFn: () => deleteAnswer(id),
     onSuccess: () => {
       toast.success("Answer deleted successfully!");
       queryClient.invalidateQueries({
-        queryKey: ["answers", "answers", "discussions", "discussion"],
+        queryKey: ["discussion", discussionId],
       });
       handleClose();
     },
