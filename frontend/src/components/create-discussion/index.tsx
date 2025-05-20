@@ -8,10 +8,9 @@ import { NewDiscussion } from "@/modules/discussion/types";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { generateDiscussionSlug } from "@/utils/generateDiscussionSlug";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createDiscussion } from "@/modules/discussion/api";
-import { getCurrentUser } from "@/modules/user/api";
-import { useSession } from "next-auth/react";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const schema = Yup.object().shape({
   title: Yup.string()
@@ -29,12 +28,7 @@ const schema = Yup.object().shape({
 
 const CreateDiscussion = () => {
   const queryClient = useQueryClient();
-
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
 
   const router = useRouter();
 

@@ -1,22 +1,15 @@
 import { getDiscussionsByUser } from "@/modules/discussion/api";
 import { Discussion } from "@/modules/discussion/types";
-import { getCurrentUser } from "@/modules/user/api";
-import { User } from "@/modules/user/types";
 import { Box, Button, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import DiscussCard from "./DiscussCard";
 import NoDataFound from "../common/NoDataFound";
 import Link from "next/link";
 import MyDiscussLoadingSkeleton from "@/skeletons/MyDiscussLoadingSkeleton";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const MyDiscussions = () => {
-  const { data: session } = useSession();
-  const { data: userData } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
-  const user = userData as User;
+  const { user } = useGetCurrentUser();
 
   const { data, isLoading } = useQuery({
     queryKey: ["discussions"],

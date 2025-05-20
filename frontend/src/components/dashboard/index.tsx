@@ -8,16 +8,11 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getPostsByAuthor } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
-import { getCurrentUser } from "@/modules/user/api";
-import { useSession } from "next-auth/react";
 import { User } from "@/modules/user/types";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const Dashboard = () => {
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
 
   const { data, isLoading } = useQuery({
     queryKey: ["posts", user?.id as string],

@@ -42,7 +42,7 @@ const DiscussCard = ({ discuss }: Props) => {
           </Typography>
         </Link>
 
-        <Stack direction="row" spacing={1} mb={1} flexWrap="wrap">
+        <Stack direction="row" spacing={1} mb={1} gap={1} flexWrap="wrap">
           {tags.map((tag) => (
             <Chip key={tag} label={tag} size="small" color="primary" />
           ))}

@@ -1,8 +1,17 @@
-import { quotes } from "@/constants/quotes";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import QuoteCard from "./QuoteCard";
+import { useQuery } from "@tanstack/react-query";
+import { getQuotes } from "@/modules/quote/api";
 
 const DailyQuote = () => {
+  const { data: quotes = [], isLoading } = useQuery({
+    queryKey: ["quotes"],
+    queryFn: getQuotes,
+    staleTime: 1000 * 60 * 60 * 24,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
   return (
     <Box sx={{ my: 8, px: { xs: 2, md: 6 } }}>
       <Box
@@ -23,9 +32,6 @@ const DailyQuote = () => {
         <Typography variant="subtitle1" color="text.secondary" mb={3}>
           Inspire your day with thoughts from great minds across the world.
         </Typography>
-        <Button variant="contained" size="small">
-          Load New Quotes
-        </Button>
       </Box>
 
       <Grid
@@ -34,7 +40,7 @@ const DailyQuote = () => {
         columns={{ xs: 2, sm: 8, md: 12 }}
       >
         {quotes.map((quote, index) => (
-          <QuoteCard key={index} quote={quote} />
+          <QuoteCard key={index} quote={quote} isLoading={isLoading} />
         ))}
       </Grid>
     </Box>

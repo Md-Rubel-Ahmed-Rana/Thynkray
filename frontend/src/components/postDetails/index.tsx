@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { handleFetchPostBySlug } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
 import { useIncrementPostViews } from "@/hooks/useIncrementPostViews";
+import LatestDiscussions from "../sharedContent/LatestDiscussions";
 
 const PostDetails = () => {
   const { query, back } = useRouter();
@@ -59,6 +60,8 @@ const PostDetails = () => {
                   <PopularPosts posts={cardData} />
                 </Box>
               </Box>
+              <Divider sx={{ margin: "20px 0px" }} />
+              <LatestDiscussions />
               <Divider sx={{ margin: "20px 0px" }} />
               <Box>
                 <Typography

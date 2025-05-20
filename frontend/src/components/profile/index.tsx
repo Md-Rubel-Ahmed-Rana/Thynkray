@@ -10,19 +10,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditProfileInfo from "./EditProfileInfo";
 import { useState } from "react";
 import EditProfileImage from "./EditProfileImage";
-import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "@/modules/user/api";
-import { User } from "@/modules/user/types";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const Profile = () => {
-  const { data: session } = useSession();
-  const { data } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
-  const user = data as User;
-
+  const { user } = useGetCurrentUser();
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditProfileImage, setIsEditProfileImage] = useState(false);
   return (

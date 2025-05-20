@@ -5,9 +5,9 @@ import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { ImageRounded } from "@mui/icons-material";
 import { toast } from "react-toastify";
-import { useSession } from "next-auth/react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCurrentUser, updateUserProfileImage } from "@/modules/user/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateUserProfileImage } from "@/modules/user/api";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -28,11 +28,7 @@ type Props = {
 
 const EditProfileImage = ({ open, setOpen }: Props) => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
 
