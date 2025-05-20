@@ -3,7 +3,7 @@ import { Discussion, Discussions } from "@/modules/discussion/types";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import DiscussionCard from "./DiscussionCard";
-import LatestDiscussionLoadingSkeleton from "@/skeletons/latestDiscussionLoadingSkeleton";
+import LatestDiscussionLoadingSkeleton from "@/skeletons/LatestDiscussionLoadingSkeleton";
 import NoDataFound from "../common/NoDataFound";
 
 const LatestDiscussions = () => {
@@ -18,11 +18,11 @@ const LatestDiscussions = () => {
   const result = (data || []) as Discussions;
 
   return (
-    <Box px={2} py={4}>
+    <Box>
       <Typography variant="h5" gutterBottom fontWeight={600}>
         Latest Discussions
       </Typography>
-      <Grid container spacing={3}>
+      <Box>
         {isLoading ? (
           <LatestDiscussionLoadingSkeleton />
         ) : (
@@ -36,18 +36,22 @@ const LatestDiscussions = () => {
                 <Button variant="contained">Explore more</Button>
               </NoDataFound>
             ) : (
-              <>
+              <Grid
+                container
+                spacing={{ xs: 2, md: 3 }}
+                columns={{ xs: 2, sm: 4, md: 12 }}
+              >
                 {result?.discussions?.map((discussion: Discussion) => (
                   <DiscussionCard
                     discussion={discussion}
                     key={discussion?.id}
                   />
                 ))}
-              </>
+              </Grid>
             )}
           </>
         )}
-      </Grid>
+      </Box>
     </Box>
   );
 };
