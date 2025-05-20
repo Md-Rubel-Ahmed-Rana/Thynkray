@@ -125,3 +125,9 @@ export const deletePost = async (id: string): Promise<void> => {
     withCredentials: true,
   });
 };
+
+export const incrementPostViews = async (id: string): Promise<void> => {
+  return await axios.patch(`${baseApi}/post/${id}/views`, {
+    withCredentials: true,
+  });
+};

@@ -6,6 +6,7 @@ import DiscussionDetailsLoadingSkeleton from "@/skeletons/DiscussionDetailsLoadi
 import { useQuery } from "@tanstack/react-query";
 import { getSingleDiscussion } from "@/modules/discussion/api";
 import { Discussion } from "@/modules/discussion/types";
+import { useIncrementDiscussionViews } from "@/hooks/useIncrementDiscussionViews";
 
 const DiscussionDetails = () => {
   const { query } = useRouter();
@@ -15,8 +16,10 @@ const DiscussionDetails = () => {
     queryKey: ["discussion", id],
     queryFn: () => getSingleDiscussion(id),
   });
-
   const discussion = data as Discussion;
+
+  // Increment views (custom hook)
+  useIncrementDiscussionViews(id);
 
   return (
     <Box>

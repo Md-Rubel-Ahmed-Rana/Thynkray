@@ -40,13 +40,13 @@ const DiscussionSection = ({ discuss }: Props) => {
           }}
         >
           <Typography>
-            Asked <b>{moment(new Date(discuss.createdAt)).fromNow()}</b>
+            Asked <b>{moment(discuss.createdAt).fromNow()}</b>
           </Typography>
           <Typography>
-            Modified <b>{moment(new Date(discuss.updatedAt)).fromNow()}</b>
+            Modified <b>{moment(discuss.updatedAt).fromNow()}</b>
           </Typography>
           <Typography>
-            Viewed <b>{discuss.views || 49} times</b>
+            Viewed <b>{discuss.views || 0} times</b>
           </Typography>
         </Box>
         <Box
