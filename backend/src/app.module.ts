@@ -23,6 +23,7 @@ import { CronJobModule } from './cron-job/taskScheduler.module';
 import { LoggerModule } from './common/logger/logger.module';
 import { DiscussionModule } from './discussion/discussion.module';
 import { AnswerModule } from './answer/answer.module';
+import { QuotesModule } from './quotes/quotes.module';
 
 @Module({
   imports: [
@@ -60,7 +61,8 @@ import { AnswerModule } from './answer/answer.module';
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     DiscussionModule,
-    AnswerModule
+    AnswerModule,
+    QuotesModule
 
   ],
   controllers: [AppController],
