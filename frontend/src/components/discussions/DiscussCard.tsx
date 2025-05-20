@@ -29,10 +29,8 @@ const DiscussCard = ({ discuss }: Props) => {
           width: { xs: "100%", md: "8%" },
         }}
       >
-        <Typography>{discuss?.views || 45} views</Typography>
-        <Typography>
-          {discuss?._count?.answers || discuss?.totalAnswer || 20} answers
-        </Typography>
+        <Typography>{discuss?.views || 0} views</Typography>
+        <Typography>{discuss?.totalAnswer || 0} answers</Typography>
         <Typography sx={{ display: { xs: "block", md: "none" } }}>
           {moment(new Date(discuss.createdAt)).fromNow()}
         </Typography>

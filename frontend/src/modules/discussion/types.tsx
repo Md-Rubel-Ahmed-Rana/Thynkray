@@ -8,9 +8,6 @@ export type Discussion = {
   user: User;
   views: number;
   answers: Answer[];
-  _count: {
-    answers: number;
-  };
   tags: string[];
   totalAnswer: number;
   createdAt: Date;
