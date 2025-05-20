@@ -7,9 +7,10 @@ import { Answer } from "@/modules/discussion/types";
 
 type Props = {
   answer: Answer;
+  setIsEdit: (value: boolean) => void;
 };
 
-const AnswerActions = ({ answer }: Props) => {
+const AnswerActions = ({ answer, setIsEdit }: Props) => {
   const [isDelete, setIsDelete] = useState(false);
   return (
     <>
@@ -19,7 +20,11 @@ const AnswerActions = ({ answer }: Props) => {
         alignItems={"center"}
         width={{ xs: "100%", md: "auto" }}
       >
-        <IconButton component="a" color="primary">
+        <IconButton
+          onClick={() => setIsEdit(true)}
+          component="a"
+          color="primary"
+        >
           <EditIcon />
         </IconButton>
         <IconButton onClick={() => setIsDelete(true)} color="error">
