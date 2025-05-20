@@ -25,15 +25,14 @@ export const handleFetchPostId = async ({
   return result?.data?.data as Post;
 };
 
-export const handleFetchRelatedPosts = async ({
+export const getRelatedPosts = async ({
   queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<Post[]> => {
-  const [, searchText] = queryKey;
-  const result = await axios.get(`${baseApi}/post/search?q=${searchText}`, {
+}: QueryFunctionContext<[string, string]>): Promise<Post> => {
+  const [, id] = queryKey;
+  const result = await axios.get(`${baseApi}/post/${id}/related`, {
     withCredentials: true,
   });
-
-  return result?.data?.data as Post[];
+  return result?.data?.data as Post;
 };
 
 export const getLatestPosts = async ({
