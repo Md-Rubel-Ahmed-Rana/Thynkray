@@ -65,6 +65,26 @@ export class PostController {
   }
 
   @ApiOkResponse({
+    description: "Find popular posts by most views",
+    type: PostsResponseDto
+  })
+  @SkipThrottle()
+  @Get('popular')
+  findPopularPosts() {
+    return this.postService.findPopularPosts();
+  }
+
+  @ApiOkResponse({
+    description: "Find related posts",
+    type: PostsResponseDto
+  })
+  @SkipThrottle()
+  @Get(':id/related')
+  findRelatedPosts(@Param('id') id: string) {
+    return this.postService.findRelatedPosts(id);
+  }
+
+  @ApiOkResponse({
     description: "Find single post by id",
     type: PostResponseDto
   })
@@ -73,6 +93,8 @@ export class PostController {
   findOne(@Param('id') id: string) {
     return this.postService.findOne(id);
   }
+
+ 
 
   
   @ApiOkResponse({

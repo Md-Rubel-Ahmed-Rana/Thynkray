@@ -16,11 +16,11 @@ export class GlobalNewsService {
   async findAll(query: GetGlobalNewsDto) {
     try {
       const response = await this.newsapi.v2.topHeadlines({
-        category: query.category,
+        category: query?.category || "general",
         language: 'en',
-        country: query.country || 'us',
-        pageSize: query.pageSize || 10,
-        page: query.page || 1,
+        country: query?.country || 'us',
+        pageSize: query?.pageSize || 10,
+        page: query?.page || 1,
       });
 
       if (response.status !== 'ok') {

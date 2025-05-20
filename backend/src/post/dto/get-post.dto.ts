@@ -42,7 +42,7 @@ export class GetPostDto {
         this.tags = tags;
         this.content = content;
         this.author = author;
-        this.comments = comments;
+        this.comments = comments || 0;
         this.views = views || 0;
         this.createdAt = createdAt || new Date();
         this.updatedAt = updatedAt || new Date();

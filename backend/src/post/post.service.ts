@@ -6,6 +6,7 @@ import { RedisCacheService } from 'src/cache/cache.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { sortByCreatedAtDesc } from 'src/utility/sortByCreatedAt';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostService {
@@ -91,6 +92,105 @@ export class PostService {
     }
   }
 
+
+  async findPopularPosts() {
+    const posts = await this.prisma.post.findMany({
+      include: {
+        author: true,
+        content: true,
+          _count: {
+          select: {
+            comments: true
+          }
+          }
+      },
+      orderBy: {
+        views: "desc",
+      },
+      take: 10
+    });
+
+    const postDtos = GetPostDto.fromEntities(posts)
+
+    return {
+      message: "Posts retrieved successfully!",
+      data: postDtos,
+      success: true,
+      statusCode: 200,
+    }
+  }
+
+  async findRelatedPosts(currentPostId: string) {
+    const currentPost = await this.prisma.post.findUnique({
+      where: { id: currentPostId },
+    });
+  
+    if (!currentPost) {
+      throw new Error("Post not found");
+    }
+  
+    const relatedPosts = await this.prisma.post.findMany({
+      where: {
+        id: { not: currentPostId },
+        OR: [
+          { category: currentPost.category },
+          { tags: { hasSome: currentPost.tags } },
+        ],
+      },
+      orderBy: {
+        views: "desc",
+      },
+      take: 10,
+    });
+  
+    const relatedPostIds = relatedPosts.map(post => post.id);
+  
+    let remainingPosts: typeof relatedPosts = [];
+  
+    if (relatedPosts.length < 10) {
+      const needed = 10 - relatedPosts.length;
+  
+      remainingPosts = await this.prisma.post.findMany({
+        where: {
+          id: {
+            notIn: [currentPostId, ...relatedPostIds],
+          },
+        },
+        orderBy: {
+          views: "desc",
+        },
+        take: needed,
+      });
+    }
+  
+    const finalPostIds = [...relatedPostIds, ...remainingPosts.map(p => p.id)];
+  
+    const enrichedPosts = await this.prisma.post.findMany({
+      where: {
+        id: { in: finalPostIds },
+      },
+      include: {
+        author: true,
+        content: true,
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+      },
+    });
+  
+    const postDtos = GetPostDto.fromEntities(enrichedPosts);
+  
+    return {
+      message: "Posts retrieved successfully!",
+      data: postDtos,
+      success: true,
+      statusCode: 200,
+    };
+  }
+  
+
   async findAllByAuthorId(authorId: string) {
 
     const postsFromCache = await this.cache.get(this.cacheKey)
@@ -129,7 +229,7 @@ export class PostService {
     }
   }
 
-  async getLatestPosts(limit = 5) {
+  async getLatestPosts(limit = 10) {
     const latestPosts = await this.prisma.post.findMany({
        include: {
         author: true,
@@ -173,7 +273,6 @@ export class PostService {
       data: postDtos
     }
   }
-
  
  async findOne(id: string) {
     const posts = await this.cache.get(this.cacheKey) as GetPostDto[]
@@ -345,13 +444,16 @@ export class PostService {
   }
 
   async incrementViews(id: string){
-    await this.isPostExist(id)
+    const isExist = await this.isPostExist(id)
 
     const post  = await this.prisma.post.update({
       where: {id},
       data: {
-        views: {increment: 1}
-      }
+        views: {increment: 1},
+        updatedAt: isExist.updatedAt
+      },
+      include: { author: true, content: true }
+      
     })
 
     const updatedPost = await this.prisma.post.findUnique({
@@ -372,7 +474,7 @@ export class PostService {
     }
   }
 
-  async isPostExist(id: string){
+  async isPostExist(id: string): Promise<Post>{
     const post = await this.prisma.post.findUnique({
       where: {
         id
@@ -382,7 +484,7 @@ export class PostService {
     if (!post) {
       throw new HttpException('Post was not found', HttpStatus.NOT_FOUND);
     }else{
-      return
+      return post
     }
   }
 
