@@ -7,3 +7,9 @@ export const createAnswer = async (data: NewAnswer): Promise<void> => {
     withCredentials: true,
   });
 };
+
+export const deleteAnswer = async (id: string): Promise<void> => {
+  return await axios.delete(`${baseApi}/answer/${id}`, {
+    withCredentials: true,
+  });
+};
