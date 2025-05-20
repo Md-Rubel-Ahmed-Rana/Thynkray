@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPosts } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
+import LatestDiscussions from "../sharedContent/LatestDiscussions";
 
 const Articles = () => {
   const { data, isLoading } = useQuery({
@@ -86,6 +87,7 @@ const Articles = () => {
           </Box>
         </Box>
       </Box>
+      <LatestDiscussions />
     </Box>
   );
 };
