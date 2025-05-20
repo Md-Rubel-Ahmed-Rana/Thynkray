@@ -10,19 +10,14 @@ import { CreateNewPost, CreateSection } from "@/modules/post/types";
 import { generatePostSlug } from "@/utils/generatePostSlug";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/modules/post/api";
-import { getCurrentUser } from "@/modules/user/api";
-import { useSession } from "next-auth/react";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const CreatePost = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
 
   const {
     register,

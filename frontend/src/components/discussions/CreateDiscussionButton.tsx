@@ -1,16 +1,10 @@
-import { getCurrentUser } from "@/modules/user/api";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { Button } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
 const CreateDiscussionButton = () => {
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
   const router = useRouter();
 
   const handleNavigate = () => {

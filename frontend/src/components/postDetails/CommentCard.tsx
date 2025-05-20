@@ -6,20 +6,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import CommentEditForm from "./CommentEditForm";
 import CommentDeleteModal from "./CommentDeleteModal";
-import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "@/modules/user/api";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 type Props = {
   comment: Comment;
 };
 
 const CommentCard = ({ comment }: Props) => {
-  const { data: session } = useSession();
-  const { data: user } = useQuery({
-    queryKey: ["user", session?.user?.email as string],
-    queryFn: getCurrentUser,
-  });
+  const { user } = useGetCurrentUser();
   const [shouldEdit, setShouldEdit] = useState(false);
   const [shouldDelete, setShouldDelete] = useState(false);
   return (
