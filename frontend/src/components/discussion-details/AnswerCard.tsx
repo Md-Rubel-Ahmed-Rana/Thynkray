@@ -1,6 +1,7 @@
 import { Answer } from "@/modules/discussion/types";
 import { Box, Typography } from "@mui/material";
 import moment from "moment";
+import AnswerActions from "./AnswerActions";
 
 type Props = {
   answer: Answer;
@@ -40,6 +41,7 @@ const AnswerCard = ({ answer }: Props) => {
         <Typography color="textDisabled">
           answered {moment(answer.createdAt).format("MMM D, YYYY [at] H:mm")}
         </Typography>
+        <AnswerActions />
       </Box>
     </Box>
   );
