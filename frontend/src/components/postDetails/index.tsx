@@ -13,6 +13,7 @@ import PostDetailsLoadingSkeleton from "@/skeletons/PostDetailsLoadingSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { handleFetchPostBySlug } from "@/modules/post/api";
 import { Post } from "@/modules/post/types";
+import { useIncrementPostViews } from "@/hooks/useIncrementPostViews";
 
 const PostDetails = () => {
   const { query, back } = useRouter();
@@ -24,6 +25,9 @@ const PostDetails = () => {
   });
 
   const post = data as Post;
+
+  // increment post views
+  useIncrementPostViews(post?.id);
 
   return (
     <>
