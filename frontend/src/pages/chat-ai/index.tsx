@@ -1,20 +1,13 @@
-import ChatAI from "@/components/chat";
-import ChatUI from "@/components/chat/GeneratedLayout";
+import InitialChatUI from "@/components/chat/InitialChatUI";
 import SEOHead from "@/components/common/SEOHead";
-import ChatLayout from "@/layout/ChatLayout";
-import { ReactElement } from "react";
 
-const ChatAIPage = () => {
+const InitialChatUIPage = () => {
   return (
     <>
       <SEOHead title={"Chat with AI - Thynkray"} />
-      <ChatUI />
+      <InitialChatUI />
     </>
   );
 };
 
-export default ChatAIPage;
-
-// ChatAIPage.getLayout = function (page: ReactElement) {
-//   return <ChatLayout>{page}</ChatLayout>;
-// };
+export default InitialChatUIPage;

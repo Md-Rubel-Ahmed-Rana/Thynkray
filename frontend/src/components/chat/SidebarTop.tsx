@@ -3,6 +3,7 @@ import React from "react";
 import ThemeSwitcher from "../common/ThemeSwitcher";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/system";
+import Link from "next/link";
 
 const StyledSearchBox = styled(TextField)({
   marginTop: "10px",
@@ -34,7 +35,14 @@ const SidebarTop = () => {
         <Button fullWidth variant="outlined" size="small">
           <ThemeSwitcher />
         </Button>
-        <Button size="large" fullWidth variant="contained" sx={{ py: "10px" }}>
+        <Button
+          size="large"
+          fullWidth
+          variant="contained"
+          href="/chat-ai"
+          component={Link}
+          sx={{ py: "10px" }}
+        >
           New Chat
         </Button>
       </Box>
@@ -43,12 +51,14 @@ const SidebarTop = () => {
         variant="outlined"
         placeholder="Search chats..."
         size="small"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          },
         }}
       />
     </Box>
