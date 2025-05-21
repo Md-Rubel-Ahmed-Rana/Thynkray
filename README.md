@@ -1,14 +1,14 @@
-# Thynkray : Blogging or Articles Website
+# Thynkray: Blogging or Articles Website
 
 ## Overview
 
-**Thynkray** is a modern, full-stack blogging platform to provide seamless experience both writers and readers. Built with **Next.js** and **NestJS**, it offers robust features like rich text editing, advanced full-text search capabilities with **Meilisearch**.
+**Thynkray** is a modern, full-stack blogging platform that provides a seamless experience for both writers and readers. Built with **Next.js** and **NestJS**, it offers robust features like rich text editing and advanced full-text search capabilities with **Meilisearch**.
 
 ### Live links
 
 - [Frontend](https://thynkray.vercel.app)
-- [Backend](https://api-thynkray.onrender.com/api/v1/health)
-- [Swagger : API Documentation](https://api-thynkray.onrender.com/api-docs)
+- [Backend](https://thynkray.onrender.com/api/v1/health)
+- [Swagger : API Documentation](https://thynkray.onrender.com/api-doc)
 
 ### Clone repository
 
@@ -23,14 +23,14 @@ git clone https://github.com/Md-Rubel-Ahmed-Rana/Thynkray.git
 3. **Advanced Search:** Fast and relevant search results powered by Meilisearch.
 4. **File Uploads:** Upload images and files directly to Google Drive using the Google Drive API.
 5. **Responsive Design:** Optimized for all devices with Material UI components.
-6. **State Management:** Efficient state handling using Zustand.
+6. **State Management:** Efficient state handling using TanStack Query.
 
 ## Tech Stack and Third-Party Libraries
 
 ### Core Language & Frameworks
 
 - **TypeScript**: Strongly typed superset of JavaScript used across both frontend and backend for better developer experience, type safety, and tooling.
-- **Next.js**: React-based fullstack framework used on the frontend. Enables file-based routing, SSR/SSG, API routes, and tight integration with NextAuth.
+- **Next.js**: React-based full-stack framework used on the frontend. Enables file-based routing, SSR/SSG, API routes, and tight integration with NextAuth.
 - **NestJS**: Modular, scalable Node.js framework on the backend. Used to build the REST API with features like validation, logging, scheduling, and event-driven architecture
 
 ### Databases & ORM
@@ -54,11 +54,11 @@ git clone https://github.com/Md-Rubel-Ahmed-Rana/Thynkray.git
 ### Event-driven & Scheduled Tasks
 
 - **Event Emitter (nestjs/event-emitter)**: Adds support for an event-driven architecture, where parts of the app can listen for and respond to specific events—like Adding articles/posts on **Redis** and **Meilisearch**, Delete images from **Google Drive** when a post deleted or updated or user profile image updated.
-- **Cron Job (nestjs/schedule)**: Allows scheduling of cron jobs or interval-based background tasks. Ideal for tasks like to track and keep **data consistency** on **PostgreSQL**, **Redis**, and **Meilisearch**.
+- **Cron Job (nestjs/schedule)**: Allows scheduling of cron jobs or interval-based background tasks. Ideal for tracking and keeping data consistency** on **PostgreSQL**, **Redis**, and **Meilisearch**.
 
 ### Frontend Libraries & UI
 
-- **Material UI (MUI)**: UI component library for React. Provides modern, accessible design components, and icons.
+- **Material UI (MUI)**: UI component library for React. Provides modern, accessible design components and icons.
 - **React Hook Form**: Lightweight, performant library for managing form state and validation.
 - **React Quill**: Rich text editor used for writing and editing blog posts with formatting.
 - **Swiper**: Modern mobile touch slider for carousels, image galleries, and featured content.
@@ -66,7 +66,7 @@ git clone https://github.com/Md-Rubel-Ahmed-Rana/Thynkray.git
 
 ### State Management
 
-- **Zustand**: Minimal, scalable global state management for React apps. Simpler and lighter than Redux.
+- **TanStack Query**: TanStack Query is configurable down to each observer instance of a query with knobs and options to fit every use-case. Simpler and lighter than Redux.
 
 ### Developer Experience & Backend Utilities
 
@@ -78,8 +78,8 @@ git clone https://github.com/Md-Rubel-Ahmed-Rana/Thynkray.git
 
 ### Utilities & UX Enhancements
 
-- **Axios**: Promise-based HTTP client used on both frontend and backend for making API requests and integrations.
-- **Day.js and Moment.js**: Lightweight library for formatting and manipulating dates.
+- **Axios**: A promise-based HTTP client is used on both frontend and backend for making API requests and integrations.
+- **Day.js and Moment.js**: Lightweight libraries for formatting and manipulating dates.
 - **Framer Motion**: Powerful animation library for React. Used to animate page transitions, modals, and interactive elements.
 
 - **Lenis**: Smooth scroll library that improves scrolling behavior and feel across devices.
