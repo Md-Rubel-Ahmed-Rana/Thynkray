@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
-
+import React from "react";
+import ChatSidebar from "./ChatSidebar";
 import MessageForm from "./MessageForm";
 import Messages from "./Messages";
-import ChatSidebar from "./ChatSidebar";
 
-const ChatUI = () => {
+const SingleChatMessages = () => {
   return (
     <Box display="flex" height="100vh">
       <ChatSidebar />
@@ -16,4 +16,4 @@ const ChatUI = () => {
   );
 };
 
-export default ChatUI;
+export default SingleChatMessages;

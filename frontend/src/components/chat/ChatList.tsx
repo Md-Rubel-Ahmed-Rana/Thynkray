@@ -1,5 +1,6 @@
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import { chats } from "./dummy";
+import Link from "next/link";
 
 const ChatList = () => {
   return (
@@ -12,7 +13,13 @@ const ChatList = () => {
       {chats.map((contact) => (
         <ListItem key={contact.id}>
           <ListItemText>
-            <Typography noWrap>{contact.content}</Typography>
+            <Link
+              style={{ textDecoration: "none", color: "inherit" }}
+              href={`/chat-ai/${contact.id}`}
+              passHref
+            >
+              <Typography noWrap>{contact.content}</Typography>
+            </Link>
           </ListItemText>
         </ListItem>
       ))}
