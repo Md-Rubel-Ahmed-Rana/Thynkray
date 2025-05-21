@@ -8,7 +8,7 @@
 
 - [Frontend](https://thynkray.vercel.app)
 - [Backend](https://thynkray.onrender.com/api/v1/health)
-- [Swagger : API Documentation](https://thynkray.onrender.com/api-doc)
+- [Swagger : API Documentation](https://thynkray.onrender.com/api-docs)
 
 ### Clone repository
 
