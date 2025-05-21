@@ -1,29 +1,19 @@
-import { List, ListItem, Typography } from "@mui/material";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import { chats } from "./dummy";
 
 const ChatList = () => {
   return (
     <List
       sx={{
         overflowY: "auto",
-        maxHeight: "calc(100vh)",
-        padding: "0",
+        height: "calc(100vh - 150px)",
       }}
     >
-      {Array.from({ length: 100 }).map((_, index) => (
-        <ListItem
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            padding: "10px",
-          }}
-          key={index}
-        >
-          <Typography gutterBottom noWrap variant="h6">
-            Chat Title {index + 1}
-          </Typography>
-          <Typography variant="body2">{new Date().toLocaleString()}</Typography>
+      {chats.map((contact) => (
+        <ListItem key={contact.id}>
+          <ListItemText>
+            <Typography noWrap>{contact.content}</Typography>
+          </ListItemText>
         </ListItem>
       ))}
     </List>
