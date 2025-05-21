@@ -1,5 +1,7 @@
 import SEOHead from "@/components/common/SEOHead";
 import MyDiscussions from "@/components/my-discussions";
+import RootLayout from "@/layout/RootLayout";
+import { ReactElement } from "react";
 
 const MyDiscussionsPage = () => {
   return (
@@ -11,3 +13,7 @@ const MyDiscussionsPage = () => {
 };
 
 export default MyDiscussionsPage;
+
+MyDiscussionsPage.getLayout = function (page: ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
+};

@@ -1,6 +1,8 @@
 import SEOHead from "@/components/common/SEOHead";
 import PostsSearch from "@/components/posts/search";
+import RootLayout from "@/layout/RootLayout";
 import { useRouter } from "next/router";
+import { ReactElement } from "react";
 
 const PostsSearchPage = () => {
   const { query } = useRouter();
@@ -14,3 +16,7 @@ const PostsSearchPage = () => {
 };
 
 export default PostsSearchPage;
+
+PostsSearchPage.getLayout = function (page: ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
+};
