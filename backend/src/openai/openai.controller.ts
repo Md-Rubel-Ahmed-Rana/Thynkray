@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Query, Res, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Query,
+  Res,
+  UseGuards,
+} from "@nestjs/common";
 import { OpenaiService } from "./openai.service";
 import { Response } from "express";
 import { PinoLogger } from "src/common/logger/pino-logger.service";
@@ -63,5 +72,20 @@ export class OpenaiController {
   @Get("chats/messages/:id")
   getChatMessages(@Param("id") chatId: Types.ObjectId) {
     return this.openaiService.getChatMessages(chatId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch("chats/:id")
+  async updateChatTitle(
+    @Param("id") id: string,
+    @Query("title") title: string
+  ) {
+    return this.openaiService.updateChatTitle(id, title);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete("chats/:id")
+  async deleteChat(@Param("id") id: string) {
+    return this.openaiService.deleteChat(id);
   }
 }
