@@ -22,28 +22,48 @@ export class OpenaiService {
   }
 
   async streamQuestion(question: string): Promise<ReadableStream<Uint8Array>> {
-    const response = await this.openai.chat.completions.create({
-      model: "openai/gpt-4o",
-      messages: [{ role: "user", content: question }],
-      stream: true,
-      max_completion_tokens: 1000,
-    });
-
     const encoder = new TextEncoder();
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        for await (const chunk of response) {
-          const content = chunk.choices?.[0]?.delta?.content;
-          if (content) {
-            controller.enqueue(encoder.encode(content));
-          }
-        }
-        controller.close();
-      },
-    });
+    try {
+      const response = await this.openai.chat.completions.create({
+        model: "openai/gpt-4o",
+        messages: [{ role: "user", content: question }],
+        stream: true,
+        max_completion_tokens: 1000,
+      });
 
-    return stream;
+      return new ReadableStream({
+        async start(controller) {
+          for await (const chunk of response) {
+            const content = chunk.choices?.[0]?.delta?.content;
+            if (content) {
+              controller.enqueue(encoder.encode(content));
+            }
+          }
+          controller.close();
+        },
+      });
+    } catch (err: any) {
+      let message = `❌ **Error:** An unexpected issue occurred while generating your answer.\n`;
+
+      if (
+        err?.status === 402 ||
+        err.message?.includes("Insufficient credits")
+      ) {
+        message = `### ❌ Usage Limit Reached\n\nYou’ve reached your **credit** or **usage limit**.\n\nPlease [add more credits](https://openrouter.ai/settings/credits) to continue using the service.\n`;
+      } else if (err.message?.includes("max_completion_tokens")) {
+        message = `### ⚠️ Completion Limit Reached\n\nYour request hit the **maximum number of tokens** allowed in a single response.\nTry rephrasing or shortening your question.\n\n> Max tokens allowed: **1000**`;
+      } else if (err?.status === 400) {
+        message = `### ⚠️ Bad Request\n\nThe request sent to OpenAI was invalid. Please check the input format.`;
+      }
+
+      return new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoder.encode(message + "\n"));
+          controller.close();
+        },
+      });
+    }
   }
 
   async createNewChat(
