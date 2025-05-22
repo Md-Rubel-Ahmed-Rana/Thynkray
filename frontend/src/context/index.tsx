@@ -7,11 +7,19 @@ import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 export type IContext = {
   handleChangeThemeMode: () => void;
   themeMode: PaletteMode;
+  aiResponse: string;
+  setAiResponse: React.Dispatch<React.SetStateAction<string>>;
+  question: string;
+  setQuestion: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const context: IContext = {
   handleChangeThemeMode: () => {},
   themeMode: "light",
+  aiResponse: "",
+  setAiResponse: () => {},
+  question: "",
+  setQuestion: () => {},
 };
 
 export const ContextProvider = createContext<IContext>(context);
@@ -23,6 +31,8 @@ type Props = {
 const themeName = "thynkray-theme";
 
 const ContextAPI = ({ children }: Props) => {
+  const [aiResponse, setAiResponse] = useState("");
+  const [question, setQuestion] = useState("");
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
   const { data: session, status } = useSession();
   const hasLoggedIn = useRef(false);
@@ -71,6 +81,10 @@ const ContextAPI = ({ children }: Props) => {
   const values = {
     handleChangeThemeMode,
     themeMode,
+    aiResponse,
+    setAiResponse,
+    question,
+    setQuestion,
   };
 
   return (
