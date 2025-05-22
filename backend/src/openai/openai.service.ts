@@ -136,4 +136,36 @@ export class OpenaiService {
       data: messages,
     };
   }
+
+  async updateChatTitle(id: string, title: string) {
+    const chatId = isObjectIdOrHexString(id) ? new Types.ObjectId(id) : id;
+    const chat = await this.chatModel.findById(chatId);
+    if (!chat) {
+      throw new Error(`Chat with ID ${id} not found.`);
+    }
+    await this.chatModel.findByIdAndUpdate(chatId, { title });
+    return {
+      statusCode: HttpStatus.OK,
+      message: "Chat updated successfully",
+      success: true,
+      data: null,
+    };
+  }
+
+  async deleteChat(id: string) {
+    const chatId = isObjectIdOrHexString(id) ? new Types.ObjectId(id) : id;
+
+    const chat = await this.chatModel.findByIdAndDelete(chatId);
+    if (!chat) {
+      throw new Error(`Chat with ID ${id} not found.`);
+    }
+
+    await this.messageModel.deleteMany({ chatId });
+    return {
+      statusCode: HttpStatus.OK,
+      message: "Chat deleted successfully",
+      success: true,
+      data: null,
+    };
+  }
 }
