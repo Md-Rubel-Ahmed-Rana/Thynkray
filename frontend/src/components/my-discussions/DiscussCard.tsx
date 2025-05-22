@@ -30,7 +30,7 @@ const DiscussCard = ({ discuss }: Props) => {
       <Box flex="1">
         <Link
           style={{ textDecoration: "none" }}
-          href={`/discussion/topic/${id}/${slug}`}
+          href={`/discussion/topic/${id}/${slug}?title=${title}`}
         >
           <Typography
             className="hover-underline"
