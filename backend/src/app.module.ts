@@ -25,6 +25,8 @@ import { DiscussionModule } from "./discussion/discussion.module";
 import { AnswerModule } from "./answer/answer.module";
 import { QuotesModule } from "./quotes/quotes.module";
 import { MongooseModule } from "@nestjs/mongoose";
+import { PinoLogger } from "./common/logger/pino-logger.service";
+import { OpenaiModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -66,20 +68,21 @@ import { MongooseModule } from "@nestjs/mongoose";
     QuotesModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      inject: [ConfigService, PinoLogger],
+      useFactory: (config: ConfigService, logger: PinoLogger) => ({
         uri: config.get<string>("MONGODB_URI"),
         connectionFactory: (connection) => {
           connection.on("connected", () =>
-            console.log("✅ MongoDB connection established")
+            logger.log("✅ MongoDB connected successfully")
           );
-          connection.on("error", (err) =>
-            console.error("❌ MongoDB connection error:", err)
+          connection.on("error", (err: any) =>
+            logger.error("❌ MongoDB connection error:", err.message)
           );
           return connection;
         },
       }),
     }),
+    OpenaiModule,
   ],
   controllers: [AppController],
   providers: [
