@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 import { Message } from "./message.schema";
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, versionKey: false, toJSON: { virtuals: true } })
 export class Chat extends Document {
   @Prop({ required: true })
   user: string;
