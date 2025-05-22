@@ -1,10 +1,21 @@
-import { Box } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import { useContext, useEffect, useRef } from "react";
-import { messages } from "./dummy";
 import SingleMessageCard from "./SingleMessageCard";
 import { ContextProvider } from "@/context";
+import { useQuery } from "@tanstack/react-query";
+import { getMessageByChatId } from "@/modules/chat/api";
+import { Message } from "@/modules/chat/types";
+import { useRouter } from "next/router";
 
 const Messages = () => {
+  const { query } = useRouter();
+  const chatId = query.chatId as string;
+  const { data, isLoading } = useQuery({
+    queryKey: ["chats-messages", chatId],
+    queryFn: getMessageByChatId,
+  });
+
+  const messages = (data || []) as Message[];
   const { aiResponse, question } = useContext(ContextProvider);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,9 +36,19 @@ const Messages = () => {
       }}
     >
       <Box display="flex" flexDirection="column" gap={1}>
-        {messages.map((msg) => (
-          <SingleMessageCard key={msg.id} message={msg} />
-        ))}
+        {isLoading ? (
+          <Box display="flex" flexDirection="column" gap={1}>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <Skeleton key={index} variant="text" width="100%" />
+            ))}
+          </Box>
+        ) : (
+          <>
+            {messages.map((msg) => (
+              <SingleMessageCard key={msg.id} message={msg} />
+            ))}
+          </>
+        )}
 
         {question && (
           <SingleMessageCard
