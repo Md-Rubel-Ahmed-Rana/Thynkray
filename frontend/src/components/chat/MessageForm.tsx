@@ -18,7 +18,7 @@ const MessageForm = () => {
   const { user } = useGetCurrentUser();
   const { setAiResponse, setQuestion } = useContext(ContextProvider);
   const router = useRouter();
-  const chatId = router.query.chatId as string;
+  const chatId = router.query.id as string;
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const totalPromptCount = useGetTotalAIPromptCount(user?.id || "");

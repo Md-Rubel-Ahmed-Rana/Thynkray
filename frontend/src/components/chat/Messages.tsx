@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 
 const Messages = () => {
   const { query } = useRouter();
-  const chatId = query.chatId as string;
+  const chatId = query.id as string;
   const { data = [], isLoading } = useQuery({
     queryKey: ["chats-messages", chatId],
     queryFn: () => getMessageByChatId(chatId),
