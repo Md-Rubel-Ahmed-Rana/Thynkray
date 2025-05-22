@@ -16,7 +16,7 @@ import NoDataFound from "../common/NoDataFound";
 const ChatList = () => {
   const { user } = useGetCurrentUser();
   const { data, isLoading } = useQuery({
-    queryKey: ["chatList", user?.id],
+    queryKey: ["chats-messages", user?.id],
     queryFn: getChatListByUser,
     refetchOnWindowFocus: false,
   });
