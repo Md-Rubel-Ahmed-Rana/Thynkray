@@ -21,3 +21,25 @@ export const getMessageByChatId = async (
   });
   return res.data.data;
 };
+
+export const updateChatTitle = async ({
+  chatId,
+  title,
+}: {
+  chatId: string;
+  title: string;
+}): Promise<Chat> => {
+  const res = await axios.patch(
+    `${baseApi}/openai/chats/${chatId}`,
+    { title },
+    { withCredentials: true }
+  );
+  return res.data.data;
+};
+
+export const deleteChat = async (chatId: string): Promise<Chat> => {
+  const res = await axios.delete(`${baseApi}/openai/chats/${chatId}`, {
+    withCredentials: true,
+  });
+  return res.data.data;
+};
