@@ -26,7 +26,7 @@ import { AnswerModule } from "./answer/answer.module";
 import { QuotesModule } from "./quotes/quotes.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PinoLogger } from "./common/logger/pino-logger.service";
-import { OpenaiModule } from './openai/openai.module';
+import { OpenaiModule } from "./openai/openai.module";
 
 @Module({
   imports: [
