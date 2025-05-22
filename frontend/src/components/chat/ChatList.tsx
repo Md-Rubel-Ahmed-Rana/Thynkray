@@ -12,6 +12,7 @@ import { getChatListByUser } from "@/modules/chat/api";
 import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { Chat } from "@/modules/chat/types";
 import NoDataFound from "../common/NoDataFound";
+import ChatActions from "./ChatActions";
 
 const ChatList = () => {
   const { user } = useGetCurrentUser();
@@ -59,6 +60,7 @@ const ChatList = () => {
                       <Typography noWrap>{chat.title}</Typography>
                     </Link>
                   </ListItemText>
+                  <ChatActions chat={chat} />
                 </ListItem>
               ))}
             </>
