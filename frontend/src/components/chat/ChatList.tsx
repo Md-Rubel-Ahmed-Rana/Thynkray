@@ -48,13 +48,11 @@ const ChatList = () => {
           ) : (
             <>
               {chatList.map((chat) => (
-                <ListItem key={chat.id || chat._id}>
+                <ListItem key={chat.id}>
                   <ListItemText>
                     <Link
                       style={{ textDecoration: "none", color: "inherit" }}
-                      href={`/chat-ai/${chat?._id || chat?.id}?title=${
-                        chat.title
-                      }`}
+                      href={`/chat-ai/${chat?.id}?title=${chat.title}`}
                       passHref
                     >
                       <Typography noWrap>{chat.title}</Typography>
