@@ -1,52 +1,20 @@
 import { Box, Button, InputAdornment, TextField } from "@mui/material";
-import React from "react";
-import ThemeSwitcher from "../common/ThemeSwitcher";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled } from "@mui/system";
 import Link from "next/link";
-
-const StyledSearchBox = styled(TextField)({
-  marginTop: "10px",
-  "& .MuiOutlinedInput-root": {
-    color: "#ffffff",
-    "& fieldset": {
-      borderColor: "#424242",
-    },
-    "&:hover fieldset": {
-      borderColor: "#666666",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#0d47a1",
-    },
-  },
-});
 
 const SidebarTop = () => {
   return (
-    <Box position={"sticky"} p={2}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 2,
-        }}
+    <Box position={"sticky"} p={1}>
+      <Button
+        sx={{ mb: 1 }}
+        fullWidth
+        variant="contained"
+        href="/chat-ai"
+        component={Link}
       >
-        <Button fullWidth variant="outlined" size="small">
-          <ThemeSwitcher />
-        </Button>
-        <Button
-          size="large"
-          fullWidth
-          variant="contained"
-          href="/chat-ai"
-          component={Link}
-          sx={{ py: "10px" }}
-        >
-          New Chat
-        </Button>
-      </Box>
-      <StyledSearchBox
+        New Chat
+      </Button>
+      <TextField
         fullWidth
         variant="outlined"
         placeholder="Search chats..."

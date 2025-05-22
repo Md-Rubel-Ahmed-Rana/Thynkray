@@ -1,11 +1,22 @@
-import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
+import { useContext, useEffect, useRef } from "react";
 import { messages } from "./dummy";
+import SingleMessageCard from "./SingleMessageCard";
+import { ContextProvider } from "@/context";
 
 const Messages = () => {
-  const theme = useTheme();
+  const { aiResponse, question } = useContext(ContextProvider);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [aiResponse]);
 
   return (
     <Box
+      ref={containerRef}
       sx={{
         flex: 1,
         overflowY: "auto",
@@ -14,49 +25,33 @@ const Messages = () => {
       }}
     >
       <Box display="flex" flexDirection="column" gap={1}>
-        {messages.map((msg) => {
-          const isOwn = msg.role === "user";
+        {messages.map((msg) => (
+          <SingleMessageCard key={msg.id} message={msg} />
+        ))}
 
-          const backgroundColor = isOwn
-            ? theme.palette.mode === "dark"
-              ? theme.palette.grey[800]
-              : theme.palette.grey[300]
-            : theme.palette.background.paper;
+        {question && (
+          <SingleMessageCard
+            key={"question"}
+            message={{
+              id: "3434",
+              content: question,
+              role: "user",
+              createdAt: new Date(),
+            }}
+          />
+        )}
 
-          const textColor = isOwn
-            ? theme.palette.getContrastText(backgroundColor)
-            : theme.palette.text.primary;
-
-          return (
-            <Box
-              key={msg.id}
-              display="flex"
-              flexDirection="column"
-              alignItems={isOwn ? "flex-end" : "flex-start"}
-            >
-              <Paper
-                sx={{
-                  padding: "10px 15px",
-                  margin: "8px 0",
-                  maxWidth: "70%",
-                  width: "fit-content",
-                  backgroundColor,
-                  color: textColor,
-                  borderRadius: "12px",
-                  alignSelf: isOwn ? "flex-end" : "flex-start",
-                }}
-              >
-                <Typography>{msg.text}</Typography>
-                <Typography
-                  variant="caption"
-                  sx={{ color: theme.palette.text.secondary }}
-                >
-                  {msg.createdAt.toLocaleTimeString()}
-                </Typography>
-              </Paper>
-            </Box>
-          );
-        })}
+        {aiResponse && (
+          <SingleMessageCard
+            key={"response"}
+            message={{
+              id: "4545",
+              content: aiResponse,
+              role: "assistant",
+              createdAt: new Date(),
+            }}
+          />
+        )}
       </Box>
     </Box>
   );

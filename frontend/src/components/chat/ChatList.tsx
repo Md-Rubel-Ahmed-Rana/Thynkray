@@ -10,15 +10,15 @@ const ChatList = () => {
         height: "calc(100vh - 150px)",
       }}
     >
-      {chats.map((contact) => (
-        <ListItem key={contact.id}>
+      {chats.map((chat) => (
+        <ListItem key={chat.id}>
           <ListItemText>
             <Link
               style={{ textDecoration: "none", color: "inherit" }}
-              href={`/chat-ai/${contact.id}`}
+              href={`/chat-ai/${chat.id}?title=${chat.title}`}
               passHref
             >
-              <Typography noWrap>{contact.content}</Typography>
+              <Typography noWrap>{chat.title}</Typography>
             </Link>
           </ListItemText>
         </ListItem>
