@@ -23,7 +23,6 @@ const MessageForm = () => {
     setQuestion(userInput);
     setAiResponse("");
     setLoading(true);
-    router.push("/chat-ai/new-chat");
 
     const res = await fetch(
       `${baseApi}/openai/ask?userId=${user?.id}&chatId=${
@@ -37,16 +36,33 @@ const MessageForm = () => {
     if (!res.body) return;
 
     const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+    let chatIdExtracted = false;
 
     const readChunk = async () => {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        setAiResponse((prev) => prev + value);
+
+        if (!chatId) {
+          if (!chatIdExtracted && value.startsWith("[CHAT_ID]")) {
+            const endOfId = value.indexOf("\n");
+            const newChatId = value.slice(9, endOfId).trim();
+            console.log("Extracted CHAT_ID:", newChatId);
+            router.push(`/chat-ai/${newChatId}?title=${userInput}`);
+            chatIdExtracted = true;
+
+            setAiResponse((prev) => prev + value.slice(endOfId + 1));
+          } else {
+            setAiResponse((prev) => prev + value);
+          }
+        } else {
+          setAiResponse((prev) => prev + value);
+        }
       }
       setLoading(false);
       setUserInput("");
     };
+
     readChunk();
   };
 

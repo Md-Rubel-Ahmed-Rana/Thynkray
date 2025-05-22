@@ -48,7 +48,7 @@ const SingleMessageCard = ({ message }: Props) => {
           variant="caption"
           sx={{ color: theme.palette.text.secondary }}
         >
-          {message.createdAt.toLocaleTimeString()}
+          {new Date(message.createdAt).toLocaleTimeString()}
         </Typography>
       </Paper>
     </Box>
