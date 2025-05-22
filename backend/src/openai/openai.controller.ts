@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -78,9 +79,9 @@ export class OpenaiController {
   @Patch("chats/:id")
   async updateChatTitle(
     @Param("id") id: string,
-    @Query("title") title: string
+    @Body() body: { title: string }
   ) {
-    return this.openaiService.updateChatTitle(id, title);
+    return this.openaiService.updateChatTitle(id, body.title);
   }
 
   @UseGuards(AuthGuard)

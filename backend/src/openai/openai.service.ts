@@ -113,7 +113,8 @@ export class OpenaiService {
   async getUserChats(userId: string) {
     const chats = await this.chatModel
       .find({ user: userId })
-      .select("title createdAt");
+      .select("title createdAt")
+      .sort({ createdAt: -1 });
     return {
       statusCode: HttpStatus.OK,
       message: "Chats retrieved successfully",
