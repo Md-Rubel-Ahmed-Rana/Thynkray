@@ -1,7 +1,8 @@
 import SEOHead from "@/components/common/SEOHead";
 import CategorizedPosts from "@/components/posts/category";
+import RootLayout from "@/layout/RootLayout";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { ReactElement } from "react";
 
 const CategorizedPostsPage = () => {
   const { query } = useRouter();
@@ -15,3 +16,7 @@ const CategorizedPostsPage = () => {
 };
 
 export default CategorizedPostsPage;
+
+CategorizedPostsPage.getLayout = function (page: ReactElement) {
+  return <RootLayout>{page}</RootLayout>;
+};

@@ -1,13 +1,13 @@
-import ChatAI from "@/components/chat";
+import InitialChatUI from "@/components/chat/InitialChatUI";
 import SEOHead from "@/components/common/SEOHead";
 
-const ChatAIPage = () => {
+const InitialChatUIPage = () => {
   return (
     <>
       <SEOHead title={"Chat with AI - Thynkray"} />
-      <ChatAI />
+      <InitialChatUI />
     </>
   );
 };
 
-export default ChatAIPage;
+export default InitialChatUIPage;
