@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Skeleton } from "@mui/material";
 import { useContext, useEffect, useRef } from "react";
 import SingleMessageCard from "./SingleMessageCard";
@@ -10,9 +11,12 @@ import { useRouter } from "next/router";
 const Messages = () => {
   const { query } = useRouter();
   const chatId = query.chatId as string;
-  const { data, isLoading } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["chats-messages", chatId],
-    queryFn: getMessageByChatId,
+    queryFn: () => getMessageByChatId(chatId),
+    enabled: !!chatId,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   console.log({ data, isLoading, chatId });
@@ -25,7 +29,7 @@ const Messages = () => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [aiResponse]);
+  }, [aiResponse, question, messages]);
 
   return (
     <Box
@@ -46,9 +50,30 @@ const Messages = () => {
           </Box>
         ) : (
           <>
-            {messages.map((msg) => (
-              <SingleMessageCard key={msg.id} message={msg} />
-            ))}
+            {messages?.length > 0 ? (
+              messages?.map((message) => (
+                <SingleMessageCard
+                  key={message.id}
+                  message={{
+                    id: message.id,
+                    content: message.content,
+                    role: message.role,
+                    createdAt: new Date(message.createdAt),
+                  }}
+                />
+              ))
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <p>No messages found</p>
+              </Box>
+            )}
           </>
         )}
 
