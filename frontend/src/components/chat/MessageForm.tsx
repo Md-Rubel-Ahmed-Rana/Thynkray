@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 import { ContextProvider } from "@/context";
 import { baseApi } from "@/modules";
 import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
+import useGetTotalAIPromptCount from "@/hooks/useGetTotalAIPromptCount";
+import { toast } from "react-toastify";
+import { setLocalStorage } from "@/db/localStorage";
 
 const StyledInputArea = styled(Box)({
   padding: "20px",
@@ -18,8 +21,28 @@ const MessageForm = () => {
   const chatId = router.query.chatId as string;
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const totalPromptCount = useGetTotalAIPromptCount(user?.id || "");
+
+  const MAX_PROMPT_COUNT = 3;
+  const MAX_PROMPT_COUNT_REACHED = totalPromptCount >= MAX_PROMPT_COUNT;
+
+  const handleMaxPromptCount = () => {
+    if (MAX_PROMPT_COUNT_REACHED) {
+      toast.warn(
+        `You have reached the maximum number of prompts (${MAX_PROMPT_COUNT}). You can't ask more questions at this time.`
+      );
+      return;
+    }
+  };
 
   const handleAsk = async () => {
+    setLocalStorage(user?.id, totalPromptCount + 1);
+    toast.warn(
+      `You have used ${
+        totalPromptCount + 1
+      } out of ${MAX_PROMPT_COUNT} prompts.`
+    );
+    handleMaxPromptCount();
     setQuestion(userInput);
     setAiResponse("");
     setLoading(true);

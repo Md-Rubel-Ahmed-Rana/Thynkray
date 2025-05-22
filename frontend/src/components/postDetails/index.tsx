@@ -1,4 +1,3 @@
-import { cardData } from "@/constants/cardData";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import PostHeader from "./PostHeader";
@@ -57,7 +56,7 @@ const PostDetails = () => {
                   <RelatedPosts post={post} />
                 </Box>
                 <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
-                  <PopularPosts posts={cardData} />
+                  <PopularPosts />
                 </Box>
               </Box>
               <Divider sx={{ margin: "20px 0px" }} />
