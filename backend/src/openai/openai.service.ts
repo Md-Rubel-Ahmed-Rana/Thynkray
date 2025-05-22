@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { isObjectIdOrHexString, Model, Types } from "mongoose";
 import OpenAI from "openai";
 import { Chat } from "./schemas/chat.schema";
 import { Message } from "./schemas/message.schema";
@@ -75,7 +75,7 @@ export class OpenaiService {
       { _id: { $in: [userMsg._id, assistantMsg._id] } },
       { chatId: chat._id }
     );
-    return;
+    return chat._id as string;
   }
 
   async addToChat(chatId: string, question: string, answer: string) {
@@ -111,10 +111,29 @@ export class OpenaiService {
   }
 
   async getUserChats(userId: string) {
-    return this.chatModel.find({ user: userId }).select("title createdAt");
+    const chats = await this.chatModel
+      .find({ user: userId })
+      .select("title createdAt");
+    return {
+      statusCode: HttpStatus.OK,
+      message: "Chats retrieved successfully",
+      success: true,
+      data: chats,
+    };
   }
 
-  async getChatMessages(chatId: string) {
-    return this.messageModel.find({ chatId }).sort({ createdAt: 1 });
+  async getChatMessages(chatId: Types.ObjectId) {
+    const objectId = new Types.ObjectId(chatId);
+    const messages = await this.messageModel
+      .find({
+        chatId: objectId,
+      })
+      .sort({ createdAt: 1 });
+    return {
+      statusCode: HttpStatus.OK,
+      message: "Messages retrieved successfully",
+      success: true,
+      data: messages,
+    };
   }
 }

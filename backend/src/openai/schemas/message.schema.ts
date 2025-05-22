@@ -6,7 +6,7 @@ export class Message extends Document {
   @Prop({ required: true })
   role: "user" | "assistant";
 
-  @Prop({ required: true })
+  @Prop()
   content: string;
 
   @Prop({ type: Types.ObjectId, ref: "Chat" })
