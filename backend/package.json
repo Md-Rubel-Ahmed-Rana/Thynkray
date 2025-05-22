@@ -31,6 +31,8 @@
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
+    "db:backup": "ts-node ./src/backups/backup.ts",
+    "db:restore": "ts-node ./src/backups/restore.ts",
     "build:swc": "npx swc --out-dir dist -w src",
     "start:swc": "nodemon dist/main",
     "SWC:dev": "concurrently   \"npm run build:swc\" \"npm run start:swc\" "
