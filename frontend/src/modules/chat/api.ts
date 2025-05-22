@@ -13,10 +13,9 @@ export const getChatListByUser = async ({
   return res.data.data;
 };
 
-export const getMessageByChatId = async ({
-  queryKey,
-}: QueryFunctionContext<[string, string]>): Promise<Message[]> => {
-  const [, chatId] = queryKey;
+export const getMessageByChatId = async (
+  chatId: string
+): Promise<Message[]> => {
   const res = await axios.get(`${baseApi}/openai/chats/messages/${chatId}/`, {
     withCredentials: true,
   });
