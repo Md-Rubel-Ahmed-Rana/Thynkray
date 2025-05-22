@@ -4,14 +4,18 @@ import { styled } from "@mui/system";
 import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import { ContextProvider } from "@/context";
+import { baseApi } from "@/modules";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 
 const StyledInputArea = styled(Box)({
   padding: "20px",
 });
 
 const MessageForm = () => {
+  const { user } = useGetCurrentUser();
   const { setAiResponse, setQuestion } = useContext(ContextProvider);
   const router = useRouter();
+  const chatId = router.query.chatId as string;
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +26,12 @@ const MessageForm = () => {
     router.push("/chat-ai/new-chat");
 
     const res = await fetch(
-      `http://localhost:5000/chatbot/stream?q=${encodeURIComponent(userInput)}`
+      `${baseApi}/openai/ask?userId=${user?.id}&chatId=${
+        chatId || ""
+      }&question=${encodeURIComponent(userInput)}`,
+      {
+        credentials: "include",
+      }
     );
 
     if (!res.body) return;
