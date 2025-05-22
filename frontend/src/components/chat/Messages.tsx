@@ -15,6 +15,8 @@ const Messages = () => {
     queryFn: getMessageByChatId,
   });
 
+  console.log({ data, isLoading, chatId });
+
   const messages = (data || []) as Message[];
   const { aiResponse, question } = useContext(ContextProvider);
   const containerRef = useRef<HTMLDivElement | null>(null);
