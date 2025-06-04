@@ -58,7 +58,7 @@ const InternationalPosts = () => {
                   <Link href="/discussions">
                     <Button variant="contained">Discussions</Button>
                   </Link>
-                  <Link href="/chat">
+                  <Link href="/chat-ai">
                     <Button variant="contained">Chat AI</Button>
                   </Link>
                 </Box>

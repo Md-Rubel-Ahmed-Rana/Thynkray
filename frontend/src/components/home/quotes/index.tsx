@@ -1,17 +1,12 @@
 import { Box, Grid, Typography } from "@mui/material";
 import QuoteCard from "./QuoteCard";
-import { useQuery } from "@tanstack/react-query";
-import { getQuotes } from "@/modules/quote/api";
+import { Quote } from "@/modules/quote/types";
 
-const DailyQuote = () => {
-  const { data: quotes = [], isLoading } = useQuery({
-    queryKey: ["quotes"],
-    queryFn: getQuotes,
-    staleTime: 1000 * 60 * 60 * 24,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+type Props = {
+  quotes: Quote[];
+};
 
+const DailyQuote = ({ quotes = [] }: Props) => {
   return (
     <Box sx={{ my: 8, px: { xs: 2, md: 6 } }}>
       <Box
@@ -40,7 +35,7 @@ const DailyQuote = () => {
         columns={{ xs: 2, sm: 8, md: 12 }}
       >
         {quotes.map((quote, index) => (
-          <QuoteCard key={index} quote={quote} isLoading={isLoading} />
+          <QuoteCard key={index} quote={quote} />
         ))}
       </Grid>
     </Box>
