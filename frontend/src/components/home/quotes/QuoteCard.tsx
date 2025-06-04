@@ -1,14 +1,13 @@
 import { Quote } from "@/modules/quote/types";
-import { Grid, Paper, Skeleton, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React from "react";
 
 type Props = {
   quote: Quote;
-  isLoading: boolean;
 };
 
-const QuoteCard = ({ quote, isLoading }: Props) => {
+const QuoteCard = ({ quote }: Props) => {
   return (
     <Grid size={{ xs: 2, sm: 4, md: 4 }}>
       <Paper
@@ -30,25 +29,18 @@ const QuoteCard = ({ quote, isLoading }: Props) => {
           justifyContent: "center",
         }}
       >
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          <Typography
-            variant="h6"
-            fontStyle="italic"
-            gutterBottom
-            sx={{ flexGrow: 1 }}
-          >
-            {quote.quote ? `"${quote.quote}"` : "Loading..."}
-          </Typography>
-        )}
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          <Typography variant="subtitle2" color="text.secondary">
-            {quote?.author ? `— ${quote?.author}` : ""}
-          </Typography>
-        )}
+        <Typography
+          variant="h6"
+          fontStyle="italic"
+          gutterBottom
+          sx={{ flexGrow: 1 }}
+        >
+          {quote.quote ? `"${quote.quote}"` : "Loading..."}
+        </Typography>
+
+        <Typography variant="subtitle2" color="text.secondary">
+          {quote?.author ? `— ${quote?.author}` : ""}
+        </Typography>
       </Paper>
     </Grid>
   );

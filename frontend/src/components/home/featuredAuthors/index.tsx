@@ -1,7 +1,12 @@
 import { Typography, Box, Container } from "@mui/material";
-import AllAuthors from "@/components/authors";
+import AuthorContainer from "./AuthorContainer";
+import { User } from "@/modules/user/types";
 
-const FeaturedAuthors = () => {
+type Props = {
+  authors: User[];
+};
+
+const FeaturedAuthors = ({ authors = [] }: Props) => {
   return (
     <Box sx={{ py: 8, backgroundColor: "background.default" }}>
       <Container>
@@ -37,7 +42,7 @@ const FeaturedAuthors = () => {
           </Typography>
         </Box>
 
-        <AllAuthors />
+        <AuthorContainer authors={authors} />
       </Container>
     </Box>
   );
