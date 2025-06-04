@@ -47,7 +47,7 @@ const RelatedPosts = ({ post }: Props) => {
                 <Link href={"/discussions"}>
                   <Button variant="contained">Explore Discussions</Button>
                 </Link>
-                <Link href={"/chat"}>
+                <Link href={"/chat-ai"}>
                   <Button variant="contained">Chat with AI</Button>
                 </Link>
               </Box>

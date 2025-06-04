@@ -4,19 +4,39 @@ import MainContent from "./mainContent";
 import FeaturedAuthors from "./featuredAuthors";
 import DailyQuote from "./quotes";
 import ContactUs from "./contact";
-import International from "./international";
-import LatestPosts from "../sharedContent/LatestPosts";
 import { Box, Divider } from "@mui/material";
-import PopularPosts from "../sharedContent/PopularPosts";
-import LatestDiscussions from "../sharedContent/LatestDiscussions";
+import { InternationalPost, Post } from "@/modules/post/types";
+import { Discussion } from "@/modules/discussion/types";
+import { User } from "@/modules/user/types";
+import { Quote } from "@/modules/quote/types";
+import HomeDiscussions from "./discussions";
+import LatestPosts from "./latestPosts";
+import HomePopularPosts from "./popularPosts";
+import GlobalNews from "./globalNews";
 
-const Home = () => {
+type HomeProps = {
+  latestPosts: Post[];
+  discussions: Discussion[];
+  popularPosts: Post[];
+  internationalPosts: InternationalPost[];
+  featuredAuthors: User[];
+  quotes: Quote[];
+};
+
+const Home = ({
+  discussions,
+  featuredAuthors,
+  internationalPosts,
+  latestPosts,
+  popularPosts,
+  quotes,
+}: HomeProps) => {
   return (
     <main>
       <Banner />
-      <MainContent />
+      <MainContent posts={latestPosts} />
       <Divider sx={{ margin: "20px 0px" }} />
-      <LatestDiscussions />
+      <HomeDiscussions discussions={discussions} />
       <Divider sx={{ margin: "20px 0px" }} />
       <Box
         sx={{
@@ -29,19 +49,19 @@ const Home = () => {
         my={4}
       >
         <Box sx={{ width: { xs: "100%", md: "70%" } }}>
-          <LatestPosts />
+          <LatestPosts posts={latestPosts} />
         </Box>
         <Box mt={6} sx={{ width: { xs: "100%", md: "30%" } }}>
-          <PopularPosts />
+          <HomePopularPosts posts={popularPosts} />
         </Box>
       </Box>
 
       <Divider sx={{ margin: "20px 0px" }} />
-      <International />
+      <GlobalNews news={internationalPosts} />
       <Divider sx={{ margin: "20px 0px" }} />
-      <FeaturedAuthors />
+      <FeaturedAuthors authors={featuredAuthors} />
       <Divider sx={{ margin: "20px 0px" }} />
-      <DailyQuote />
+      <DailyQuote quotes={quotes} />
       <Divider sx={{ margin: "20px 0px" }} />
       <ContactUs />
     </main>
