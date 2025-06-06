@@ -15,6 +15,7 @@ import "../styles/globals.css";
 import ScrollToTopButton from "@/components/common/BottomToTopScrollButton";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
+import GoogleOneTapSignin from "@/components/common/GoogleOneTapSignin";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -67,6 +68,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             transition={Bounce}
           />
           <ScrollToTopButton />
+          <GoogleOneTapSignin />
         </ContextAPI>
       </SessionProvider>
     </QueryClientProvider>
