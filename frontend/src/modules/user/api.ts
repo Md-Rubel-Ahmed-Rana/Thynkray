@@ -2,6 +2,7 @@ import axios from "axios";
 import { baseApi } from "..";
 import { User } from "./types";
 import { QueryFunctionContext } from "@tanstack/react-query";
+import { signIn } from "next-auth/react";
 
 export const getCurrentUser = async ({
   queryKey,
@@ -29,6 +30,35 @@ export const userLogin = async (user: {
   await axios.post(`${baseApi}/user`, user, {
     withCredentials: true,
   });
+};
+
+export const initializeGoogleOneTap = () => {
+  window.google.accounts.id.initialize({
+    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+    callback: async (response) => {
+      signIn("googleonetap", {
+        credential: response.credential,
+        redirect: false,
+      });
+      const res = await fetch("/api/auth/one-tap-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ credential: response.credential }),
+      });
+
+      const user = await res.json();
+      await userLogin({
+        name: user?.name,
+        email: user?.email,
+        profile_image: user?.picture,
+      });
+    },
+    auto_select: true,
+    cancel_on_tap_outside: false,
+  });
+  window.google.accounts.id.prompt();
 };
 
 export const updateUserProfileImage = async (
