@@ -4,7 +4,9 @@ import { OnEvent } from "@nestjs/event-emitter";
 import { PrismaService } from "src/prisma/prisma.service";
 import { GetPostDto } from "src/post/dto/get-post.dto";
 import { PinoLogger } from "src/common/logger/pino-logger.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class MeiliSearchService {
   private index: any;
 
@@ -42,46 +44,39 @@ export class MeiliSearchService {
     }
   }
 
-  async addAllPostsOnMeilisearch(): Promise<{
-    statusCode: number;
-    message: string;
-    response: any;
-  }> {
-    try {
-      const posts = await this.prisma.post.findMany({
-        include: {
-          author: true,
-          content: true,
-          _count: {
-            select: {
-              comments: true,
-            },
+  async addAllPostsOnMeilisearch() {
+    const posts = await this.prisma.post.findMany({
+      include: {
+        author: true,
+        content: true,
+        _count: {
+          select: {
+            comments: true,
           },
         },
-      });
-      const postDtos = GetPostDto.fromEntities(posts);
-      const documents = postDtos
-        .map((post) => {
-          try {
-            return MeiliSearchDto.fromPost(post);
-          } catch (e: any) {
-            this.logger.warn(`Skipping post due to error: ${e?.message}`);
-            return null;
-          }
-        })
-        .filter(Boolean);
+      },
+    });
 
-      const response = await this.index.addDocuments(documents);
-      return {
-        statusCode: 200,
-        message: "Documents added to MeiliSearch",
-        response,
-      };
-    } catch (error: any) {
-      this.logger.error(
-        `Error adding full documents to MeiliSearch. Error: ${error?.message}`
-      );
-    }
+    const postDtos = GetPostDto.fromEntities(posts);
+
+    const documents = postDtos
+      .map((post) => {
+        try {
+          return MeiliSearchDto.fromPost(post);
+        } catch (e: any) {
+          this.logger.warn(`Skipping post due to error: ${e?.message}`);
+          return null;
+        }
+      })
+      .filter(Boolean);
+
+    const response = await this.index.addDocuments(documents);
+
+    return {
+      statusCode: 200,
+      message: "Documents added to MeiliSearch",
+      data: response,
+    };
   }
 
   async search(
