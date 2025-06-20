@@ -21,7 +21,7 @@ const upload = multer(multerOptions);
     RedisConfigService,
     PrismaService,
   ],
-  exports: [RedisCacheService],
+  exports: [RedisCacheService, PostService],
 })
 export class PostModule {
   configure(consumer: MiddlewareConsumer) {

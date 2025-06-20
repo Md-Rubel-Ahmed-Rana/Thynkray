@@ -10,7 +10,6 @@ export class GlobalNewsService {
 
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>("NEWS_API_KEY");
-    console.log({ NEWS_API_KEY: apiKey });
     this.newsapi = new NewsAPI(apiKey);
   }
 

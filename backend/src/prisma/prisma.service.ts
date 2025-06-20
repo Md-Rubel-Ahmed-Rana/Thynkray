@@ -1,5 +1,5 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PinoLogger } from "src/common/logger/pino-logger.service";
 
 @Injectable()
